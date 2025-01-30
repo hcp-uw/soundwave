@@ -73,11 +73,15 @@
 //   },
 // });
 import { View, Text } from 'react-native';
+import RoundedRectangle from '@/components/RoundedRectangle';
 
 export default function HomeScreen() {
   return (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: "white" }}>
-      <Text style={{ fontSize: 24 }}>Hello, aditi and ahana! 🎉</Text>
+    <View style={{ flex: 1, backgroundColor: '#641346', justifyContent: "center", alignItems: "center"}}>
+      
+      <RoundedRectangle />
+
     </View>
   );
 }
+
