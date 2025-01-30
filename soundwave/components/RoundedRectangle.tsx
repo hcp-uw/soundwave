@@ -20,8 +20,9 @@ const styles = StyleSheet.create({
     
   },
   text: {
-    fontSize: 20,
-    fontWeight: 'bold',
+    fontSize: 35,
+    fontFamily: 'Afacad',
+    //fontWeight: 'bold',
     color: 'black',
   },
 });
