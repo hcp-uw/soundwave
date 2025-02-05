@@ -2,9 +2,42 @@ const express = require("express")
 const cors = require("cors")
 const { unknownEndpoint } = require('./middleware');
 
+require("dotenv").config({ path: "firebase-key.env" }); // Load env file
 // create your express application
 const app = express();
 
+<<<<<<< HEAD
+const admin = require("firebase-admin");
+
+const credentials = JSON.parse(fs.readFileSync(process.env.FIREBASE_KEY_PATH, "utf8")); 
+
+admin.initializeApp({
+  credential: admin.credential.cert(credentials)
+});
+
+//create the endpoints
+
+//post endpoint!
+app.post('./create', async (req, res) => {
+    try {
+        const postId = req.body.postId;
+        const postJson = {
+            username: req.body.username,
+            content: req.body.content,
+            rating: req.body.rating
+        };
+        const response = db.collection("posts").doc(postId).set(postJson);
+        res.send(response);
+    } 
+    catch(error) {
+        res.send(error);
+    }
+})
+
+const db = admin.firestore();
+
+=======
+>>>>>>> parent of f95bf1b (create post)
 // enable json parsing
 app.use(express.json());
 

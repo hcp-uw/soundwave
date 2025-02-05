@@ -10,6 +10,12 @@
   "license": "ISC",
   "dependencies": {
     "cors": "^2.8.5",
+<<<<<<< HEAD
+    "dotenv": "^16.4.7",
+    "express": "^4.18.2",
+    "firebase-admin": "^13.0.2"
+=======
     "express": "^4.18.2"
+>>>>>>> parent of f95bf1b (create post)
   }
 }
