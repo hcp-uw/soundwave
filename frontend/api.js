@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // Replace with your backend URL or IP address (Ensure the backend is running)
-const API_URL = 'http://your-backend-ip:port';
+const API_URL = 'http://localhost:3001';
 
 export const fetchData = async () => {
     try {
