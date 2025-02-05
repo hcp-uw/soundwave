@@ -3,17 +3,24 @@ const cors = require("cors")
 const { unknownEndpoint } = require('./middleware');
 
 require("dotenv").config({ path: "firebase-key.env" }); // Load env file
+require("dotenv").config({ path: "firebase_key.env" }); // Load env file
 // create your express application
 const app = express();
 
-<<<<<<< HEAD
 const admin = require("firebase-admin");
+const fs = require("fs");
 
 const credentials = JSON.parse(fs.readFileSync(process.env.FIREBASE_KEY_PATH, "utf8")); 
 
 admin.initializeApp({
   credential: admin.credential.cert(credentials)
 });
+
+// enable json parsing
+app.use(express.json());
+
+// enable cors
+app.use(cors());
 
 //create the endpoints
 
@@ -36,13 +43,6 @@ app.post('./create', async (req, res) => {
 
 const db = admin.firestore();
 
-=======
->>>>>>> parent of f95bf1b (create post)
-// enable json parsing
-app.use(express.json());
-
-// enable cors
-app.use(cors());
 
 // our 'database'. This is just a simple in-memory store for the images, and
 // will be lost when the server is restarted. In a real application, you would
