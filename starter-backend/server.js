@@ -2,7 +2,6 @@ const express = require("express")
 const cors = require("cors")
 const { unknownEndpoint } = require('./middleware');
 
-require("dotenv").config({ path: "firebase-key.env" }); // Load env file
 require("dotenv").config({ path: "firebase_key.env" }); // Load env file
 // create your express application
 const app = express();
@@ -22,11 +21,14 @@ app.use(express.json());
 // enable cors
 app.use(cors());
 
+app.use(express.urlencoded({extended: true}));
+
 //create the endpoints
 
 //post endpoint!
-app.post('./create', async (req, res) => {
+app.post('/create', async (req, res) => {
     try {
+        console.log(req.body);
         const postId = req.body.postId;
         const postJson = {
             username: req.body.username,
