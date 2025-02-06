@@ -25,7 +25,7 @@ app.use(express.urlencoded({extended: true}));
 
 //create the endpoints
 
-//post endpoint!
+//post endpoint! to create!
 app.post('/create', async (req, res) => {
     try {
         console.log(req.body);
@@ -37,9 +37,19 @@ app.post('/create', async (req, res) => {
         };
         const response = db.collection("posts").doc(postId).set(postJson);
         res.send(response);
+        console.log("sent successfully");
+        //code with error messages to help for debugging:
+        // Firestore write (Await it!)
+        // await db.collection("posts").doc(postId).set(postJson);
+
+        // console.log("Data written to Firestore successfully");
+        // res.status(200).json({ message: "Post added successfully!" });
     } 
     catch(error) {
         res.send(error);
+        //error messages:
+        // console.error("Firebase Error:", error);
+        // res.status(500).json({ error: "Internal Server Error", details: error.message });
     }
 })
 
