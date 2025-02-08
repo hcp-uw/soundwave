@@ -69,6 +69,16 @@ export default function TabLayout() {
           
         }}
       />
+      <Tabs.Screen
+        name="newpost"
+        options={{
+          title: 'newpost',
+          tabBarIcon: ({ color }: { color: string }) => (
+            <IconSymbol size={28} name="paperplane.fill" color={color} />
+          ),
+          
+        }}
+      />
     </Tabs>
   );
 }
