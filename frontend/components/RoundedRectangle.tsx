@@ -1,9 +1,15 @@
 import { View, Text, StyleSheet } from 'react-native';
+import { ReactNode } from 'react';
 
-export default function RoundedRectangle() {
+interface RoundedRectangleProps {
+  children?: ReactNode; // 👈 Ensures children can be any valid React element(s)
+}
+
+export default function RoundedRectangle({ children }: RoundedRectangleProps) {
   return (
     <View style={styles.rectangle}>
       <Text style={styles.text}>new post</Text>
+      {children}
     </View>
   );
 }
