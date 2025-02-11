@@ -39,16 +39,17 @@ const handleNext= () => {
             height: 40,
           }}
         >
-          <Ionicons name="search" size={20} color="#7A5C61" />
+          <Ionicons name="search" size={20} color="black" />
           <TextInput
             placeholder="find song..."
+            placeholderTextColor="black"
             value={searchQuery}
             onChangeText={setSearchQuery}
             style={{
               flex: 1,
               marginLeft: 10,
               fontSize: 16,
-              color: "#4A3B47",
+              color: "black",
             }}
           />
           <TouchableOpacity>
