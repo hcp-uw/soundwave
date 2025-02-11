@@ -2,10 +2,16 @@ import { useState } from "react";
 import { View, TextInput, TouchableOpacity, Text } from "react-native";
 import { Ionicons } from "@expo/vector-icons"; // Import icons
 import RoundedRectangle from "@/components/RoundedRectangle"; // Ensure this exists
+import { Record } from "@/components/Record";
+import { NextButton } from "@/components/nextButton";
 
 
 export default function NewPostScreen() {
   const [searchQuery, setSearchQuery] = useState("");
+
+const handleNext= () => { 
+  console.log("hey kanishka");
+}
 
   return (
     <View
@@ -14,6 +20,7 @@ export default function NewPostScreen() {
         backgroundColor: "#641346",
         justifyContent: "center",
         alignItems: "center",
+        paddingBottom: 10,
         paddingHorizontal: 20,
       }}
     >
@@ -48,6 +55,15 @@ export default function NewPostScreen() {
             <Ionicons name="mic" size={20} color="#7A5C61" />
           </TouchableOpacity>
         </View>
+
+        <View style={{ flex: 1, alignItems: "center", marginTop: 120}}>
+            <Record/>
+            
+        </View>
+        <View style={{ flex: 1, alignItems: "center", marginTop: 15}}>
+            <NextButton onPress={handleNext}/>
+        </View>
+        
       </RoundedRectangle>
     </View>
   );

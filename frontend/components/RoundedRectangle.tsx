@@ -18,8 +18,10 @@ const styles = StyleSheet.create({
   rectangle: {
     backgroundColor: '#D6A5B3',
     borderRadius: 20,
-    padding: 20,
-    width: '90%',
+    padding: 15,
+    paddingTop: 20,
+   
+    width: '98%',
     height: '80%',
     alignSelf: 'center',
     alignItems: 'center',
@@ -28,6 +30,7 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 35,
     fontFamily: 'Afacad',
+    paddingBottom: 15,
     //fontWeight: 'bold',
     color: 'black',
   },
