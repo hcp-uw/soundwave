@@ -5,20 +5,25 @@ import { NextButton } from "@/components/nextButton";
 import { sendData } from "../../api";
 
 interface PostData {
+    postId: string;
     song: string;
     artist: string;
-    text: string;
+    content: string;
+    
   }
 
 export default function NewPostScreen() {
   const [textBoxInput, setTextBoxInput] = useState(""); // Textbox state
   const songName = "very cool song"
   const artistName = "very cool artist"
+
   const handleNext = async () => {
     const postData: PostData = {
+            postId: "1234",
             song: songName,
             artist: artistName,
-            text: textBoxInput,
+            content: textBoxInput,
+            
           };
         const response = await sendData(postData); // Use the function from api.js
         if (response) {

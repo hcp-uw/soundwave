@@ -19,6 +19,7 @@ admin.initializeApp({
 app.use(express.json());
 
 // enable cors
+//app.use(cors({ origin: "*"}));
 app.use(cors());
 
 app.use(express.urlencoded({extended: true}));
@@ -35,7 +36,7 @@ app.post('/create', async (req, res) => {
             song: req.body.song,
             artist: req.body.artist,
             content: req.body.content,
-            rating: req.body.rating
+            //rating: req.body.rating
         };
         const response = await db.collection("posts").doc(postId).set(postJson);
         res.send(response);
@@ -50,7 +51,7 @@ app.post('/create', async (req, res) => {
     catch(error) {
         res.send(error);
         //error messages:
-        // console.error("Firebase Error:", error);
+        console.error("Firebase Error:", error);
         // res.status(500).json({ error: "Internal Server Error", details: error.message });
     }
 })
