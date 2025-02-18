@@ -31,7 +31,9 @@ app.post('/create', async (req, res) => {
         console.log(req.body);
         const postId = req.body.postId;
         const postJson = {
-            username: req.body.username,
+            //username: req.body.username,
+            song: req.body.song,
+            artist: req.body.artist,
             content: req.body.content,
             rating: req.body.rating
         };
