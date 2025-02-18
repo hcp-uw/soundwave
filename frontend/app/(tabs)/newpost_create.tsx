@@ -1,0 +1,77 @@
+import { useState } from "react";
+import { View, TextInput, Text, Alert } from "react-native";
+import RoundedRectangle from "@/components/RoundedRectangle"; // Ensure this exists
+import { NextButton } from "@/components/nextButton";
+import { sendData } from "../../api";
+
+interface PostData {
+    song: string;
+    artist: string;
+    text: string;
+  }
+
+export default function NewPostScreen() {
+  const [textBoxInput, setTextBoxInput] = useState(""); // Textbox state
+  const songName = "very cool song"
+  const artistName = "very cool artist"
+  const handleNext = async () => {
+    const postData: PostData = {
+            song: songName,
+            artist: artistName,
+            text: textBoxInput,
+          };
+        const response = await sendData(postData); // Use the function from api.js
+        if (response) {
+        Alert.alert("Success", "Your data has been sent!");
+        } else {
+        Alert.alert("Error", "Failed to send data");
+        }
+    };
+  
+  return (
+    <View
+      style={{
+        flex: 1,
+        backgroundColor: "#641346", // Keep the same background color
+        justifyContent: "center",
+        alignItems: "center",
+        paddingHorizontal: 20,
+      }}
+    >
+      {/* Rounded Rectangle Container */}
+      <RoundedRectangle>
+        {/* Textbox */}
+        <Text
+          style={{
+            marginTop: 10, // Space between textbox and text
+            fontSize: 16,
+            color: "black",
+            textAlign: "center",
+            marginBottom: 20
+          }}
+        >
+          {`${songName} \n ${artistName}`}
+        </Text>
+        <TextInput
+          style={{
+            width: "100%",
+            height: 400,
+            backgroundColor: "white",
+            borderRadius: 10,
+            paddingHorizontal: 10,
+          }}
+          placeholder="Enter text..."
+          placeholderTextColor="gray"
+          value={textBoxInput}
+          onChangeText={setTextBoxInput}
+        />
+
+        
+        {/* Next Button */}
+        <View style={{ flex: 1, alignItems: "center", marginTop: 15 }}>
+          <NextButton onPress={handleNext} />
+        </View>
+      </RoundedRectangle>
+    </View>
+  );
+}

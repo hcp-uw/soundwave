@@ -4,13 +4,26 @@ import { Ionicons } from "@expo/vector-icons"; // Import icons
 import RoundedRectangle from "@/components/RoundedRectangle"; // Ensure this exists
 import { Record } from "@/components/Record";
 import { NextButton } from "@/components/nextButton";
+import { useNavigation } from "@react-navigation/native"; // Import navigation hook
+import { StackNavigationProp } from "@react-navigation/stack";
+
+type RootStackParamList = {
+  NewPost: undefined;
+  newpost_create: undefined; // Change 'NextScreen' to your actual next screen name
+};
+
+type NavigationProp = StackNavigationProp<RootStackParamList, "newpost_create">;
 
 
 export default function NewPostScreen() {
   const [searchQuery, setSearchQuery] = useState("");
+  const navigation = useNavigation<NavigationProp>();
+
 
 const handleNext= () => { 
-  console.log("hey kanishka");
+  //console.log("hey viba");
+  navigation.navigate("newpost_create");
+
 }
 
   return (
