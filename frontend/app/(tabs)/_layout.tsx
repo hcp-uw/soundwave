@@ -33,7 +33,7 @@ export default function TabLayout() {
   if (!fontsLoaded) {
     return null;
   }
-
+  // Tab bars
   return (
     <Tabs
       screenOptions={{
@@ -79,6 +79,16 @@ export default function TabLayout() {
           
         }}
       />
+      <Tabs.Screen
+        name="search_results"
+        options={{
+          title: 'search_results',
+          tabBarIcon: ({ color }: { color: string }) => (
+            <IconSymbol size={28} name="paperplane.fill" color={color} />
+          ),
+          
+        }}
+        />
     </Tabs>
   );
 }

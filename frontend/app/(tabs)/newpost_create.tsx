@@ -27,7 +27,7 @@ export default function NewPostScreen() {
           };
         const response = await sendData(postData); // Use the function from api.js
         if (response) {
-        Alert.alert("Success", "Your data has been sent!");
+        Alert.alert("slay", "post created!");
         } else {
         Alert.alert("Error", "Failed to send data");
         }
@@ -48,7 +48,7 @@ export default function NewPostScreen() {
         {/* Textbox */}
         <Text
           style={{
-            marginTop: 10, // Space between textbox and text
+            marginTop: 10, 
             fontSize: 16,
             color: "black",
             textAlign: "center",
