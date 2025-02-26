@@ -3,6 +3,60 @@ import { View, TextInput, Text, Alert } from "react-native";
 import RoundedRectangle from "@/components/RoundedRectangle"; // Ensure this exists
 import { NextButton } from "@/components/nextButton";
 import { sendData } from "../../api";
+import { FormControl, InputGroup, Container, Button } from "react-bootstrap";
+
+
+//K: import necessary client ID and secret from .env
+const clientId = import.meta.env.VITE_CLIENT_ID;
+const clientSecret = import.meta.env.VITE_CLIENT_SECRET;
+
+//K: fetches our access token (spotify api thing)
+useEffect(() => {
+  let authParams = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
+    body:
+      "grant_type=client_credentials&client_id=" +
+      clientId +
+      "&client_secret=" +
+      clientSecret,
+  };
+
+  fetch("https://accounts.spotify.com/api/token", authParams) //we are sending our POST request to this url
+    .then((result) => result.json())
+    .then((data) => {
+      setAccessToken(data.access_token);
+    });
+}, []);
+
+
+//gets the first result of type 'track', based on search
+async function search() {
+  let trackParams = {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + accessToken,
+    },
+  };
+
+  // Get Track
+  const trackID = await fetch(
+    "https://api.spotify.com/v1/search?q=" + searchInput + "&type=track",
+    trackParams
+  )
+    .then((result) => result.json())
+    .then((data) => {
+      return data.artists.items[0].id;
+    });
+}
+
+
+//what's left? actually integrate in a "search" function into the front end
+//github stuff
+
 
 interface PostData {
     song: string;
@@ -13,6 +67,26 @@ interface PostData {
 export default function NewPostScreen() {
   const [textBoxInput, setTextBoxInput] = useState(""); // Textbox state
   const songName = "very cool song"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   const artistName = "very cool artist"
   const handleNext = async () => {
     const postData: PostData = {
