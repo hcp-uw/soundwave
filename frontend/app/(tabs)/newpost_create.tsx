@@ -3,26 +3,32 @@ import { View, TextInput, Text, Alert } from "react-native";
 import RoundedRectangle from "@/components/RoundedRectangle"; // Ensure this exists
 import { NextButton } from "@/components/nextButton";
 import { sendData } from "../../api";
+import { FormControl, InputGroup, Container, Button } from "react-bootstrap";
 
 interface PostData {
+    postId: string;
     song: string;
     artist: string;
-    text: string;
+    content: string;
+    
   }
 
 export default function NewPostScreen() {
   const [textBoxInput, setTextBoxInput] = useState(""); // Textbox state
   const songName = "very cool song"
   const artistName = "very cool artist"
+
   const handleNext = async () => {
     const postData: PostData = {
+            postId: "1234",
             song: songName,
             artist: artistName,
-            text: textBoxInput,
+            content: textBoxInput,
+            
           };
         const response = await sendData(postData); // Use the function from api.js
         if (response) {
-        Alert.alert("Success", "Your data has been sent!");
+        Alert.alert("slay", "post created!");
         } else {
         Alert.alert("Error", "Failed to send data");
         }
@@ -43,7 +49,7 @@ export default function NewPostScreen() {
         {/* Textbox */}
         <Text
           style={{
-            marginTop: 10, // Space between textbox and text
+            marginTop: 10, 
             fontSize: 16,
             color: "black",
             textAlign: "center",

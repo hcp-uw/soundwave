@@ -45,14 +45,14 @@ const handleNext= () => {
           style={{
             flexDirection: "row",
             alignItems: "center",
-            backgroundColor: "#E5B8C9",
+            backgroundColor: "#AA7E8B",
             borderRadius: 20,
             paddingHorizontal: 15,
             width: "100%",
             height: 40,
           }}
         >
-          <Ionicons name="search" size={20} color="black" />
+          <Ionicons name="search" size={20} color="#AA7E8B" />
           <TextInput
             placeholder="find song..."
             placeholderTextColor="black"
