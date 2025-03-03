@@ -80,7 +80,6 @@ export default function HomeScreen() {
     <View style={{ flex: 1, backgroundColor: '#641346', justifyContent: "center", alignItems: "center"}}>
       
       <RoundedRectangle />
-
     </View>
   );
 }
