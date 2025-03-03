@@ -10,6 +10,7 @@ import { StackNavigationProp } from "@react-navigation/stack";
 type RootStackParamList = {
   NewPost: undefined;
   newpost_create: undefined; // Change 'NextScreen' to your actual next screen name
+  search_results: undefined;
 };
 
 type NavigationProp = StackNavigationProp<RootStackParamList, "newpost_create">;
@@ -22,7 +23,7 @@ export default function NewPostScreen() {
 
 const handleNext= () => { 
   //console.log("hey viba");
-  navigation.navigate("newpost_create");
+  navigation.navigate("search_results");
 
 }
 
@@ -82,6 +83,3 @@ const handleNext= () => {
     </View>
   );
 }
-
-
-
