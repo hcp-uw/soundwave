@@ -79,7 +79,7 @@ export default function TabLayout() {
           
         }}
       />
-      <Tabs.Screen
+      {/* <Tabs.Screen
         name="search_results"
         options={{
           title: 'search_results',
@@ -88,7 +88,7 @@ export default function TabLayout() {
           ),
           
         }}
-        />
+        /> */}
     </Tabs>
   );
 }

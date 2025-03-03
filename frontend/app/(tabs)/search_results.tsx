@@ -5,19 +5,26 @@ import RoundedRectangle from "@/components/RoundedRectangle";
 import { NextButton } from "@/components/nextButton";
 import { useNavigation } from "@react-navigation/native"; 
 import { StackNavigationProp } from "@react-navigation/stack";
+import { useRoute } from "@react-navigation/native";
+import Config from "react-native-config";
 
-require("dotenv").config({ path: "spotify_key.env" });
 
-const CLIENT_ID = process.env.EXPO_PUBLIC_SPOTIFY_CLIENT_ID;
-const CLIENT_SECRET = process.env.EXPO_PUBLIC_SPOTIFY_CLIENT_SECRET;
+// const CLIENT_ID = process.env.EXPO_PUBLIC_SPOTIFY_CLIENT_ID;
+// const CLIENT_SECRET = process.env.EXPO_PUBLIC_SPOTIFY_CLIENT_SECRET;
+// const CLIENT_ID = Config.EXPO_PUBLIC_SPOTIFY_CLIENT_ID;
+// const CLIENT_SECRET = Config.EXPO_PUBLIC_SPOTIFY_CLIENT_SECRET;
+const CLIENT_ID = "c6e0ff7427c64fba8dff3607aa63f7a6";
+const CLIENT_SECRET = "92675ba7243f48119252ec8d36a25de7";
 
 console.log("CLIENT_ID:", CLIENT_ID);
 console.log("CLIENT_SECRET:", CLIENT_SECRET);
 
+
 type RootStackParamList = {
   NewPost: undefined;
-  newpost_create: undefined;
+  newpost_create: { songTitle: string; songArtist: string }; // ✅ Expect parameters
 };
+
 
 type NavigationProp = StackNavigationProp<RootStackParamList, "newpost_create">;
 
@@ -92,22 +99,61 @@ export default function NewPostScreen() {
   };
 
   const handleSearchSubmit = () => {
+    console.log("searching alsdkfjasldkj");
     search();
     Keyboard.dismiss();
   };
 
-  const SongGrid = () => (
+  const [selectedSong, setSelectedSong] = useState<{ title: string; artist: string } | null>(null);
+
+  const SongGrid = ({ setSelectedSong }: { setSelectedSong: (song: { title: string; artist: string }) => void }) => (
+    //const [selectedSong, setSelectedSong] = useState<{ title: string; artist: string } | null>(null);
     <FlatList
+      // data={results}
+      // keyExtractor={(item) => item.id}
+      // numColumns={3}
+      // renderItem={({ item }) => (
+        
+      //   <View style={styles.item}>
+      //     <Text style={styles.songTitle}>{item.title}</Text>
+      //     <Text style={styles.songArtist}>{item.artist}</Text>
+      //   </View>
+      // )}
+      // contentContainerStyle={styles.gridContent}
       data={results}
-      keyExtractor={(item) => item.id}
-      numColumns={3}
-      renderItem={({ item }) => (
-        <View style={styles.item}>
-          <Text style={styles.songTitle}>{item.title}</Text>
-          <Text style={styles.songArtist}>{item.artist}</Text>
-        </View>
-      )}
-      contentContainerStyle={styles.gridContent}
+    keyExtractor={(item) => item.id}
+    numColumns={3}
+    renderItem={({ item }) => (
+      <TouchableOpacity
+      //   style={styles.item}
+        
+      //   onPress={() =>
+      //     setSelectedSong({ title: item.title, artist: item.artist });
+      //     navigation.navigate("newpost_create", {
+            
+      //       songTitle: item.title,
+      //       songArtist: item.artist,
+      //     })
+      //   }
+      // >
+      //   <Text style={styles.songTitle}>{item.title}</Text>
+      //   <Text style={styles.songArtist}>{item.artist}</Text>
+      style={styles.item}
+        onPress={() => {
+          setSelectedSong({ title: item.title, artist: item.artist }); // ✅ Set the selected song
+          if (selectedSong) {
+            navigation.navigate("newpost_create", {
+              songTitle: item.title,
+              songArtist: item.artist,
+            });
+          }
+        }}
+      >
+        <Text style={styles.songTitle}>{item.title}</Text>
+        <Text style={styles.songArtist}>{item.artist}</Text>
+      </TouchableOpacity>
+    )}
+    contentContainerStyle={styles.gridContent}
     />
   );
 
@@ -118,11 +164,21 @@ export default function NewPostScreen() {
         <View style={styles.searchBar}>
           <Ionicons name="search" size={20} color="black" />
           <TextInput
+            // placeholder="find song..."
+            // placeholderTextColor="black"
+            // value={searchQuery}
+            // onChangeText={setSearchQuery} //our 
+            // onSubmitEditing={handleSearchSubmit}
+            // style={styles.searchInput}
             placeholder="find song..."
             placeholderTextColor="black"
             value={searchQuery}
-            onChangeText={setSearchQuery} //our 
+            onChangeText={(text) => {
+              console.log("Search query updated:", text); // Debugging
+              setSearchQuery(text);
+            }}
             onSubmitEditing={handleSearchSubmit}
+            returnKeyType="search" // Makes keyboard show a "Search" button
             style={styles.searchInput}
           />
           <TouchableOpacity onPress={handleSearchSubmit}>
@@ -135,7 +191,8 @@ export default function NewPostScreen() {
           {loading ? (
             <ActivityIndicator size="large" color="black" />
           ) : results.length > 0 ? (
-            <SongGrid />
+            <SongGrid setSelectedSong={setSelectedSong} />
+
           ) : (
             <Text style={styles.noResultsText}>No results found</Text>
           )}
@@ -143,7 +200,24 @@ export default function NewPostScreen() {
 
         {/* Next Button */}
         <View style={styles.nextButtonContainer}>
-          <NextButton onPress={() => navigation.navigate("newpost_create")} />
+          {/* <NextButton onPress={() =>
+          navigation.navigate("newpost_create", {
+            songTitle: item.title,
+            songArtist: item.artist,
+          })
+        } /> */}
+        <NextButton
+          onPress={() => {
+            if (selectedSong) {
+              navigation.navigate("newpost_create", {
+                songTitle: selectedSong.title,
+                songArtist: selectedSong.artist,
+              });
+            } else {
+              alert("Please select a song first!"); // Prevents navigation if no song is selected
+            }
+          }}
+        />
         </View>
       </RoundedRectangle>
     </View>

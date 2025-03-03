@@ -36,6 +36,10 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "spotifyClientId": "c6e0ff7427c64fba8dff3607aa63f7a6",
+      "spotifyClientSecret": "92675ba7243f48119252ec8d36a25de7"
     }
   }
 }

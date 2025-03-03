@@ -6,6 +6,7 @@ import { Record } from "@/components/Record";
 import { NextButton } from "@/components/nextButton";
 import { useNavigation } from "@react-navigation/native"; // Import navigation hook
 import { StackNavigationProp } from "@react-navigation/stack";
+import { useRoute } from "@react-navigation/native";
 
 type RootStackParamList = {
   NewPost: undefined;
@@ -24,7 +25,10 @@ export default function NewPostScreen() {
 const handleNext= () => { 
   //console.log("hey viba");
   navigation.navigate("search_results");
-
+  // const handleNext = () => {
+  //   if (!searchQuery.trim()) return; // Prevent empty searches
+  //   navigation.navigate("search_results", { query: searchQuery });
+  // };
 }
 
   return (
