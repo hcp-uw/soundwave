@@ -36,10 +36,6 @@
     ],
     "experiments": {
       "typedRoutes": true
-    },
-    "extra": {
-      "spotifyClientId": "your-client-id-here",
-      "spotifyClientSecret": "your-client-secret-here"
     }
   }
 }
