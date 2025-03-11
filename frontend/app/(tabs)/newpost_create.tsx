@@ -15,8 +15,6 @@ interface PostData {
     
   }
 
-
-
 export default function NewPostScreen() {
   const route = useRoute();
   const { songTitle, songArtist } = route.params as { songTitle: string; songArtist: string };
@@ -28,14 +26,22 @@ export default function NewPostScreen() {
   const [idNum, setIdNum] = useState(0);
 
   const handleNext = async () => {
+    console.log("test 1");
     const postData: PostData = {
-            postId: idNum.toString(),
+            //postId: idNum.toString(),
+            postId: "696969696969",
             song: songName,
             artist: artistName,
             content: textBoxInput,
             
           };
+        console.log("hiiiii");
+        console.log(postData.postId);
+        console.log(postData.song);
+        console.log(postData.artist);
+        console.log(postData.content);
         const response = await sendData(postData); // Use the function from api.js
+        console.log("test2");
         if (response) {
         Alert.alert("slay", "post created!");
         setIdNum((prevId) => prevId + 1);

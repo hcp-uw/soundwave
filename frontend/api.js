@@ -16,17 +16,22 @@ export const fetchData = async () => {
 
 export const sendData = async (data) => {
     try {
-        const response = await axios.post(`${API_URL}/create`, data);
+        //const response = await axios.post(`${API_URL}/create`, data);
+        //return response.data;
+
+
+        const response = await axios.post(`${API_URL}/create`, data, { timeout: 20000 }); // 10s timeout
         return response.data;
+
     } catch (error) {
-        console.error("Error sending data:", error);
+        console.error("Error sending data, it timed out:", error);
         return null;
     }
 };
 
 export const createPost = async (data) => {
         try {
-            const response = await axios.post(`${API_URL}/create, data`); // Matches your /create endpoint
+            const response = await axios.post(`${API_URL}/create`, data); // Matches your /create endpoint
             return response.data; // Returns success message or created postId
         } catch (error) {
             console.error("Error creating post:", error.message);

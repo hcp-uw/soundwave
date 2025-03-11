@@ -1,5 +1,5 @@
-const express = require("express")
-const cors = require("cors")
+const express = require("express");
+const cors = require("cors");
 const { unknownEndpoint } = require('./middleware');
 
 require("dotenv").config({ path: "firebase_key.env" }); // Load env file

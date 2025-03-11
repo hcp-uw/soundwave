@@ -125,37 +125,29 @@ export default function NewPostScreen() {
     numColumns={3}
     renderItem={({ item }) => (
       <TouchableOpacity
-      //   style={styles.item}
-        
-      //   onPress={() =>
-      //     setSelectedSong({ title: item.title, artist: item.artist });
-      //     navigation.navigate("newpost_create", {
-            
-      //       songTitle: item.title,
-      //       songArtist: item.artist,
-      //     })
-      //   }
-      // >
-      //   <Text style={styles.songTitle}>{item.title}</Text>
-      //   <Text style={styles.songArtist}>{item.artist}</Text>
       style={styles.item}
         onPress={() => {
-          setSelectedSong({ title: item.title, artist: item.artist }); // ✅ Set the selected song
-          if (selectedSong) {
-            navigation.navigate("newpost_create", {
-              songTitle: item.title,
-              songArtist: item.artist,
-            });
-          }
+          setSelectedSong({ title: item.title, artist: item.artist }); // ✅ Update state first
         }}
       >
         <Text style={styles.songTitle}>{item.title}</Text>
         <Text style={styles.songArtist}>{item.artist}</Text>
       </TouchableOpacity>
+
+      
     )}
     contentContainerStyle={styles.gridContent}
     />
   );
+
+  useEffect(() => {
+    if (selectedSong) {
+      navigation.navigate("newpost_create", {
+        songTitle: selectedSong.title,
+        songArtist: selectedSong.artist,
+      });
+    }
+  }, [selectedSong]);
 
   return (
     <View style={styles.screenContainer}>
@@ -212,6 +204,7 @@ export default function NewPostScreen() {
               navigation.navigate("newpost_create", {
                 songTitle: selectedSong.title,
                 songArtist: selectedSong.artist,
+
               });
             } else {
               alert("Please select a song first!"); // Prevents navigation if no song is selected
