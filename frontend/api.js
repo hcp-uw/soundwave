@@ -1,9 +1,10 @@
 import axios from 'axios';
 
 // Replace with your backend URL or IP address (Ensure the backend is running)
-//const API_URL = 'http://10.18.101.45:3001';
-//const API_URL = 'http://10.19.238.53:3001';
-const API_URL = 'http://localhost:3001';
+
+//REMEMBER TO UPDATE IP ADDRESS!!!!!
+const API_URL = 'http://10.19.239.246:3001';
+//const API_URL = 'http://localhost:3001';
 
 export const fetchData = async () => {
     try {
@@ -14,21 +15,6 @@ export const fetchData = async () => {
         return null;
     }
 };
-
-// export const sendData = async (data) => {
-//     try {
-//         //const response = await axios.post(`${API_URL}/create`, data);
-//         //return response.data;
-
-
-//         const response = await axios.post(`${API_URL}/create`, data, { timeout: 20000 }); // 10s timeout
-//         return response.data;
-
-//     } catch (error) {
-//         console.error("Error sending data, it timed out:", error);
-//         return null;
-//     }
-// };
 
 export const sendData = async (data) => {
     try {

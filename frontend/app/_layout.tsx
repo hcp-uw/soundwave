@@ -31,7 +31,7 @@ export default function RootLayout() {
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
       <Stack>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="+not-found" />
+        {/* <Stack.Screen name="+not-found" /> */}
         <Stack.Screen name="newpost" options={{ title: "New Post" }} />
         <Stack.Screen name="newpost_create" options={{ title: "New Post Create"}} />
         <Stack.Screen name="search_results" options={{ title: "Search Results" }} />
