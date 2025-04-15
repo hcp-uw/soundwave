@@ -1,5 +1,5 @@
-const express = require("express")
-const cors = require("cors")
+const express = require("express");
+const cors = require("cors");
 const { unknownEndpoint } = require('./middleware');
 
 require("dotenv").config({ path: "firebase_key.env" }); // Load env file
@@ -19,8 +19,12 @@ admin.initializeApp({
 app.use(express.json());
 
 // enable cors
-//app.use(cors({ origin: "*"}));
-app.use(cors());
+app.use(cors({ origin: "*"}));
+// app.use(cors({
+//     origin: "http://10.18.101.45:3001",
+//     method: ["GET", "POST", "PUT", "DELETE"],
+//     allowedHeaders: ["Content-Type"]
+// }));
 
 app.use(express.urlencoded({extended: true}));
 
@@ -29,7 +33,8 @@ const db = admin.firestore();
 //post endpoint! to create!
 app.post('/create', async (req, res) => {
     try {
-        console.log(req.body);
+        console.log("Received request at /create", req.body); 
+        //onsole.log(req.body);
         const postId = req.body.postId;
         const postJson = {
             //username: req.body.username,
@@ -55,6 +60,8 @@ app.post('/create', async (req, res) => {
         // res.status(500).json({ error: "Internal Server Error", details: error.message });
     }
 })
+
+
 
 //read endpoint
 app.get('/read/all', async (req, res) => {
@@ -151,6 +158,11 @@ app.use(unknownEndpoint);
 const PORT = 3001;
 
 // start your server
-app.listen(PORT, () => {
-    console.log(`Server running on port test ${PORT}`);
+// app.listen(PORT, () => {
+//     console.log(`Server running on port test ${PORT}`);
+// });
+
+
+app.listen(PORT, "0.0.0.0", () => {
+    console.log(`Server running on http://0.0.0.0:${PORT}`);
 });

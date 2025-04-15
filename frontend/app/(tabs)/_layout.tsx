@@ -79,7 +79,7 @@ export default function TabLayout() {
           
         }}
       />
-      <Tabs.Screen
+      {/* <Tabs.Screen
         name="home"
         options={{
           title: 'home',
@@ -98,7 +98,7 @@ export default function TabLayout() {
           ),
           
         }}
-      />
+      /> */}
     </Tabs>
   );
 }

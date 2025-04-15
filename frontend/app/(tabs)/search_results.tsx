@@ -1,25 +1,39 @@
 import { useState, useEffect } from "react";
-import { View, TextInput, TouchableOpacity, Text, FlatList, StyleSheet, Keyboard } from "react-native";
+import { View, TextInput, TouchableOpacity, Text, FlatList, StyleSheet, Keyboard, ActivityIndicator } from "react-native";
 import { Ionicons } from "@expo/vector-icons"; 
 import RoundedRectangle from "@/components/RoundedRectangle"; 
 import { NextButton } from "@/components/nextButton";
 import { useNavigation } from "@react-navigation/native"; 
 import { StackNavigationProp } from "@react-navigation/stack";
+import { useRoute } from "@react-navigation/native";
+import Config from "react-native-config";
 
-const CLIENT_ID = process.env.EXPO_PUBLIC_SPOTIFY_CLIENT_ID;
-const CLIENT_SECRET = process.env.EXPO_PUBLIC_SPOTIFY_CLIENT_SECRET;
+
+// const CLIENT_ID = process.env.EXPO_PUBLIC_SPOTIFY_CLIENT_ID;
+// const CLIENT_SECRET = process.env.EXPO_PUBLIC_SPOTIFY_CLIENT_SECRET;
+// const CLIENT_ID = Config.EXPO_PUBLIC_SPOTIFY_CLIENT_ID;
+// const CLIENT_SECRET = Config.EXPO_PUBLIC_SPOTIFY_CLIENT_SECRET;
+const CLIENT_ID = "c6e0ff7427c64fba8dff3607aa63f7a6";
+const CLIENT_SECRET = "92675ba7243f48119252ec8d36a25de7";
+
+console.log("CLIENT_ID:", CLIENT_ID);
+console.log("CLIENT_SECRET:", CLIENT_SECRET);
+
 
 type RootStackParamList = {
   NewPost: undefined;
-  newpost_create: undefined;
+  newpost_create: { songTitle: string; songArtist: string }; // ✅ Expect parameters
 };
+
 
 type NavigationProp = StackNavigationProp<RootStackParamList, "newpost_create">;
 
 export default function NewPostScreen() {
   const [searchQuery, setSearchQuery] = useState("");
   const [accessToken, setAccessToken] = useState<string | null>(null);
-  const [results, setResults] = useState<any[]>([]); // Stores search results
+  const [results, setResults] = useState<any[]>([]);
+  const [loading, setLoading] = useState(false); // New loading state
+
   const navigation = useNavigation<NavigationProp>();
 
   useEffect(() => {
@@ -27,9 +41,7 @@ export default function NewPostScreen() {
       try {
         const authParams = {
           method: "POST",
-          headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
-          },
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
           body: `grant_type=client_credentials&client_id=${CLIENT_ID}&client_secret=${CLIENT_SECRET}`,
         };
 
@@ -52,64 +64,90 @@ export default function NewPostScreen() {
   const search = async () => {
     if (!searchQuery.trim() || !accessToken) return;
 
+    setLoading(true); // Start loading indicator
+
     try {
-      const trackParams = {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${accessToken}`,
-        },
-      };
-
-      console.log("Searching for:", searchQuery); 
-
       const response = await fetch(
         `https://api.spotify.com/v1/search?q=${encodeURIComponent(searchQuery)}&type=track&limit=9`,
-        trackParams
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
       );
 
       const data = await response.json();
 
-      console.log("API Response:", data);
-
       if (data.tracks?.items?.length > 0) {
-        setResults(data.tracks.items.map((track: any) => ({
-          id: track.id,
-          title: track.name,
-          artist: track.artists.map((artist: any) => artist.name).join(", "),
-        })));
-        console.log("Formatted Results:", formattedResults); // ✅ Logs the formatted song list
-        setResults(formattedResults);
+        setResults(
+          data.tracks.items.map((track: any) => ({
+            id: track.id,
+            title: track.name,
+            artist: track.artists.map((artist: any) => artist.name).join(", "),
+          }))
+        );
       } else {
-        console.log("No results found");
-        setResults([]); // Clear results if no match
+        setResults([]);
       }
     } catch (error) {
       console.error("Search error:", error);
+    } finally {
+      setLoading(false); // Stop loading indicator
     }
   };
 
   const handleSearchSubmit = () => {
+    console.log("searching alsdkfjasldkj");
     search();
-    Keyboard.dismiss(); // Hide keyboard on submit
+    Keyboard.dismiss();
   };
 
-  const SongGrid = () => {
-    return (
-      <FlatList
-        data={results}
-        keyExtractor={(item) => item.id}
-        numColumns={3} 
-        renderItem={({ item }) => (
-          <View style={styles.item}>
-            <Text style={styles.songTitle}>{item.title}</Text>
-            <Text style={styles.songArtist}>{item.artist}</Text>
-          </View>
-        )}
-        contentContainerStyle={styles.gridContent}
-      />
-    );
-  };
+  const [selectedSong, setSelectedSong] = useState<{ title: string; artist: string } | null>(null);
+
+  const SongGrid = ({ setSelectedSong }: { setSelectedSong: (song: { title: string; artist: string }) => void }) => (
+    //const [selectedSong, setSelectedSong] = useState<{ title: string; artist: string } | null>(null);
+    <FlatList
+      // data={results}
+      // keyExtractor={(item) => item.id}
+      // numColumns={3}
+      // renderItem={({ item }) => (
+        
+      //   <View style={styles.item}>
+      //     <Text style={styles.songTitle}>{item.title}</Text>
+      //     <Text style={styles.songArtist}>{item.artist}</Text>
+      //   </View>
+      // )}
+      // contentContainerStyle={styles.gridContent}
+      data={results}
+    keyExtractor={(item) => item.id}
+    numColumns={3}
+    renderItem={({ item }) => (
+      <TouchableOpacity
+      style={styles.item}
+        onPress={() => {
+          setSelectedSong({ title: item.title, artist: item.artist }); // ✅ Update state first
+        }}
+      >
+        <Text style={styles.songTitle}>{item.title}</Text>
+        <Text style={styles.songArtist}>{item.artist}</Text>
+      </TouchableOpacity>
+
+      
+    )}
+    contentContainerStyle={styles.gridContent}
+    />
+  );
+
+  useEffect(() => {
+    if (selectedSong) {
+      navigation.navigate("newpost_create", {
+        songTitle: selectedSong.title,
+        songArtist: selectedSong.artist,
+      });
+    }
+  }, [selectedSong]);
 
   return (
     <View style={styles.screenContainer}>
@@ -118,11 +156,21 @@ export default function NewPostScreen() {
         <View style={styles.searchBar}>
           <Ionicons name="search" size={20} color="black" />
           <TextInput
+            // placeholder="find song..."
+            // placeholderTextColor="black"
+            // value={searchQuery}
+            // onChangeText={setSearchQuery} //our 
+            // onSubmitEditing={handleSearchSubmit}
+            // style={styles.searchInput}
             placeholder="find song..."
             placeholderTextColor="black"
             value={searchQuery}
-            onChangeText={setSearchQuery}
-            onSubmitEditing={handleSearchSubmit} // Triggers search when pressing "Enter"
+            onChangeText={(text) => {
+              console.log("Search query updated:", text); // Debugging
+              setSearchQuery(text);
+            }}
+            onSubmitEditing={handleSearchSubmit}
+            returnKeyType="search" // Makes keyboard show a "Search" button
             style={styles.searchInput}
           />
           <TouchableOpacity onPress={handleSearchSubmit}>
@@ -132,12 +180,37 @@ export default function NewPostScreen() {
 
         {/* Song Grid */}
         <View style={styles.rectangle}>
-          {results.length > 0 ? <SongGrid /> : <Text style={styles.noResultsText}>No results found</Text>}
+          {loading ? (
+            <ActivityIndicator size="large" color="black" />
+          ) : results.length > 0 ? (
+            <SongGrid setSelectedSong={setSelectedSong} />
+
+          ) : (
+            <Text style={styles.noResultsText}>No results found</Text>
+          )}
         </View>
 
         {/* Next Button */}
         <View style={styles.nextButtonContainer}>
-          <NextButton onPress={() => navigation.navigate("newpost_create")} />
+          {/* <NextButton onPress={() =>
+          navigation.navigate("newpost_create", {
+            songTitle: item.title,
+            songArtist: item.artist,
+          })
+        } /> */}
+        <NextButton
+          onPress={() => {
+            if (selectedSong) {
+              navigation.navigate("newpost_create", {
+                songTitle: selectedSong.title,
+                songArtist: selectedSong.artist,
+
+              });
+            } else {
+              alert("Please select a song first!"); // Prevents navigation if no song is selected
+            }
+          }}
+        />
         </View>
       </RoundedRectangle>
     </View>
@@ -212,4 +285,3 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
 });
-
