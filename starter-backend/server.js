@@ -41,6 +41,7 @@ app.post('/create', async (req, res) => {
             song: req.body.song,
             artist: req.body.artist,
             content: req.body.content,
+            cover: req.body.cover,
             //rating: req.body.rating
         };
         const response = await db.collection("posts").doc(postId).set(postJson);
