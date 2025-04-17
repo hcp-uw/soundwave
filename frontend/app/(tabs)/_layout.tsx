@@ -80,6 +80,19 @@ export default function TabLayout() {
         }}
       />
       {/* <Tabs.Screen
+        name="search_results"
+        options={{
+          title: 'home',
+          tabBarIcon: ({ color }: { color: string }) => (
+            <IconSymbol size={28} name="house.fill" color={color} />
+          ),
+          
+        }}
+          
+<<<<<<<<< Temporary merge branch 1
+<<<<<<<<< Temporary merge branch 1
+        />
+            {/* <Tabs.Screen
         name="home"
         options={{
           title: 'home',
