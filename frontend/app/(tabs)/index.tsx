@@ -1,15 +1,25 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { View, Text, Image, StyleSheet, ScrollView, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import { fetchData } from "../../api";
 
 export default function HomeScreen() {
   const navigation = useNavigation();
   const [isFavorited, setIsFavorited] = useState(false);
+  const [posts, setPosts] = useState([]);
 
   const toggleFavorite = () => {
     setIsFavorited(!isFavorited);
   };
+
+  useEffect(() => {
+    const getPosts = async () => {
+      const data = await fetchData();
+      if (data) setPosts(data);
+    };
+    getPosts();
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -31,11 +41,12 @@ export default function HomeScreen() {
         </View>
 
         {/* Music Post */}
+        {posts.map((post, index) => (
         <View style={styles.musicPost}>
           {/* Album Cover */}
           <View style={styles.albumCovers}>
             <Image 
-              source={{ uri: 'https://via.placeholder.com/300' }} 
+              source={{ uri: post.cover || 'https://via.placeholder.com/300' }} 
               style={[styles.albumCoverBase, styles.albumCoverBack2]} 
             />
             <Image 
@@ -71,15 +82,10 @@ export default function HomeScreen() {
                 </TouchableOpacity>
               </View>
             </View>
-            <Text style={styles.commentText}>
-              This is my review! jfa;sldkfjasldkfja;slkdfja;lskdjf;alskdjf;alskjd
-              falsk ;aslkj aslkfja slfkj aslkjfa slkjaf ;alskjdf
-              asldkjfasldtkj asdflkjas
-              ;dasldkfja;slkdjfa;lskdjf;alskdjf;alskjdfalsk
-              ;aslkj
-            </Text>
+            <Text style={styles.commentText}>{post.content || "No comment"} </Text>
           </View>
         </View>
+        ))}
       </ScrollView>
     </View>
   );

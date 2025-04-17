@@ -3,8 +3,9 @@ import axios from 'axios';
 // Replace with your backend URL or IP address (Ensure the backend is running)
 
 //REMEMBER TO UPDATE IP ADDRESS!!!!!
-const API_URL = 'http://10.19.93.207:3001';
+// const API_URL = 'http://10.19.93.207:3001'; // miranda
 //const API_URL = 'http://localhost:3001';
+const API_URL = 'http://10.18.41.37:3001'; // aditi
 
 export const fetchData = async () => {
     try {
