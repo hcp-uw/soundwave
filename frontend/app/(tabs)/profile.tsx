@@ -42,6 +42,7 @@ const albumLists = [
 export default function ProfileScreen() {
   const [reviews, setReviews] = useState<Review[]>([]);
   const [loading, setLoading] = useState(true);
+  // refresh each time page is loaded
   useFocusEffect(
     useCallback(() => {
       async function loadReviews() {
