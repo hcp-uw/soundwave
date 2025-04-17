@@ -3,7 +3,7 @@ import axios from 'axios';
 // Replace with your backend URL or IP address (Ensure the backend is running)
 
 //REMEMBER TO UPDATE IP ADDRESS!!!!!
-const API_URL = 'http://10.19.239.246:3001';
+const API_URL = 'http://10.19.93.207:3001';
 //const API_URL = 'http://localhost:3001';
 
 export const fetchData = async () => {

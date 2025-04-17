@@ -1,10 +1,15 @@
 import { useState, useEffect } from "react";
+import React from "react";
+import { Image } from 'react-native';
 import { View, TextInput, TouchableOpacity, Text, FlatList, StyleSheet, Keyboard, ActivityIndicator } from "react-native";
 import { Ionicons } from "@expo/vector-icons"; 
 import RoundedRectangle from "@/components/RoundedRectangle"; 
 import { NextButton } from "@/components/nextButton";
 import { useNavigation } from "@react-navigation/native"; 
 import { StackNavigationProp } from "@react-navigation/stack";
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Afacad:ital,wght@0,400..700;1,400..700&display=swap');
+</style>
 import { useRoute } from "@react-navigation/native";
 import Config from "react-native-config";
 
@@ -22,16 +27,28 @@ console.log("CLIENT_SECRET:", CLIENT_SECRET);
 
 type RootStackParamList = {
   NewPost: undefined;
-  newpost_create: { songTitle: string; songArtist: string }; // ✅ Expect parameters
+  newpost_create: { songTitle: string; songArtist: string, cover:string }; // ✅ Expect parameters
 };
+
+type Song = {
+  id: string;
+  title: string;
+  artist: string;
+  cover: string;
+};
+
 
 
 type NavigationProp = StackNavigationProp<RootStackParamList, "newpost_create">;
 
 export default function NewPostScreen() {
+  //what the user searched
   const [searchQuery, setSearchQuery] = useState("");
+  //access tokens for api
   const [accessToken, setAccessToken] = useState<string | null>(null);
+  //results 
   const [results, setResults] = useState<any[]>([]);
+  //loading state indicator
   const [loading, setLoading] = useState(false); // New loading state
 
   const navigation = useNavigation<NavigationProp>();
@@ -68,7 +85,7 @@ export default function NewPostScreen() {
 
     try {
       const response = await fetch(
-        `https://api.spotify.com/v1/search?q=${encodeURIComponent(searchQuery)}&type=track&limit=9`,
+        `https://api.spotify.com/v1/search?q=${encodeURIComponent(searchQuery)}&type=track&limit=21`,
         {
           method: "GET",
           headers: {
@@ -78,14 +95,19 @@ export default function NewPostScreen() {
         }
       );
 
+      //get data from api
       const data = await response.json();
 
+      //if there is data from api
       if (data.tracks?.items?.length > 0) {
+        //set results
         setResults(
+          //map over all items from data.tracks.items
           data.tracks.items.map((track: any) => ({
             id: track.id,
             title: track.name,
             artist: track.artists.map((artist: any) => artist.name).join(", "),
+            cover: track.album.images?.[1]?.url || track.album.images?.[0]?.url || "",
           }))
         );
       } else {
@@ -104,35 +126,66 @@ export default function NewPostScreen() {
     Keyboard.dismiss();
   };
 
-  const [selectedSong, setSelectedSong] = useState<{ title: string; artist: string } | null>(null);
+  //const [selectedSong, setSelectedSong] = useState<{ title: string; artist: string; cover:string } | null>(null);
+  const [selectedSong, setSelectedSong] = useState<Song | null>(null);
+  
+  
 
-  const SongGrid = ({ setSelectedSong }: { setSelectedSong: (song: { title: string; artist: string }) => void }) => (
-    //const [selectedSong, setSelectedSong] = useState<{ title: string; artist: string } | null>(null);
+
+  //const SongGrid = ({ setSelectedSong }: { setSelectedSong: (song: { title: string; artist: string, cover:string }) => void }) => (
+  //const SongGrid = ({ setSelectedSong }: { setSelectedSong: (song: Song) => void }) => (
+    // type SongGridProps = {
+    //   setSelectedSong: (song: Song) => void;
+    // };
+    
+    const SongGrid = ({ setSelectedSong }: { setSelectedSong: (song: Song) => void }) => (
+
     <FlatList
-      // data={results}
-      // keyExtractor={(item) => item.id}
-      // numColumns={3}
-      // renderItem={({ item }) => (
-        
-      //   <View style={styles.item}>
-      //     <Text style={styles.songTitle}>{item.title}</Text>
-      //     <Text style={styles.songArtist}>{item.artist}</Text>
-      //   </View>
-      // )}
-      // contentContainerStyle={styles.gridContent}
-      data={results}
+      
+    data={results}
     keyExtractor={(item) => item.id}
     numColumns={3}
+    horizontal={false}
+    columnWrapperStyle={{
+      justifyContent: "space-between",
+      paddingHorizontal: 6, 
+    }}
+
+
     renderItem={({ item }) => (
+      // <TouchableOpacity
+      // style={styles.item}
+      //   onPress={() => {
+      //     setSelectedSong({ title: item.title, artist: item.artist, cover: item.cover }); 
+      //   }}
+      // >
+      <View style={styles.item}>
       <TouchableOpacity
-      style={styles.item}
-        onPress={() => {
-          setSelectedSong({ title: item.title, artist: item.artist }); // ✅ Update state first
-        }}
+        key={item.id}
+        onPress={() =>
+          setSelectedSong({
+            id: item.id,
+            title: item.title,
+            artist: item.artist,
+            cover: item.cover,
+          })
+        }
       >
-        <Text style={styles.songTitle}>{item.title}</Text>
-        <Text style={styles.songArtist}>{item.artist}</Text>
+
+        {/* <View style={styles.imagePlaceholder} /> */}
+        <View style={styles.imagePlaceholder}>
+          {item.cover ? (
+            <Image
+              source={{ uri: item.cover }}
+              style={styles.coverImage}
+              resizeMode="cover" // Ensures the image covers the entire placeholder
+            />
+          ) : null}
+        </View>
+        <Text style={styles.songTitle} numberOfLines={2} ellipsizeMode="tail">{item.title}</Text>
+        <Text style={styles.songArtist} numberOfLines={2} ellipsizeMode="tail">{item.artist}</Text>
       </TouchableOpacity>
+      </View>
 
       
     )}
@@ -145,6 +198,7 @@ export default function NewPostScreen() {
       navigation.navigate("newpost_create", {
         songTitle: selectedSong.title,
         songArtist: selectedSong.artist,
+        cover: selectedSong.cover,
       });
     }
   }, [selectedSong]);
@@ -156,21 +210,15 @@ export default function NewPostScreen() {
         <View style={styles.searchBar}>
           <Ionicons name="search" size={20} color="black" />
           <TextInput
-            // placeholder="find song..."
-            // placeholderTextColor="black"
-            // value={searchQuery}
-            // onChangeText={setSearchQuery} //our 
-            // onSubmitEditing={handleSearchSubmit}
-            // style={styles.searchInput}
             placeholder="find song..."
             placeholderTextColor="black"
             value={searchQuery}
             onChangeText={(text) => {
-              console.log("Search query updated:", text); // Debugging
+              //console.log("Search query updated:", text); // Debugging
               setSearchQuery(text);
             }}
             onSubmitEditing={handleSearchSubmit}
-            returnKeyType="search" // Makes keyboard show a "Search" button
+            returnKeyType="search" 
             style={styles.searchInput}
           />
           <TouchableOpacity onPress={handleSearchSubmit}>
@@ -192,19 +240,13 @@ export default function NewPostScreen() {
 
         {/* Next Button */}
         <View style={styles.nextButtonContainer}>
-          {/* <NextButton onPress={() =>
-          navigation.navigate("newpost_create", {
-            songTitle: item.title,
-            songArtist: item.artist,
-          })
-        } /> */}
         <NextButton
           onPress={() => {
             if (selectedSong) {
               navigation.navigate("newpost_create", {
                 songTitle: selectedSong.title,
                 songArtist: selectedSong.artist,
-
+                cover: selectedSong.cover,
               });
             } else {
               alert("Please select a song first!"); // Prevents navigation if no song is selected
@@ -235,6 +277,25 @@ const styles = StyleSheet.create({
     height: 40,
     marginBottom: 15,
   },
+  imagePlaceholder: {
+    // width: '100%',
+    // aspectRatio: 1, // Makes it a square, or change to a number like 1.5 for a rectangle
+    // backgroundColor: '#ccc', // light gray placeholder
+    // borderRadius: 8,
+    // marginBottom: 8,
+    // width: '80%', // Ensure placeholder takes full width of the grid item
+    aspectRatio: 1, // Ensures the placeholder is square (you can adjust to create a rectangle if desired)
+    // backgroundColor: '#ccc', // Light gray background color for empty state
+    // borderRadius: 8, // Rounded corners for the placeholder
+    marginBottom: 1, // Space between image and text
+    // overflow: 'hidden', // Ensures the image doesn't overflow the rounded corners
+    justifyContent: 'center', // Centers the image
+    alignItems: 'center', // Centers the image
+    height: 100, // Set a fixed height for the image container
+    width: '80%',
+    
+    borderRadius: 8,
+  },
   searchInput: {
     flex: 1,
     marginLeft: 10,
@@ -255,24 +316,47 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "center",
+    // paddingBottom: 20,
   },
+
   item: {
     alignItems: "center",
     margin: 5,
-    marginBottom: 10,
-    paddingTop: 80,
+    marginBottom: 4,
+    paddingTop: 0.2,
     backgroundColor: "#FFF",
-    padding: 5,
+    padding: 9,
     width: "30%",
+    
     borderRadius: 10,
   },
+  coverImage: {
+    width: '80%',
+    aspectRatio: 1,
+    borderRadius: 8,
+    // marginBottom: 10,
+  },
+  
   songTitle: {
-    fontSize: 12,
+    fontSize: 16,
     fontWeight: "bold",
+    textAlign: "center",
+    lineHeight:19,
+    paddingHorizontal: 12,
+    padding: 4,
+    marginBottom: 4,
+    fontFamily: "Afacad",
   },
   songArtist: {
-    fontSize: 10,
+    fontSize: 13,
     color: "gray",
+    paddingHorizontal: 12,
+    textAlign: "center",
+    fontFamily: "Afacad",
+    flexWrap: "wrap",
+
+    overflow: "hidden",
+    
   },
   noResultsText: {
     fontSize: 16,
@@ -280,8 +364,10 @@ const styles = StyleSheet.create({
     textAlign: "center",
     marginTop: 20,
   },
+  
   nextButtonContainer: {
     marginTop: 20,
     alignItems: "center",
   },
+  
 });

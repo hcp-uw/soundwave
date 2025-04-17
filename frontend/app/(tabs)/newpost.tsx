@@ -25,10 +25,7 @@ export default function NewPostScreen() {
 const handleNext= () => { 
   //console.log("hey viba");
   navigation.navigate("search_results");
-  // const handleNext = () => {
-  //   if (!searchQuery.trim()) return; // Prevent empty searches
-  //   navigation.navigate("search_results", { query: searchQuery });
-  // };
+
 }
 
   return (

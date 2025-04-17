@@ -107,7 +107,27 @@ export default function TabLayout() {
           ),
           
         }}
-        /> */}
+        />
+        {/* <Tabs.Screen
+        name="home"
+        options={{
+          title: 'home',
+          tabBarIcon: ({ color }: { color: string }) => (
+            <IconSymbol size={28} name="house.fill" color={color} />
+          ),
+          
+        }}
+      />
+      <Tabs.Screen
+        name="newlist"
+        options={{
+          title: 'newlist',
+          tabBarIcon: ({ color }: { color: string }) => (
+            <IconSymbol size={28} name="plus" color={color} />
+          ),
+          
+        }}
+      /> */}
     </Tabs>
   );
 }

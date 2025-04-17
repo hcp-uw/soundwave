@@ -1,10 +1,47 @@
-import { useState } from "react";
-import { View, TextInput, Text, Alert } from "react-native";
+import { useState, useEffect, useRef} from "react";
+import { View, TextInput, Text, Alert, StyleSheet, Image, Animated } from "react-native";
+import { Keyboard, TouchableWithoutFeedback } from 'react-native';
+
 import RoundedRectangle from "@/components/RoundedRectangle"; // Ensure this exists
 import { NextButton } from "@/components/nextButton";
 import { sendData } from "../../api";
 //import { FormControl, InputGroup, Container, Button } from "react-bootstrap";
 import { useRoute } from "@react-navigation/native";
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Afacad:ital,wght@0,400..700;1,400..700&display=swap');
+</style>
+
+
+// Spinning Image Component
+const SpinningImage = ({ songCover }: { songCover: string }) => {
+  //const [spinValue] = useState(new Animated.Value(0));
+  const spinValue = useRef(new Animated.Value(0)).current; // Create an animated value for rotation
+
+  useEffect(() => {
+    Animated.loop(
+      Animated.timing(spinValue, {
+        toValue: 0,  // End value of the animation (1 full rotation)
+        duration: 2000, // Time for one rotation (in milliseconds)
+        useNativeDriver: true, // Enable native driver for better performance
+      })
+    ).start();
+  }, [spinValue]);
+
+  // Interpolating the spin value to a rotation degree
+  const spin = spinValue.interpolate({
+    inputRange: [0, 1],
+    outputRange: ["0deg", "360deg"], // Rotation range from 0 to 360 degrees
+  });
+
+  return (
+    <View style={styles.record}>
+      <Animated.Image
+        source={{ uri: songCover }}
+        style={[styles.album, { transform: [{ rotate: spin }] }]} // Apply the spinning animation
+      />
+    </View>
+  );
+};
 
 
 interface PostData {
@@ -12,18 +49,25 @@ interface PostData {
     song: string;
     artist: string;
     content: string;
-    
+    cover: string;
   }
 
+  
+
 export default function NewPostScreen() {
+
+  
   const route = useRoute();
-  const { songTitle, songArtist } = route.params as { songTitle: string; songArtist: string };
+  const { songTitle, songArtist, cover } = route.params as { songTitle: string; songArtist: string, cover:string };
 
   const [textBoxInput, setTextBoxInput] = useState(""); // Textbox state
   const songName = songTitle;
   const artistName = songArtist;
+  const songCover = cover;
 
   const [idNum, setIdNum] = useState(0);
+
+  
 
   const handleNext = async () => {
     console.log("test 1");
@@ -33,7 +77,7 @@ export default function NewPostScreen() {
             song: songName,
             artist: artistName,
             content: textBoxInput,
-            
+            cover: songCover,
           };
         console.log("hiiiii");
         console.log(postData.postId);
@@ -51,6 +95,7 @@ export default function NewPostScreen() {
     };
   
   return (
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
     <View
       style={{
         flex: 1,
@@ -62,28 +107,30 @@ export default function NewPostScreen() {
     >
       {/* Rounded Rectangle Container */}
       <RoundedRectangle>
+        <View style={styles.recordOuter}>
+          <View style={styles.record}>
+              <Image source={{ uri: songCover}} style={styles.album}></Image> 
+              <SpinningImage songCover={songCover} />
+          </View>
+        </View>
+        
+        
         {/* Textbox */}
         <Text
-          style={{
-            marginTop: 10, 
-            fontSize: 16,
-            color: "black",
-            textAlign: "center",
-            marginBottom: 20
-          }}
+          style={ styles.songTitle }
         >
-          {`${songName} \n ${artistName}`}
+          {`${songName} `}
+        </Text>
+        <Text style= {styles.artistName}>
+          {`${artistName}`}
         </Text>
         <TextInput
-          style={{
-            width: "100%",
-            height: 400,
-            backgroundColor: "white",
-            borderRadius: 10,
-            paddingHorizontal: 10,
-          }}
-          placeholder="Enter text..."
+          style={styles.input}
+          placeholder="Spill your thoughts..."
+          
           placeholderTextColor="gray"
+          multiline={true}
+          textAlignVertical="top"
           value={textBoxInput}
           onChangeText={setTextBoxInput}
         />
@@ -95,5 +142,66 @@ export default function NewPostScreen() {
         </View>
       </RoundedRectangle>
     </View>
+    </TouchableWithoutFeedback>
   );
 }
+const styles = StyleSheet.create({
+  songTitle: { 
+    paddingTop: 15,
+    fontFamily: "Afacad",
+    fontSize: 20,
+    textAlign: "center",
+    fontWeight: "bold",
+  },
+  artistName: { 
+    fontFamily: "Afacad",
+    fontSize: 18,
+    textAlign: "center",
+    paddingBottom: 10,
+  },
+  input: { 
+    textAlign: "left",        // ← horizontal alignment
+    textAlignVertical: "top",
+    fontFamily: "Afacad", 
+    fontSize: 16, 
+    width: "100%",
+    height: 200,
+    paddingTop: 20,
+    paddingHorizontal: 23,
+    backgroundColor: "white",
+    borderRadius: 20,
+    
+  }, 
+  record: { 
+    backgroundColor: "gray",
+    paddingBottom: 20,
+    width: 120,
+    height: 120,
+    borderRadius: 60, // half the width/height = circle
+    overflow: "hidden", 
+    justifyContent: "center",
+    alignItems: "center",
+    position: "absolute",
+    
+  }, 
+  recordOuter: { 
+    backgroundColor: "black",
+    paddingBottom: 20,
+    width: 140,
+    height: 140,
+    borderRadius: 70, // half the width/height = circle
+    overflow: "hidden", 
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  album: { 
+    width: 100,
+    height: 100,
+    borderRadius: 50, // half the width/height = circle
+    overflow: "hidden",
+    justifyContent: "center",
+    alignItems: "center",
+    position: "absolute",
+  }
+
+});
