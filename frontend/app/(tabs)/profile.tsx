@@ -12,7 +12,6 @@ type Review = {
   image: string;
 };
 
-
 // hardcoded list of albums until lists are created
 const albumLists = [
   {
