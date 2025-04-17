@@ -1,86 +1,209 @@
-// import { Image, StyleSheet, Platform } from 'react-native';
-
-// import { HelloWave } from '@/components/HelloWave';
-// import ParallaxScrollView from '@/components/ParallaxScrollView';
-// import { ThemedText } from '@/components/ThemedText';
-// import { ThemedView } from '@/components/ThemedView';
-
-// export default function HomeScreen() {
-//   return (
-//     <ParallaxScrollView
-//       headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-//       headerImage={
-//         <Image
-//           source={require('@/assets/images/partial-react-logo.png')}
-//           style={styles.reactLogo}
-//         />
-//       }>
-//       <ThemedView style={styles.titleContainer}>
-//         <ThemedText type="title">Welcome!</ThemedText>
-//         <HelloWave />
-//       </ThemedView>
-//       <ThemedView style={styles.stepContainer}>
-//         <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-//         <ThemedText>
-//           Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-//           Press{' '}
-//           <ThemedText type="defaultSemiBold">
-//             {Platform.select({
-//               ios: 'cmd + d',
-//               android: 'cmd + m',
-//               web: 'F12'
-//             })}
-//           </ThemedText>{' '}
-//           to open developer tools.
-//         </ThemedText>
-//       </ThemedView>
-//       <ThemedView style={styles.stepContainer}>
-//         <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-//         <ThemedText>
-//           Tap the Explore tab to learn more about what's included in this starter app.
-//         </ThemedText>
-//       </ThemedView>
-//       <ThemedView style={styles.stepContainer}>
-//         <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-//         <ThemedText>
-//           When you're ready, run{' '}
-//           <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-//           <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-//           <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-//           <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-//         </ThemedText>
-//       </ThemedView>
-//     </ParallaxScrollView>
-//   );
-// }
-
-// const styles = StyleSheet.create({
-//   titleContainer: {
-//     flexDirection: 'row',
-//     alignItems: 'center',
-//     gap: 8,
-//   },
-//   stepContainer: {
-//     gap: 8,
-//     marginBottom: 8,
-//   },
-//   reactLogo: {
-//     height: 178,
-//     width: 290,
-//     bottom: 0,
-//     left: 0,
-//     position: 'absolute',
-//   },
-// });
-import { View, Text } from 'react-native';
-import RoundedRectangle from '@/components/RoundedRectangle';
+import { useState } from "react";
+import { View, Text, Image, StyleSheet, ScrollView, TouchableOpacity } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
 
 export default function HomeScreen() {
+  const navigation = useNavigation();
+  const [isFavorited, setIsFavorited] = useState(false);
+
+  const toggleFavorite = () => {
+    setIsFavorited(!isFavorited);
+  };
+
   return (
-    <View style={{ flex: 1, backgroundColor: '#641346', justifyContent: "center", alignItems: "center"}}>
-      
-      <RoundedRectangle />
+    <View style={styles.container}>
+      <ScrollView style={styles.scrollView}>
+        {/* User Profile Header */}
+        <View style={styles.profileCard}>
+          <View style={styles.profileHeader}>
+            <View style={styles.profileImageContainer}>
+              <Image 
+                source={{ uri: 'https://via.placeholder.com/150' }} 
+                style={styles.profileImage} 
+              />
+            </View>
+            <View style={styles.profileInfo}>
+              <Text style={styles.profileName}>Igor</Text>
+              <Text style={styles.profileSubtitle}>Tyler, the Creator</Text>
+            </View>
+          </View>
+        </View>
+
+        {/* Music Post */}
+        <View style={styles.musicPost}>
+          {/* Album Cover */}
+          <View style={styles.albumCovers}>
+            <Image 
+              source={{ uri: 'https://via.placeholder.com/300' }} 
+              style={[styles.albumCoverBase, styles.albumCoverBack2]} 
+            />
+            <Image 
+              source={{ uri: 'https://via.placeholder.com/300' }} 
+              style={[styles.albumCoverBase, styles.albumCoverBack1]} 
+            />
+            <Image 
+              source={{ uri: 'https://via.placeholder.com/300' }} 
+              style={styles.albumCoverFront} 
+            />
+          </View>
+
+          {/* Song Title */}
+          <View style={styles.songInfoContainer}>
+            <Text style={styles.songTitle}>I THINK</Text>
+            <Text style={styles.artistName}>Tyler, the Creator</Text>
+          </View>
+
+          {/* User Comment Section */}
+          <View style={styles.commentSection}>
+            <View style={styles.commentHeader}>
+              <Text style={styles.username}>@username</Text>
+              <View style={styles.interactionButtons}>
+                <TouchableOpacity onPress={toggleFavorite}>
+                  <Ionicons 
+                    name={isFavorited ? "star" : "star-outline"} 
+                    size={24} 
+                    color="#641346" 
+                  />
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.playButton}>
+                  <Ionicons name="play" size={24} color="#641346" />
+                </TouchableOpacity>
+              </View>
+            </View>
+            <Text style={styles.commentText}>
+              This is my review! jfa;sldkfjasldkfja;slkdfja;lskdjf;alskdjf;alskjd
+              falsk ;aslkj aslkfja slfkj aslkjfa slkjaf ;alskjdf
+              asldkjfasldtkj asdflkjas
+              ;dasldkfja;slkdjfa;lskdjf;alskdjf;alskjdfalsk
+              ;aslkj
+            </Text>
+          </View>
+        </View>
+      </ScrollView>
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#641346",
+  },
+  scrollView: {
+    flex: 1,
+  },
+  profileCard: {
+    backgroundColor: "#F8D0DD",
+    borderRadius: 25,
+    margin: 20,
+    padding: 15,
+  },
+  profileHeader: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  profileImageContainer: {
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+    backgroundColor: "#000",
+    justifyContent: "center",
+    alignItems: "center",
+    overflow: "hidden",
+  },
+  profileImage: {
+    width: 70,
+    height: 70,
+    borderRadius: 35,
+  },
+  profileInfo: {
+    marginLeft: 20,
+  },
+  profileName: {
+    fontSize: 24,
+    fontWeight: "bold",
+    color: "#000",
+  },
+  profileSubtitle: {
+    fontSize: 16,
+    color: "#000",
+  },
+  musicPost: {
+    alignItems: "center",
+    paddingHorizontal: 20,
+    paddingBottom: 20,
+  },
+  albumCovers: {
+    height: 300,
+    width: "100%",
+    position: "relative",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  albumCoverBase: {
+    width: "80%",
+    height: 280,
+    position: "absolute",
+  },
+  albumCoverBack2: {
+    top: 20,
+    left: "10%",
+  },
+  albumCoverBack1: {
+    top: 10,
+    left: "5%",
+  },
+  albumCoverFront: {
+    width: "90%",
+    height: 280,
+    borderRadius: 5,
+  },
+  songInfoContainer: {
+    width: "100%",
+    alignItems: "center",
+    marginTop: 20,
+    marginBottom: 20,
+  },
+  songTitle: {
+    fontSize: 28,
+    fontWeight: "bold",
+    color: "white",
+    textAlign: "center",
+  },
+  artistName: {
+    fontSize: 24,
+    color: "white",
+    textAlign: "center",
+  },
+  commentSection: {
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 15,
+    width: "100%",
+  },
+  commentHeader: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 10,
+  },
+  username: {
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "#641346",
+  },
+  interactionButtons: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  playButton: {
+    marginLeft: 15,
+  },
+  commentText: {
+    fontSize: 14,
+    color: "#333",
+    lineHeight: 20,
+  },
+});
 
