@@ -1,19 +1,7 @@
 import React from 'react';
-import { View, Text, Image, ScrollView, StyleSheet, FlatList, Dimensions } from 'react-native';
-import { Ionicons } from '@expo/vector-icons'; // or 'react-native-vector-icons/Ionicons'
-import { StackNavigationProp } from "@react-navigation/stack";
-import { useNavigation } from "@react-navigation/native";
+import { View, Text, Image, ScrollView, StyleSheet, FlatList } from 'react-native';
 
-
-
-type RootStackParamList = {
-  ProfileScreen: undefined;
-};
-
-type NavigationProp = StackNavigationProp<RootStackParamList, "ProfileScreen">;
-
-const { width } = Dimensions.get('window');
-
+// parameters for review card
 type Review = {
   title: string;
   artist: string;
@@ -21,6 +9,7 @@ type Review = {
   image: string;
 };
 
+// hardcoded list of reviews
 const reviews: Review[] = [
   {
     title: 'I Said I Love You First',
@@ -39,6 +28,7 @@ const reviews: Review[] = [
   },
 ];
 
+// hardcoded list of albums
 const albumLists = [
   {
     title: 'all time favs',
@@ -66,11 +56,9 @@ const albumLists = [
 ];
 
 export default function ProfileScreen() {
-const navigation = useNavigation<NavigationProp>();
-
   return (
     <ScrollView style={styles.container}>
-      {/* Profile Header */}
+      {/* profile header */}
       <View style={styles.header}>
         <Image
           source={{ uri: 'https://preview.redd.it/220728-phoning-update-hanni-photos-v0-i5cdr2pcy9e91.jpg?width=640&crop=smart&auto=webp&s=2f52e1438ebf3a27f58627d9f03c506d65895251' }} // default profile pic
@@ -82,7 +70,7 @@ const navigation = useNavigation<NavigationProp>();
         </View>
       </View>
 
-      {/* My Reviews */}
+      {/* my reviews */}
       <Text style={styles.sectionTitle}>My Reviews</Text>
       <FlatList
         data={reviews}
@@ -102,7 +90,7 @@ const navigation = useNavigation<NavigationProp>();
         )}
       />
 
-      {/* My Lists */}
+      {/* my lists */}
       <Text style={styles.sectionTitle}>My Lists</Text>
       <FlatList
         data={albumLists}
@@ -206,7 +194,6 @@ const styles = StyleSheet.create({
     },
     reviewBody: {
       fontSize: 13,
-      maxWidth: 205,
       fontFamily: "Afacad",
       color: 'white' 
     },
@@ -217,12 +204,12 @@ const styles = StyleSheet.create({
       marginLeft: 16,
       borderRadius: 25,
       overflow: 'hidden',
-      flex: 1,
       height: 230,
-      width: 330
+      width: 330,
+      
     },
     listTitle: {
-      fontWeight: 500, // afacad weight between 400-700
+      fontWeight: 500,
       fontSize: 20,
       fontFamily: "Afacad",
       letterSpacing: 2,

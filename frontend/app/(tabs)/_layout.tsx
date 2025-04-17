@@ -79,7 +79,6 @@ export default function TabLayout() {
           
         }}
       />
-<<<<<<< HEAD
       <Tabs.Screen
         name="home"
         options={{
@@ -100,9 +99,6 @@ export default function TabLayout() {
         }}
       />
       {/* <Tabs.Screen
-=======
-      /* <Tabs.Screen
->>>>>>> origin/frontend
         name="search_results"
         options={{
           title: 'home',
