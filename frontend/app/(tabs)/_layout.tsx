@@ -88,11 +88,8 @@ export default function TabLayout() {
           ),
           
         }}
-          
-<<<<<<<<< Temporary merge branch 1
-<<<<<<<<< Temporary merge branch 1
         />
-            {/* <Tabs.Screen
+        {/* <Tabs.Screen
         name="home"
         options={{
           title: 'home',
