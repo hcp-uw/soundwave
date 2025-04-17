@@ -89,6 +89,15 @@ export default function TabLayout() {
           
         }}
       />
+     <Tabs.Screen
+        name="profile"
+        options={{
+          title: 'profile',
+          tabBarIcon: ({ color }: { color: string }) => (
+            <IconSymbol size={28} name="house.fill" color={color} />
+          ), 
+        }}
+      />
       {/* <Tabs.Screen
         name="search_results"
         options={{
