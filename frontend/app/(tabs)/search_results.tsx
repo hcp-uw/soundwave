@@ -27,7 +27,7 @@ console.log("CLIENT_SECRET:", CLIENT_SECRET);
 
 type RootStackParamList = {
   NewPost: undefined;
-  newpost_create: { songTitle: string; songArtist: string, cover:string }; // ✅ Expect parameters
+  newpost_create: { songTitle: string; songArtist: string, cover: string }; // ✅ Expect parameters
 };
 
 type Song = {
