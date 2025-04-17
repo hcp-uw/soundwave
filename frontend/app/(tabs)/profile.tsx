@@ -1,5 +1,8 @@
-import React from 'react';
-import { View, Text, Image, ScrollView, StyleSheet, FlatList } from 'react-native';
+import React, { useState, useCallback } from 'react';
+import { useFocusEffect } from '@react-navigation/native';
+import { View, Text, Image, ScrollView, StyleSheet, FlatList, ActivityIndicator } from 'react-native';
+import { fetchData } from '@/api';
+import { PostData } from './newpost_create'; 
 
 // parameters for review card
 type Review = {
@@ -9,26 +12,7 @@ type Review = {
   image: string;
 };
 
-// hardcoded list of reviews
-const reviews: Review[] = [
-  {
-    title: 'I Said I Love You First',
-    artist: 'Selena Gomez and Benny Blanco',
-    review:
-      '"Stars can entertain us, they can mirror us, but they can never be known to us, really. And yet: In a way, Gomez has never seemed more relatable—to those of us who have phoned it in at work because we were busy being dumb in love."',
-    image:
-      'https://upload.wikimedia.org/wikipedia/en/a/a3/I_Said_I_Love_You_First.jpg',
-  },
-  {
-    title: 'New Jeans',
-    artist: 'NewJeans',
-    review: '"Their tone is pure, straight, and natural with moments of playful vocal dips that add a whimsical touch. Sincerity and confidence shine through both the lyrics and voices that deliver them, which are enhanced by nostalgic synths in the background."',
-    image:
-      'https://i.scdn.co/image/ab67616d0000b2739d28fd01859073a3ae6ea209',
-  },
-];
-
-// hardcoded list of albums
+// hardcoded list of albums until lists are created
 const albumLists = [
   {
     title: 'all time favs',
@@ -56,6 +40,32 @@ const albumLists = [
 ];
 
 export default function ProfileScreen() {
+  const [reviews, setReviews] = useState<Review[]>([]);
+  const [loading, setLoading] = useState(true);
+  // refresh each time page is loaded
+  useFocusEffect(
+    useCallback(() => {
+      async function loadReviews() {
+        setLoading(true);
+        const posts = await fetchData();
+        if (posts) {
+          const formatted: Review[] = posts.map((p: PostData) => ({
+            title: p.song,
+            artist: p.artist,
+            review: p.content,
+            image: p.cover,
+          }));
+          setReviews(formatted);
+        }
+        setLoading(false);
+      }
+  
+      loadReviews();
+    }, [])
+  );
+  if (loading) {
+    return <ActivityIndicator style={{ flex: 1 }} size="large" />;
+  }
   return (
     <ScrollView style={styles.container}>
       {/* profile header */}
@@ -74,9 +84,12 @@ export default function ProfileScreen() {
       <Text style={styles.sectionTitle}>My Reviews</Text>
       <FlatList
         data={reviews}
-        keyExtractor={(_, index) => index.toString()}
+        keyExtractor={(r => r.title + r.artist)}
         horizontal
         pagingEnabled
+        snapToAlignment="center"
+        snapToInterval={330 + 16}
+        decelerationRate="fast"
         showsHorizontalScrollIndicator={false}
         renderItem={({ item }) => (
           <View style={styles.reviewCard}>
@@ -97,6 +110,9 @@ export default function ProfileScreen() {
         keyExtractor={(_, index) => index.toString()}
         horizontal
         pagingEnabled
+        snapToAlignment="center"
+        snapToInterval={330 + 16}
+        decelerationRate="fast"
         showsHorizontalScrollIndicator={false}
         renderItem={({ item }) => (
           <View style={styles.listCard}>
