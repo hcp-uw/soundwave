@@ -79,8 +79,8 @@ export default function TabLayout() {
           
         }}
       />
-      <Tabs.Screen
-        name="home"
+      {/* <Tabs.Screen
+        name="search_results"
         options={{
           title: 'home',
           tabBarIcon: ({ color }: { color: string }) => (
@@ -98,7 +98,7 @@ export default function TabLayout() {
           ),
           
         }}
-      />
+        />
     </Tabs>
   );
 }
