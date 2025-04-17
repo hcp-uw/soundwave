@@ -72,9 +72,9 @@ export default function TabLayout() {
       <Tabs.Screen
         name="newpost"
         options={{
-          title: 'newpost',
+          title: 'Post',
           tabBarIcon: ({ color }: { color: string }) => (
-            <IconSymbol size={28} name="paperplane.fill" color={color} />
+            <IconSymbol size={28} name="plus" color={color} />
           ),
           
         }}
@@ -92,9 +92,9 @@ export default function TabLayout() {
      <Tabs.Screen
         name="profile"
         options={{
-          title: 'profile',
+          title: 'Profile',
           tabBarIcon: ({ color }: { color: string }) => (
-            <IconSymbol size={28} name="house.fill" color={color} />
+            <IconSymbol size={28} name="person.crop.circle" color={color} />
           ), 
         }}
       />
@@ -118,16 +118,17 @@ export default function TabLayout() {
           
         }}
       />
+      */}
       <Tabs.Screen
         name="newlist"
         options={{
-          title: 'newlist',
+          title: 'List',
           tabBarIcon: ({ color }: { color: string }) => (
             <IconSymbol size={28} name="plus" color={color} />
           ),
           
         }}
-      /> */}
+      /> */
     </Tabs>
   );
 }
