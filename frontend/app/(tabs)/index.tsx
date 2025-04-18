@@ -35,7 +35,7 @@ export default function HomeScreen() {
             </View>
             <View style={styles.profileInfo}>
               <Text style={styles.profileName}>Igor</Text>
-              <Text style={styles.profileSubtitle}>Tyler, the Creator</Text>
+              <Text style={styles.profileSubtitle}>poop, the Creator</Text>
             </View>
           </View>
         </View>
