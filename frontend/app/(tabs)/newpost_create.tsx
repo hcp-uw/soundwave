@@ -44,7 +44,7 @@ const SpinningImage = ({ songCover }: { songCover: string }) => {
 };
 
 
-interface PostData {
+export interface PostData {
     postId: string;
     song: string;
     artist: string;
@@ -79,8 +79,7 @@ export default function NewPostScreen() {
   const handleNext = async () => {
     console.log("test 1");
     const postData: PostData = {
-            //postId: idNum.toString(),
-            postId: "696969696969",
+            postId: idNum.toString(),
             song: songName,
             artist: artistName,
             content: textBoxInput,
@@ -134,6 +133,7 @@ export default function NewPostScreen() {
         <TextInput
           style={styles.input}
           placeholder="Spill your thoughts..."
+          //placeholder="hey poopy..."
           
           placeholderTextColor="gray"
           multiline={true}

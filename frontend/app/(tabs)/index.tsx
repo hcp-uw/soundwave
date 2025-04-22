@@ -4,10 +4,15 @@ import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { fetchData } from "../../api";
 
+interface Post {
+  cover?: string;
+  content?: string;
+}
+
 export default function HomeScreen() {
   const navigation = useNavigation();
   const [isFavorited, setIsFavorited] = useState(false);
-  const [posts, setPosts] = useState([]);
+  const [posts, setPosts] = useState<Post[]>([]);
 
   const toggleFavorite = () => {
     setIsFavorited(!isFavorited);
@@ -35,7 +40,7 @@ export default function HomeScreen() {
             </View>
             <View style={styles.profileInfo}>
               <Text style={styles.profileName}>Igor</Text>
-              <Text style={styles.profileSubtitle}>Tyler, the Creator</Text>
+              <Text style={styles.profileSubtitle}>poop, the Creator</Text>
             </View>
           </View>
         </View>

@@ -4,12 +4,13 @@ import React, { useEffect } from 'react';
 import { Platform } from 'react-native';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
-
+import TabBarBackground from '@/components/ui/TabBarBackground'; // make sure the path matches
 import { HapticTab } from '@/components/HapticTab';
 import { IconSymbol } from '@/components/ui/IconSymbol';
-import TabBarBackground from '@/components/ui/TabBarBackground';
+//import TabBarBackground from '@/components/ui/TabBarBackground';
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
+// import { Home, icon, Plus } from '@/assets/icons_custom';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -37,14 +38,22 @@ export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
+        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].navIconSelected,
+        tabBarInactiveTintColor: Colors.background.tabIconDefault,
+        
         headerShown: false,
         tabBarButton: HapticTab,
         tabBarBackground: TabBarBackground,
+        position: 'absolute',
+        
         tabBarStyle: Platform.select({
           ios: {
             // Use a transparent background on iOS to show the blur effect
             position: 'absolute',
+            borderTopWidth: 0,
+            elevation: 0, // for Android
+            shadowOpacity: 0, // for iOS
+            backgroundColor: 'transparent',
           },
           default: {},
         }),
@@ -55,49 +64,55 @@ export default function TabLayout() {
           title: 'Home',
           tabBarIcon: ({ color }: { color: string }) => (
             <IconSymbol size={28} name="house.fill" color={color} />
+            // <a href="/" className="flex items-center gap-2">
+            //   <img src="/assets/icons_customsHome.svg" alt="Home" width={24} height={24} />
+            //   Home
+            // </a>
           ),
           
         }}
       />
       <Tabs.Screen
-        name="explore"
+        name="newlist"
         options={{
-          title: 'Explore',
+          title: 'New List',
           tabBarIcon: ({ color }: { color: string }) => (
             <IconSymbol size={28} name="house.fill" color={color} />
           ),
           
         }}
       />
-      <Tabs.Screen
-        name="newpost"
+      
+     <Tabs.Screen
+        name="profile"
         options={{
-          title: 'newpost',
+          title: 'Profile',
+          tabBarIcon: ({ color }: { color: string }) => (
+            <IconSymbol size={28} name="person.crop.circle" color={color} />
+          ), 
+        }}
+      />
+      <Tabs.Screen
+        name="search_results"
+        options={{
+          title: 'New Post',
           tabBarIcon: ({ color }: { color: string }) => (
             <IconSymbol size={28} name="paperplane.fill" color={color} />
           ),
           
         }}
-      />
-      /* <Tabs.Screen
-        name="search_results"
-        options={{
-          title: 'home',
-          tabBarIcon: ({ color }: { color: string }) => (
-            <IconSymbol size={28} name="house.fill" color={color} />
-          ),
-          
-        }}
         />
-      <Tabs.Screen
-        name="newlist"
-        options={{
-          title: 'newlist',
-          tabBarIcon: ({ color }: { color: string }) => (
-            <IconSymbol size={28} name="plus" color={color} />
-          ),
-          
-        }}
+        <Tabs.Screen
+          name="newpost_create"
+          options={{
+            href: null, // hides it from the tab bar
+          }}
+        />
+        <Tabs.Screen
+          name="home"
+          options={{
+            href: null, // hides it from the tab bar
+          }}
         />
     </Tabs>
   );
