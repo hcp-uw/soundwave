@@ -11,7 +11,7 @@ import { StackNavigationProp } from "@react-navigation/stack";
 @import url('https://fonts.googleapis.com/css2?family=Afacad:ital,wght@0,400..700;1,400..700&display=swap');
 </style>
 import { useRoute } from "@react-navigation/native";
-import Config from "react-native-config";
+//import Config from "@react-native-config";
 
 
 // const CLIENT_ID = process.env.EXPO_PUBLIC_SPOTIFY_CLIENT_ID;
