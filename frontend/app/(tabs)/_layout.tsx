@@ -1,6 +1,5 @@
 import { Tabs } from 'expo-router';
 //import React from 'react';
-import { }
 import React, { useEffect } from 'react';
 import { Platform } from 'react-native';
 import { useFonts } from 'expo-font';
