@@ -1,6 +1,5 @@
 import { Tabs } from 'expo-router';
 //import React from 'react';
-import { }
 import React, { useEffect } from 'react';
 import { Platform } from 'react-native';
 import { useFonts } from 'expo-font';
@@ -11,6 +10,7 @@ import { IconSymbol } from '@/components/ui/IconSymbol';
 //import TabBarBackground from '@/components/ui/TabBarBackground';
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
+// import { Home, icon, Plus } from '@/assets/icons_custom';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -64,6 +64,10 @@ export default function TabLayout() {
           title: 'Home',
           tabBarIcon: ({ color }: { color: string }) => (
             <IconSymbol size={28} name="house.fill" color={color} />
+            // <a href="/" className="flex items-center gap-2">
+            //   <img src="/assets/icons_customsHome.svg" alt="Home" width={24} height={24} />
+            //   Home
+            // </a>
           ),
           
         }}
