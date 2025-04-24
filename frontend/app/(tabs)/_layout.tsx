@@ -72,6 +72,9 @@ export default function TabLayout() {
           //   //<IconSymbol size={28} name="house.fill" color={color} />
           //   //<Icon name="Home" width="50px" height="50px" />
           // ),
+          tabBarIcon: ({ color }: { color: string }) => (
+            <IconSymbol size={28} name="house.fill" color={color} />
+          ),
           
         }}
       />
