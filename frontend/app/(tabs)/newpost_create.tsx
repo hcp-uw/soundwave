@@ -78,8 +78,9 @@ export default function NewPostScreen() {
 
   const handleNext = async () => {
     console.log("test 1");
+    const newId = idNum + 1;
     const postData: PostData = {
-            postId: idNum.toString(),
+            postId: newId.toString(),
             song: songName,
             artist: artistName,
             content: textBoxInput,
@@ -94,7 +95,7 @@ export default function NewPostScreen() {
         console.log("test2");
         if (response) {
         Alert.alert("slay", "post created!");
-        setIdNum((prevId) => prevId + 1);
+        setIdNum(newId);
         } else {
         Alert.alert("Error", "Failed to send data");
         }

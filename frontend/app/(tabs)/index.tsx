@@ -1,100 +1,136 @@
-import { useState, useEffect } from "react";
-import { View, Text, Image, StyleSheet, ScrollView, TouchableOpacity } from "react-native";
+import React, { useState, useCallback, useEffect } from 'react';
+import { View, Text, Image, StyleSheet, ScrollView, FlatList, ActivityIndicator, TouchableOpacity} from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
+import { fetchData } from '@/api';
+import { PostData } from './newpost_create';
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import { fetchData } from "../../api";
 
-interface Post {
-  cover?: string;
-  content?: string;
-}
+type Review = {
+  song: string;
+  artist: string;
+  content: string;
+  cover: string;
+};
 
 export default function HomeScreen() {
-  const navigation = useNavigation();
+  const [posts, setPosts] = useState<Review[]>([]);
   const [isFavorited, setIsFavorited] = useState(false);
-  const [posts, setPosts] = useState<Post[]>([]);
+  const [loading, setLoading] = useState(true);
 
   const toggleFavorite = () => {
     setIsFavorited(!isFavorited);
   };
 
-  useEffect(() => {
-    const getPosts = async () => {
-      const data = await fetchData();
-      if (data) setPosts(data);
-    };
-    getPosts();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      async function loadPosts() {
+        setLoading(true);
+        const data = await fetchData();
+        if (data) {
+          const formatted = data.map((post: PostData) => ({
+            song: post.song,
+            artist: post.artist,
+            content: post.content,
+            cover: post.cover,
+          }));
+          setPosts(formatted);
+        }
+        setLoading(false);
+      }
+
+      loadPosts();
+    }, [])
+  );
+
+  /*if (loading) {
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" />
+      </View>
+    );
+  }*/
+
+  if (loading) {
+      return <ActivityIndicator style={{ flex: 1 }} size="large" />;
+  }
 
   return (
     <View style={styles.container}>
       <ScrollView style={styles.scrollView}>
-        {/* User Profile Header */}
-        <View style={styles.profileCard}>
-          <View style={styles.profileHeader}>
-            <View style={styles.profileImageContainer}>
-              <Image 
-                source={{ uri: 'https://via.placeholder.com/150' }} 
-                style={styles.profileImage} 
-              />
-            </View>
-            <View style={styles.profileInfo}>
-              <Text style={styles.profileName}>Igor</Text>
-              <Text style={styles.profileSubtitle}>poop, the Creator</Text>
-            </View>
-          </View>
-        </View>
+        <FlatList
+          data={posts}
+          keyExtractor={(item, index) => index.toString()}
+          renderItem={({ item }) => (
+            <View>
+              {/* User Profile Header */}
+              <View style={styles.profileCard}>
+                <View style={styles.profileHeader}>
+                  <View style={styles.profileImageContainer}>
+                    <Image
+                      source={{ uri: item.cover || 'https://via.placeholder.com/150' }}
+                      style={styles.profileImage}
+                    />
+                  </View>
+                  <View style={styles.profileInfo}>
+                    <Text style={styles.profileName}>{item.song || 'No title found'}</Text>
+                    <Text style={styles.profileSubtitle}>{item.artist || 'No artist found'}</Text>
+                  </View>
+                </View>
+              </View>
 
-        {/* Music Post */}
-        {posts.map((post, index) => (
-        <View style={styles.musicPost}>
-          {/* Album Cover */}
-          <View style={styles.albumCovers}>
-            <Image 
-              source={{ uri: post.cover || 'https://via.placeholder.com/300' }} 
-              style={[styles.albumCoverBase, styles.albumCoverBack2]} 
-            />
-            <Image 
-              source={{ uri: 'https://via.placeholder.com/300' }} 
-              style={[styles.albumCoverBase, styles.albumCoverBack1]} 
-            />
-            <Image 
-              source={{ uri: 'https://via.placeholder.com/300' }} 
-              style={styles.albumCoverFront} 
-            />
-          </View>
-
-          {/* Song Title */}
-          <View style={styles.songInfoContainer}>
-            <Text style={styles.songTitle}>I THINK</Text>
-            <Text style={styles.artistName}>Tyler, the Creator</Text>
-          </View>
-
-          {/* User Comment Section */}
-          <View style={styles.commentSection}>
-            <View style={styles.commentHeader}>
-              <Text style={styles.username}>@username</Text>
-              <View style={styles.interactionButtons}>
-                <TouchableOpacity onPress={toggleFavorite}>
-                  <Ionicons 
-                    name={isFavorited ? "star" : "star-outline"} 
-                    size={24} 
-                    color="#641346" 
+              {/* Music Post */}
+              <View style={styles.musicPost}>
+                {/* Album Cover */}
+                <View style={styles.albumCovers}>
+                  <Image
+                    source={{ uri: item.cover || 'https://via.placeholder.com/300' }}
+                    style={[styles.albumCoverBase, styles.albumCoverBack2]}
                   />
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.playButton}>
-                  <Ionicons name="play" size={24} color="#641346" />
-                </TouchableOpacity>
+                  <Image
+                    source={{ uri: item.cover || 'https://via.placeholder.com/300' }}
+                    style={[styles.albumCoverBase, styles.albumCoverBack1]}
+                  />
+                  <Image
+                    source={{ uri: item.cover || 'https://via.placeholder.com/300' }}
+                    style={styles.albumCoverFront}
+                  />
+                </View>
+
+                {/* Song Title */}
+                <View style={styles.songInfoContainer}>
+                  <Text style={styles.songTitle}>{item.song || 'No title found'}</Text>
+                  <Text style={styles.artistName}>{item.artist || 'No artist found'}</Text>
+                </View>
+
+                {/* User Comment Section */}
+                <View style={styles.commentSection}>
+                  <View style={styles.commentHeader}>
+                    <Text style={styles.username}>@username</Text>
+                    <View style={styles.interactionButtons}>
+                      <TouchableOpacity onPress={toggleFavorite}>
+                        <Ionicons
+                          name={isFavorited ? 'star' : 'star-outline'}
+                          size={24}
+                          color="#641346"
+                        />
+                      </TouchableOpacity>
+                      <TouchableOpacity style={styles.playButton}>
+                        <Ionicons name="play" size={24} color="#641346" />
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+                  <Text style={styles.commentText}>{item.content || 'No comment'}</Text>
+                </View>
               </View>
             </View>
-            <Text style={styles.commentText}>{post.content || "No comment"} </Text>
-          </View>
-        </View>
-        ))}
+          )}
+        />
       </ScrollView>
     </View>
   );
 }
+
 
 const styles = StyleSheet.create({
   container: {
@@ -217,4 +253,3 @@ const styles = StyleSheet.create({
     lineHeight: 20,
   },
 });
-
