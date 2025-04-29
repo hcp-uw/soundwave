@@ -23,7 +23,7 @@ const SpinningImage = ({ songCover }: { songCover: string }) => {
         toValue: 1,  // End value of the animation (1 full rotation)
         duration: 4000, // Time for one rotation (in milliseconds)
         useNativeDriver: true, // Enable native driver for better performance
-        easing: Easing.linear,
+        easing: Easing.linear, // make spinning consistent
       })
     ).start();
   }, [spinValue]);
