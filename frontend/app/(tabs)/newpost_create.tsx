@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef} from "react";
 import { View, TextInput, Text, Alert, StyleSheet, Image, Animated } from "react-native";
-import { Keyboard, TouchableWithoutFeedback } from 'react-native';
+import { Keyboard, TouchableWithoutFeedback, Easing} from 'react-native';
 
 import RoundedRectangle from "@/components/RoundedRectangle"; // Ensure this exists
 import { NextButton } from "@/components/nextButton";
@@ -20,9 +20,10 @@ const SpinningImage = ({ songCover }: { songCover: string }) => {
   useEffect(() => {
     Animated.loop(
       Animated.timing(spinValue, {
-        toValue: 0,  // End value of the animation (1 full rotation)
-        duration: 2000, // Time for one rotation (in milliseconds)
+        toValue: 1,  // End value of the animation (1 full rotation)
+        duration: 4000, // Time for one rotation (in milliseconds)
         useNativeDriver: true, // Enable native driver for better performance
+        easing: Easing.linear,
       })
     ).start();
   }, [spinValue]);
