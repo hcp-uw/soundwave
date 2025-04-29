@@ -11,6 +11,12 @@ import { IconSymbol } from '@/components/ui/IconSymbol';
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
 // import { Home, icon, Plus } from '@/assets/icons_custom';
+// import Icon from "@/components/ui/Icons_";
+// import HomeIcon from "@/components/ui/Icons_";
+// import ProfileIcon from '"@/components/ui/Icons_/Profile.png";
+// import PlusIcon from '"@/components/ui/Icons_/Plus.png";
+
+
 
 SplashScreen.preventAutoHideAsync();
 
@@ -62,12 +68,12 @@ export default function TabLayout() {
         name="home"
         options={{
           title: 'Home',
-          tabBarIcon: ({ color }: { color: string }) => (
-            <IconSymbol size={28} name="house.fill" color={color} />
-            // <a href="/" className="flex items-center gap-2">
-            //   <img src="/assets/icons_customsHome.svg" alt="Home" width={24} height={24} />
-            //   Home
-            // </a>
+          // tabBarIcon: ({ color }: { color: string }) => (
+          //   //<IconSymbol size={28} name="house.fill" color={color} />
+          //   //<Icon name="Home" width="50px" height="50px" />
+          // ),
+          tabBarIcon: ({ color, size }: { color: string; size: number }) => (
+            <IconSymbol size={30} name="homeIcon.fill" color={color} />
           ),
           
         }}
@@ -75,33 +81,36 @@ export default function TabLayout() {
       <Tabs.Screen
         name="newlist"
         options={{
-          title: 'New List',
-          tabBarIcon: ({ color }: { color: string }) => (
-            <IconSymbol size={28} name="house.fill" color={color} />
-          ),
+          // title: 'New List',
+          // tabBarIcon: ({ color }: { color: string }) => (
+          //   <IconSymbol size={40} name="plus.fill" color={color} />
+          // ),
+          href: null,
           
         }}
       />
       
-     <Tabs.Screen
-        name="profile"
-        options={{
-          title: 'Profile',
-          tabBarIcon: ({ color }: { color: string }) => (
-            <IconSymbol size={28} name="person.crop.circle" color={color} />
-          ), 
-        }}
-      />
+     
       <Tabs.Screen
         name="search_results"
         options={{
           title: 'New Post',
           tabBarIcon: ({ color }: { color: string }) => (
-            <IconSymbol size={28} name="paperplane.fill" color={color} />
+            <IconSymbol size={40} name="plus.fill" color={color} />
+            
           ),
           
         }}
         />
+        <Tabs.Screen
+        name="profile"
+        options={{
+          title: 'Profile',
+          tabBarIcon: ({ color }: { color: string }) => (
+            <IconSymbol size={35} name="profile.fill" color={color} />
+          ), 
+        }}
+      />
         <Tabs.Screen
           name="newpost_create"
           options={{
