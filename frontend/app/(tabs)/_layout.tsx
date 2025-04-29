@@ -7,14 +7,8 @@ import * as SplashScreen from 'expo-splash-screen';
 import TabBarBackground from '@/components/ui/TabBarBackground'; // make sure the path matches
 import { HapticTab } from '@/components/HapticTab';
 import { IconSymbol } from '@/components/ui/IconSymbol';
-//import TabBarBackground from '@/components/ui/TabBarBackground';
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
-// import { Home, icon, Plus } from '@/assets/icons_custom';
-// import Icon from "@/components/ui/Icons_";
-// import HomeIcon from "@/components/ui/Icons_";
-// import ProfileIcon from '"@/components/ui/Icons_/Profile.png";
-// import PlusIcon from '"@/components/ui/Icons_/Plus.png";
 
 
 
@@ -42,7 +36,9 @@ export default function TabLayout() {
   }
   // Tab bars
   return (
+    
     <Tabs
+    
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme ?? 'light'].navIconSelected,
         tabBarInactiveTintColor: Colors.background.tabIconDefault,
@@ -65,8 +61,10 @@ export default function TabLayout() {
         }),
       }}>
       <Tabs.Screen
+      
         name="home"
         options={{
+          
           title: 'Home',
           // tabBarIcon: ({ color }: { color: string }) => (
           //   //<IconSymbol size={28} name="house.fill" color={color} />
