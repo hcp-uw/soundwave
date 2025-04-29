@@ -214,7 +214,6 @@ export default function NewPostScreen() {
             placeholderTextColor="black"
             value={searchQuery}
             onChangeText={(text) => {
-              //console.log("Search query updated:", text); // Debugging
               setSearchQuery(text);
             }}
             onSubmitEditing={handleSearchSubmit}
@@ -234,7 +233,7 @@ export default function NewPostScreen() {
             <SongGrid setSelectedSong={setSelectedSong} />
 
           ) : (
-            <Text style={styles.noResultsText}>No results found</Text>
+            <Text style={styles.noResultsText}>search for a song!</Text>
           )}
         </View>
 
