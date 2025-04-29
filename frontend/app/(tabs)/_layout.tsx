@@ -72,8 +72,8 @@ export default function TabLayout() {
           //   //<IconSymbol size={28} name="house.fill" color={color} />
           //   //<Icon name="Home" width="50px" height="50px" />
           // ),
-          tabBarIcon: ({ color }: { color: string }) => (
-            <IconSymbol size={28} name="house.fill" color={color} />
+          tabBarIcon: ({ color, size }: { color: string; size: number }) => (
+            <IconSymbol size={30} name="homeIcon.fill" color={color} />
           ),
           
         }}
@@ -81,33 +81,36 @@ export default function TabLayout() {
       <Tabs.Screen
         name="newlist"
         options={{
-          title: 'New List',
-          tabBarIcon: ({ color }: { color: string }) => (
-            <IconSymbol size={28} name="house.fill" color={color} />
-          ),
+          // title: 'New List',
+          // tabBarIcon: ({ color }: { color: string }) => (
+          //   <IconSymbol size={40} name="plus.fill" color={color} />
+          // ),
+          href: null,
           
         }}
       />
       
-     <Tabs.Screen
-        name="profile"
-        options={{
-          title: 'Profile',
-          tabBarIcon: ({ color }: { color: string }) => (
-            <IconSymbol size={28} name="person.crop.circle" color={color} />
-          ), 
-        }}
-      />
+     
       <Tabs.Screen
         name="search_results"
         options={{
           title: 'New Post',
           tabBarIcon: ({ color }: { color: string }) => (
-            <IconSymbol size={28} name="paperplane.fill" color={color} />
+            <IconSymbol size={40} name="plus.fill" color={color} />
+            
           ),
           
         }}
         />
+        <Tabs.Screen
+        name="profile"
+        options={{
+          title: 'Profile',
+          tabBarIcon: ({ color }: { color: string }) => (
+            <IconSymbol size={35} name="profile.fill" color={color} />
+          ), 
+        }}
+      />
         <Tabs.Screen
           name="newpost_create"
           options={{
