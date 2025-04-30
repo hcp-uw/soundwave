@@ -41,7 +41,7 @@ const navigation = useNavigation<ProfileNavProp>();
         
           {/* Title */}
           <View style={styles.titleRow}>
-          <TouchableOpacity onPress={() => navigation.navigate("profile")} style={styles.backThing} hitSlop={{ top: 40, bottom: 40, left: 40, right: 40 }}>
+          <TouchableOpacity onPress={() => navigation.navigate("profile")} style={styles.backThing} hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}>
               <Ionicons name="play-back" size={35} color="#333" style={{ marginRight: 8 }} />
         </TouchableOpacity>
             <Text style={styles.titleText}>{songTitle}</Text>

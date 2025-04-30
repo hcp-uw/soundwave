@@ -111,6 +111,12 @@ export default function TabLayout() {
           ), 
         }}
       />
+      <Tabs.Screen
+        name="postfocus"
+        options={{
+          href: null,
+        }}
+      />
         <Tabs.Screen
           name="newpost_create"
           options={{

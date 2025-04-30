@@ -35,7 +35,7 @@ export default function RootLayout() {
         <Stack.Screen name="search_results" options={{ title: "Search Results" }} />
         <Stack.Screen name="newlist" options={{ headerShown: false }} />
         <Stack.Screen name="profile" options={{ title: "Profile Page "}}/>
-        <Stack.Screen name="postfocus" options={{ title: "Post Focus "}}/>
+        <Stack.Screen name="postfocus" options={{ headerShown: false }}/>
       </Stack>
       <StatusBar style="auto" />
     </ThemeProvider>
