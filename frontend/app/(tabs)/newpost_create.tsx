@@ -61,6 +61,7 @@ export default function NewPostScreen() {
   const route = useRoute();
   const { songTitle, songArtist, cover } = route.params as { songTitle: string; songArtist: string, cover:string };
 
+
   const [textBoxInput, setTextBoxInput] = useState(""); // Textbox state
   const songName = songTitle;
   const artistName = songArtist;

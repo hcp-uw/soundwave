@@ -1,114 +1,163 @@
-import React, { useState, useCallback } from 'react';
-import { View, Text, Image, ScrollView, StyleSheet } from 'react-native';
-import { useRoute } from "@react-navigation/native";
-import RoundedRectangle from "@/components/RoundedRectangle";
+import React, { useEffect } from 'react';
+import {
+  View,
+  Text,
+  Image,
+  ScrollView,
+  StyleSheet,
+  TouchableOpacity,
+} from 'react-native';
+import { useRoute, useNavigation } from '@react-navigation/native';
+import { Ionicons } from '@expo/vector-icons';
+import type { StackNavigationProp } from "@react-navigation/stack";
 
-// parameters for review card
-export interface PostData {
-    postId: string;
-    song: string;
-    artist: string;
-    content: string;
-    cover: string;
-  }
+
+type RootStackParamList = {
+    profile: undefined;
+   
+  };
+
+  type ProfileNavProp = StackNavigationProp<RootStackParamList, "profile">;
+
 
 export default function PostScreen() {
-  const route = useRoute();
-  const { songTitle, songArtist, content, cover } = route.params as { songTitle: string; songArtist: string, content:string, cover:string };
-  const songName = songTitle;
-  const artistName = songArtist;
-  const songCover = cover;
-  const postContent = content;
-  
+const navigation = useNavigation<ProfileNavProp>();
+  const { songTitle, songArtist, content, cover } = useRoute().params as {
+    songTitle: string;
+    songArtist: string;
+    content: string;
+    cover: string;
+  };
+
   return (
-    <ScrollView style={styles.container}>
+    <View style={styles.screen}>
+      {/* Back button */}
 
-    <RoundedRectangle>
-        <View>
-            <Image source={{uri: songCover}} style={styles.cover}></Image>
-            <Text style={ styles.songTitle }>
-                {`${songName} `}
-            </Text>
-            <Text style= {styles.artistName}>
-                {`${artistName}`}
-            </Text>
-            <Text style= {styles.reviewBody}>
-                {`${postContent}`}
-            </Text>
-        </View>
-    </RoundedRectangle>
-
-    {/* 
-    add back button 
-    add navigation from home screen
-    add navigation from profile
-    (?) add navigation from search results (after post is created, navigates to this page)
-    */}
       
-    </ScrollView>
+
+      <ScrollView contentContainerStyle={styles.scroll}>
+      
+        <View style={styles.card}>
+        
+          {/* Title */}
+          <View style={styles.titleRow}>
+          <TouchableOpacity onPress={() => navigation.navigate("profile")} style={styles.backThing} hitSlop={{ top: 40, bottom: 40, left: 40, right: 40 }}>
+              <Ionicons name="play-back" size={35} color="#333" style={{ marginRight: 8 }} />
+        </TouchableOpacity>
+            <Text style={styles.titleText}>{songTitle}</Text>
+            
+          </View>
+          <Text style={styles.subtitle}>{songArtist}</Text>
+          <Text style={styles.handle}>@mirandas_music</Text>
+
+          {/* Circular cover */}
+          <View style={styles.circleOuter}>
+            <View style={styles.circleInner}>
+              <Image source={{ uri: cover }} style={styles.coverImage} />
+            </View>
+          </View>
+
+          {/* Content */}
+          <Text style={styles.contentText} >{content}</Text>
+        </View>
+      </ScrollView>
+    </View>
   );
 }
 
+const PURPLE = '#641346';
+const CARD_BG = '#F3F3F3';
 
 const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: '#641346',
-    },
-    cover: {
-      width: 130,
-      height: 130,
-      aspectRatio: 1,
-      alignItems: 'center',
-      resizeMode: 'cover',
-    },
-    songTitle: { 
-        paddingTop: 15,
-        fontFamily: "Afacad",
-        fontSize: 20,
-        textAlign: "center",
-        fontWeight: "bold",
-      },
-      artistName: { 
-        fontFamily: "Afacad",
-        fontSize: 18,
-        textAlign: "center",
-        paddingBottom: 10,
-      },
-    sectionTitle: { // section headings
-      fontFamily: "Afacad",
-      fontSize: 20,
-      fontWeight: 'bold',
-      marginLeft: 16,
-      marginTop: 15,
-      color: 'white',
-      letterSpacing: 1
-    },
-    reviewTitle: {
-      fontWeight: 'bold',
-      fontSize: 20,
-      fontFamily: "Afacad",
-      letterSpacing: 1,
-      textAlign: 'center'
-    },
-    reviewSubtitle: {
-      fontFamily: "Afacad",
-      letterSpacing: 1,
-      fontSize: 14,
-      marginBottom: 8,
-      textAlign: 'center'
-    },
-    reviewBody: {
-      fontSize: 13,
-      fontFamily: "Afacad",
-      color: 'white' 
-    },
-    
-    albumImage: {
-      width: 90,
-      height: 90,
-      aspectRatio: 1,
-      resizeMode: 'cover',
-    },
-  });
-  
+  screen: {
+    flex: 1,
+    backgroundColor: PURPLE,
+  },
+  backButton: {
+    position: 'absolute',
+    top: 40,
+    left: 16,
+    zIndex: 10,
+  },
+  scroll: {
+    flexGrow: 1,              // allow centering when content is short
+    justifyContent: 'center', // center vertically
+    alignItems: 'center',     // center horizontally
+    paddingHorizontal: 16,
+    paddingVertical: 40,
+  },
+  card: {
+    width: '100%',
+    backgroundColor: CARD_BG,
+    borderRadius: 20,
+    padding: 24,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  titleRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 4,
+  },
+  titleText: {
+    flex: 1,
+    fontSize:  30,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    fontFamily: 'Afacad',
+  },
+  subtitle: {
+    fontSize: 20,
+    color: '#555',
+    fontFamily: 'Afacad',
+    marginBottom: 4,
+    textAlign: 'center',
+  },
+  handle: {
+    fontSize: 14,
+    color: '#999',
+    marginBottom: 20,
+    textAlign: 'center',
+  },
+  circleOuter: {
+    width: 220,
+    height: 220,
+    borderRadius: 110,
+    backgroundColor: '#333',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 24,
+  },
+  backThing: { 
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    backgroundColor: '#F3F3F3', // optional: if you want a circle behind the arrow
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'absolute',
+    top: -4,
+    left: 10,
+  },
+  circleInner: {
+    width: 180,
+    height: 180,
+    borderRadius: 90,
+    backgroundColor: '#555',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  coverImage: {
+    width: 150,
+    height: 150,
+    borderRadius: 75,
+  },
+  contentText: {
+    fontSize: 14,
+    color: '#333',
+    lineHeight: 20,
+    textAlign: 'left',
+    fontFamily: 'Afacad',
+  },
+});
+
