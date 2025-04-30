@@ -2,10 +2,13 @@ import { useState } from "react";
 import { View, TextInput, Text, Alert, StyleSheet } from "react-native";
 import RoundedRectangle from "@/components/RoundedRectangle"; // Ensure this exists
 import { NextButton } from "@/components/nextButton";
-import {Button } from "@/components/Button";
-import {getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword} from '@react-native-firebase/auth';
+import {Button} from "@/components/Button";
+import { auth } from "@/firebaseConfig"; // ✅ Properly initialized
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
+
+
 
 
 //import { sendData } from "../../api";
@@ -24,7 +27,7 @@ type RootStackParamList = {
 type NavigationProp = StackNavigationProp<RootStackParamList, "home">
 
 
-export default function master_login {
+export default function master_login() {
     const navigation = useNavigation<NavigationProp>();
 
    
@@ -32,8 +35,7 @@ export default function master_login {
 const[email, setEmail] = useState('');
 const[password, setPassword] = useState('');
 
-const auth = getAuth();
-
+//const auth = getAuth();
 
 const handleSignUp= (email:string, password:string) => { 
         createUserWithEmailAndPassword(auth, email, password)
@@ -114,9 +116,8 @@ const handleNextPage = () => {
           />
 
 
-
-<Button label="SignUp" onPress={handleSignUp} />
-<Button label="SignIn" onPress={handleSignUp} />
+<Button label="SignUp" onPress={() => handleSignUp(email, password)} />
+<Button label="SignIn" onPress={() => handleSignIn(email, password)} />
 
 
 
