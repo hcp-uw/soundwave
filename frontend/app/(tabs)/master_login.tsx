@@ -115,8 +115,8 @@ const handleNextPage = () => {
 
 
 
-<Button label="SignUp" onPress={handleSignUp} />
-<Button label="SignIn" onPress={handleSignUp} />
+<Button label="SignUp" onPress={handleSignUp(email, password)} />
+<Button label="SignIn" onPress={handleSignIn} />
 
 
 
