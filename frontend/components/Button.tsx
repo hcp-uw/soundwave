@@ -9,7 +9,7 @@ interface ButtonProps {
 export default function Button({ label, onPress }: ButtonProps) {
   return (
     <TouchableOpacity style={styles.button} onPress={onPress}>
-      <Text style={styles.label}>{label}</Text>
+      <Text style={styles.ButtonText}>{label}</Text>
     </TouchableOpacity>
   );
 }
@@ -43,7 +43,9 @@ const styles = StyleSheet.create({
   ButtonText: {
     fontSize: 20,
     fontFamily: 'Afacad',
-    color: "#551A2D", // Dark purple
+    color: "black", // Dark purple
+    alignItems: "center",
+    textAlign: "center",
   },
 
 });

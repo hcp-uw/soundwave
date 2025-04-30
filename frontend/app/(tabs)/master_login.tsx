@@ -58,7 +58,7 @@ export default function MasterLogin() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>welcome to soundwave</Text>
+      <Text style={styles.title}>welcome to soundwave!</Text>
 
       <TextInput
         placeholder="email"
@@ -78,8 +78,9 @@ export default function MasterLogin() {
       />
 
       <View style={styles.buttonContainer}>
-        <Button label="SignUp" onPress={() => handleSignUp(email, password)} />
-        <Button label="SignIn" onPress={() => handleSignIn(email, password)} />
+        <Button label="Sign Up" onPress={() => handleSignUp(email, password)} />
+        <Button label="Sign In" onPress={() => handleSignIn(email, password)} />
+          
       </View>
     </View>
   );
@@ -94,7 +95,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   title: {
-    fontSize: 24,
+    fontSize: 35,
     fontFamily: "Afacad",
     color: "black",
     marginBottom: 30,
@@ -117,6 +118,6 @@ const styles = StyleSheet.create({
   buttonContainer: {
     marginTop: 20,
     gap: 10,
-    width: "90%",
+    width: "35%",
   },
 });
