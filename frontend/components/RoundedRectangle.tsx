@@ -1,13 +1,14 @@
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, ViewStyle } from 'react-native';
 import { ReactNode } from 'react';
 
 interface RoundedRectangleProps {
   children?: ReactNode; // 👈 Ensures children can be any valid React element(s)
+  style?: ViewStyle; // Add style prop to accept custom styles
 }
 
-export default function RoundedRectangle({ children }: RoundedRectangleProps) {
+export default function RoundedRectangle({ children, style }: RoundedRectangleProps) {
   return (
-    <View style={styles.rectangle}>
+    <View style={[styles.rectangle, style]}> {/* Merge default styles with custom style */}
       <Text style={styles.text}>new post</Text>
       {children}
     </View>
@@ -25,13 +26,11 @@ const styles = StyleSheet.create({
     height: '80%',
     alignSelf: 'center',
     alignItems: 'center',
-    
   },
   text: {
     fontSize: 35,
     fontFamily: 'Afacad',
     paddingBottom: 15,
-    //fontWeight: 'bold',
     color: 'black',
   },
 });
