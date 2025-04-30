@@ -1,12 +1,12 @@
 import React from 'react';
 import { TouchableOpacity, Text, StyleSheet } from 'react-native';
 
-interface CustomButtonProps {
+interface ButtonProps {
   label: string;
   onPress: () => void;
 }
 
-export default function CustomButton({ label, onPress }: CustomButtonProps) {
+export default function Button({ label, onPress }: ButtonProps) {
   return (
     <TouchableOpacity style={styles.button} onPress={onPress}>
       <Text style={styles.label}>{label}</Text>
@@ -28,3 +28,4 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
 });
+export { Button };
