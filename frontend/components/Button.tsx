@@ -22,13 +22,13 @@ const styles = StyleSheet.create({
   //   borderRadius: 10,
   //   alignItems: "center",
   // },
-  // label: {
-  //   color: "white",
-  //   fontSize: 16,
-  //   fontWeight: "bold",
-  // },
+  label: {
+    color: "white",
+    fontSize: 16,
+    fontWeight: "bold",
+  },
 
-  Button: {
+  button: {
     marginTop: 10,
     marginBottom: 10,
     backgroundColor: "white",
