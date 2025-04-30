@@ -15,17 +15,36 @@ export default function Button({ label, onPress }: ButtonProps) {
 }
 
 const styles = StyleSheet.create({
-  button: {
-    backgroundColor: "#4CAF50",
-    paddingVertical: 12,
-    paddingHorizontal: 20,
-    borderRadius: 10,
-    alignItems: "center",
+  // button: {
+  //   backgroundColor: "#4CAF50",
+  //   paddingVertical: 12,
+  //   paddingHorizontal: 20,
+  //   borderRadius: 10,
+  //   alignItems: "center",
+  // },
+  // label: {
+  //   color: "white",
+  //   fontSize: 16,
+  //   fontWeight: "bold",
+  // },
+
+  Button: {
+    marginTop: 10,
+    marginBottom: 10,
+    backgroundColor: "white",
+    paddingVertical: 10,
+    paddingHorizontal: 30,
+    borderRadius: 20,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
   },
-  label: {
-    color: "white",
-    fontSize: 16,
-    fontWeight: "bold",
+  ButtonText: {
+    fontSize: 20,
+    fontFamily: 'Afacad',
+    color: "#551A2D", // Dark purple
   },
+
 });
 export { Button };
