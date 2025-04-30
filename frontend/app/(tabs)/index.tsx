@@ -1,151 +1,128 @@
-import React, { useState, useCallback, useEffect } from 'react';
-import { View, Text, Image, StyleSheet, ScrollView, FlatList, ActivityIndicator, TouchableOpacity} from 'react-native';
-import { useFocusEffect } from '@react-navigation/native';
-import { fetchData } from '@/api';
-import { PostData } from './newpost_create';
+import { useState, useEffect } from "react";
+import { View, Text, Image, StyleSheet, FlatList, TouchableOpacity, Dimensions } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import { fetchData } from "../../api";
+import { useFocusEffect } from "@react-navigation/native";
+import { useCallback } from "react";
 
-type Review = {
-  song: string;
-  artist: string;
-  content: string;
-  cover: string;
-};
 
 export default function HomeScreen() {
-  const [posts, setPosts] = useState<Review[]>([]);
+  const navigation = useNavigation();
   const [isFavorited, setIsFavorited] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const [posts, setPosts] = useState([]);
 
   const toggleFavorite = () => {
     setIsFavorited(!isFavorited);
   };
 
-  useFocusEffect(
-    useCallback(() => {
-      async function loadPosts() {
-        setLoading(true);
-        const data = await fetchData();
-        if (data) {
-          const formatted = data.map((post: PostData) => ({
-            song: post.song,
-            artist: post.artist,
-            content: post.content,
-            cover: post.cover,
-          }));
-          setPosts(formatted);
-        }
-        setLoading(false);
-      }
+  useEffect(() => {
+    const getPosts = async () => {
+      const data = await fetchData();
+      if (data) setPosts(data);
+    };
+    getPosts();
+  }, []);
 
-      loadPosts();
-    }, [])
-  );
 
-  /*if (loading) {
-    return (
-      <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" />
+  const renderPost = ({ item }) => (
+    <View style={styles.musicPost}>
+      
+      {/* Pink Album + Artist Header */}
+      <View style={styles.profileCard}>
+        <View style={styles.profileHeader}>
+          <View style={styles.profileImageContainer}>
+            <Image 
+              source={{ uri: item.cover || 'https://via.placeholder.com/150' }} 
+              style={styles.profileImage} 
+            />
+          </View>
+          <View style={styles.profileInfo}>
+            <Text style={styles.profileName}>{item.album || "Unknown Album"}</Text>
+            <Text style={styles.profileSubtitle}>{item.artist || "Unknown Artist"}</Text>
+          </View>
+        </View>
       </View>
-    );
-  }*/
+  
+      {/* Album Cover */}
+      <View style={styles.albumCovers}>
+        <Image 
+          source={{ uri: item.cover || 'https://via.placeholder.com/300' }} 
+          style={[styles.albumCoverBase, styles.albumCoverBack2]} 
+        />
+      </View>
+  
+      {/* Song Title */}
+      <View style={styles.songInfoContainer}>
+        <Text style={styles.songTitle}>{item.song || "No title found"}</Text>
+        <Text style={styles.artistName}>{item.artist || "No title found"}</Text>
+      </View>
+  
+      {/* User Review Section */}
+      <View style={styles.commentSection}>
+        <View style={styles.commentHeader}>
+          <Text style={styles.username}>@username</Text>
+          <View style={styles.interactionButtons}>
+            <TouchableOpacity onPress={toggleFavorite}>
+              <Ionicons 
+                name={isFavorited ? "star" : "star-outline"} 
+                size={24} 
+                color="#641346" 
+              />
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.playButton}>
+              <Ionicons name="play" size={24} color="#641346" />
+            </TouchableOpacity>
+          </View>
+        </View>
+        <Text style={styles.commentText}numberOfLines={3} ellipsizeMode="tail">{item.review}{item.content || "No comment"}</Text>
+      </View>
+  
+    </View>
+  );
+  
 
-  if (loading) {
-      return <ActivityIndicator style={{ flex: 1 }} size="large" />;
-  }
 
   return (
     <View style={styles.container}>
-      <ScrollView style={styles.scrollView}>
-        <FlatList
-          data={posts}
-          keyExtractor={(item, index) => index.toString()}
-          renderItem={({ item }) => (
-            <View>
-              {/* User Profile Header */}
-              <View style={styles.profileCard}>
-                <View style={styles.profileHeader}>
-                  <View style={styles.profileImageContainer}>
-                    <Image
-                      source={{ uri: item.cover || 'https://via.placeholder.com/150' }}
-                      style={styles.profileImage}
-                    />
-                  </View>
-                  <View style={styles.profileInfo}>
-                    <Text style={styles.profileName}>{item.song || 'No title found'}</Text>
-                    <Text style={styles.profileSubtitle}>{item.artist || 'No artist found'}</Text>
-                  </View>
-                </View>
-              </View>
 
-              {/* Music Post */}
-              <View style={styles.musicPost}>
-                {/* Album Cover */}
-                <View style={styles.albumCovers}>
-                  <Image
-                    source={{ uri: item.cover || 'https://via.placeholder.com/300' }}
-                    style={[styles.albumCoverBase, styles.albumCoverBack2]}
-                  />
-                  <Image
-                    source={{ uri: item.cover || 'https://via.placeholder.com/300' }}
-                    style={[styles.albumCoverBase, styles.albumCoverBack1]}
-                  />
-                  <Image
-                    source={{ uri: item.cover || 'https://via.placeholder.com/300' }}
-                    style={styles.albumCoverFront}
-                  />
-                </View>
-
-                {/* Song Title */}
-                <View style={styles.songInfoContainer}>
-                  <Text style={styles.songTitle}>{item.song || 'No title found'}</Text>
-                  <Text style={styles.artistName}>{item.artist || 'No artist found'}</Text>
-                </View>
-
-                {/* User Comment Section */}
-                <View style={styles.commentSection}>
-                  <View style={styles.commentHeader}>
-                    <Text style={styles.username}>@username</Text>
-                    <View style={styles.interactionButtons}>
-                      <TouchableOpacity onPress={toggleFavorite}>
-                        <Ionicons
-                          name={isFavorited ? 'star' : 'star-outline'}
-                          size={24}
-                          color="#641346"
-                        />
-                      </TouchableOpacity>
-                      <TouchableOpacity style={styles.playButton}>
-                        <Ionicons name="play" size={24} color="#641346" />
-                      </TouchableOpacity>
-                    </View>
-                  </View>
-                  <Text style={styles.commentText}>{item.content || 'No comment'}</Text>
-                </View>
-              </View>
-            </View>
-          )}
-        />
-      </ScrollView>
+      {/* Music Posts */}
+      <FlatList
+        data={posts}
+        renderItem={renderPost}
+        keyExtractor={(item, index) => index.toString()}
+        pagingEnabled
+        showsVerticalScrollIndicator={false}
+        snapToAlignment="start"
+        decelerationRate={"fast"}
+        snapToInterval={height}
+      />
     </View>
   );
 }
 
+const { height } = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#641346",
   },
-  scrollView: {
-    flex: 1,
-  },
+  
   profileCard: {
     backgroundColor: "#F8D0DD",
     borderRadius: 25,
-    margin: 20,
+    // marginTop: 0,
+    // marginBottom: 15,
+
     padding: 15,
+    width: 360,  // 👈 Set a fixed width
+    height: 120, // 👈 Set a fixed height (same as width to make it square)
+    justifyContent: "center", // Optional for centering content
+    alignItems: "center", // Optional for centering content
   },
+  
+
   profileHeader: {
     flexDirection: "row",
     alignItems: "center",
@@ -166,21 +143,21 @@ const styles = StyleSheet.create({
   },
   profileInfo: {
     marginLeft: 20,
+    justifyContent: "flex-start",
+    flexShrink: 1,         // allows text to shrink if needed
+    maxWidth: 250,         // adjust based on your layout
   },
-  profileName: {
-    fontSize: 24,
-    fontWeight: "bold",
-    color: "#000",
-  },
-  profileSubtitle: {
-    fontSize: 16,
-    color: "#000",
-  },
+
   musicPost: {
+    height: height,
+    justifyContent: "flex-start",
     alignItems: "center",
     paddingHorizontal: 20,
-    paddingBottom: 20,
+    paddingTop: 100, // ⬅️ reduce this to move content up
+    marginTop: -10, // ⬅️ optional: shift whole post upward
   },
+  
+  
   albumCovers: {
     height: 300,
     width: "100%",
@@ -197,31 +174,11 @@ const styles = StyleSheet.create({
     top: 20,
     left: "10%",
   },
-  albumCoverBack1: {
-    top: 10,
-    left: "5%",
-  },
-  albumCoverFront: {
-    width: "90%",
-    height: 280,
-    borderRadius: 5,
-  },
   songInfoContainer: {
     width: "100%",
     alignItems: "center",
     marginTop: 20,
     marginBottom: 20,
-  },
-  songTitle: {
-    fontSize: 28,
-    fontWeight: "bold",
-    color: "white",
-    textAlign: "center",
-  },
-  artistName: {
-    fontSize: 24,
-    color: "white",
-    textAlign: "center",
   },
   commentSection: {
     backgroundColor: "white",
@@ -235,11 +192,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginBottom: 10,
   },
-  username: {
-    fontSize: 16,
-    fontWeight: "bold",
-    color: "#641346",
-  },
   interactionButtons: {
     flexDirection: "row",
     alignItems: "center",
@@ -247,9 +199,297 @@ const styles = StyleSheet.create({
   playButton: {
     marginLeft: 15,
   },
+
+  profileName: {
+    fontSize: 24,
+    fontWeight: "bold",
+    color: "#000",
+    fontFamily: "Afacad",
+  },
+  profileSubtitle: {
+    fontSize: 16,
+    color: "#000",
+    fontFamily: "Afacad",
+  },
+  songTitle: {
+    fontSize: 28,
+    fontWeight: "bold",
+    color: "white",
+    textAlign: "center",
+    fontFamily: "Afacad",
+  },
+  artistName: {
+    fontSize: 20,
+    color: "#C5BCBC",
+    textAlign: "center",
+    fontFamily: "Afacad",
+  },
+  username: {
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "#641346",
+    fontFamily: "Afacad",
+  },
   commentText: {
     fontSize: 14,
     color: "#333",
     lineHeight: 20,
+    fontFamily: "Afacad",
   },
+  
 });
+// import React, { useState, useCallback, useEffect } from 'react';
+// import { View, Text, Image, StyleSheet, ScrollView, FlatList, ActivityIndicator, TouchableOpacity} from 'react-native';
+// import { useFocusEffect } from '@react-navigation/native';
+// import { fetchData } from '@/api';
+// import { PostData } from './newpost_create';
+// import { Ionicons } from "@expo/vector-icons";
+// import { useNavigation } from "@react-navigation/native";
+
+// type Review = {
+//   song: string;
+//   artist: string;
+//   content: string;
+//   cover: string;
+// };
+
+// export default function HomeScreen() {
+//   const [posts, setPosts] = useState<Review[]>([]);
+//   const [isFavorited, setIsFavorited] = useState(false);
+//   const [loading, setLoading] = useState(true);
+
+//   const toggleFavorite = () => {
+//     setIsFavorited(!isFavorited);
+//   };
+
+//   useFocusEffect(
+//     useCallback(() => {
+//       async function loadPosts() {
+//         setLoading(true);
+//         const data = await fetchData();
+//         if (data) {
+//           const formatted = data.map((post: PostData) => ({
+//             song: post.song,
+//             artist: post.artist,
+//             content: post.content,
+//             cover: post.cover,
+//           }));
+//           setPosts(formatted);
+//         }
+//         setLoading(false);
+//       }
+
+//       loadPosts();
+//     }, [])
+//   );
+
+//   /*if (loading) {
+//     return (
+//       <View style={styles.loadingContainer}>
+//         <ActivityIndicator size="large" />
+//       </View>
+//     );
+//   }*/
+
+//   if (loading) {
+//       return <ActivityIndicator style={{ flex: 1 }} size="large" />;
+//   }
+
+//   return (
+//     <View style={styles.container}>
+//       <ScrollView style={styles.scrollView}>
+//         <FlatList
+//           data={posts}
+//           keyExtractor={(item, index) => index.toString()}
+//           renderItem={({ item }) => (
+//             <View>
+//               {/* User Profile Header */}
+//               <View style={styles.profileCard}>
+//                 <View style={styles.profileHeader}>
+//                   <View style={styles.profileImageContainer}>
+//                     <Image
+//                       source={{ uri: item.cover || 'https://via.placeholder.com/150' }}
+//                       style={styles.profileImage}
+//                     />
+//                   </View>
+//                   <View style={styles.profileInfo}>
+//                     <Text style={styles.profileName}>{item.song || 'No title found'}</Text>
+//                     <Text style={styles.profileSubtitle}>{item.artist || 'No artist found'}</Text>
+//                   </View>
+//                 </View>
+//               </View>
+
+//               {/* Music Post */}
+//               <View style={styles.musicPost}>
+//                 {/* Album Cover */}
+//                 <View style={styles.albumCovers}>
+//                   <Image
+//                     source={{ uri: item.cover || 'https://via.placeholder.com/300' }}
+//                     style={[styles.albumCoverBase, styles.albumCoverBack2]}
+//                   />
+//                   <Image
+//                     source={{ uri: item.cover || 'https://via.placeholder.com/300' }}
+//                     style={[styles.albumCoverBase, styles.albumCoverBack1]}
+//                   />
+//                   <Image
+//                     source={{ uri: item.cover || 'https://via.placeholder.com/300' }}
+//                     style={styles.albumCoverFront}
+//                   />
+//                 </View>
+
+//                 {/* Song Title */}
+//                 <View style={styles.songInfoContainer}>
+//                   <Text style={styles.songTitle}>{item.song || 'No title found'}</Text>
+//                   <Text style={styles.artistName}>{item.artist || 'No artist found'}</Text>
+//                 </View>
+
+//                 {/* User Comment Section */}
+//                 <View style={styles.commentSection}>
+//                   <View style={styles.commentHeader}>
+//                     <Text style={styles.username}>@username</Text>
+//                     <View style={styles.interactionButtons}>
+//                       <TouchableOpacity onPress={toggleFavorite}>
+//                         <Ionicons
+//                           name={isFavorited ? 'star' : 'star-outline'}
+//                           size={24}
+//                           color="#641346"
+//                         />
+//                       </TouchableOpacity>
+//                       <TouchableOpacity style={styles.playButton}>
+//                         <Ionicons name="play" size={24} color="#641346" />
+//                       </TouchableOpacity>
+//                     </View>
+//                   </View>
+//                   <Text style={styles.commentText}>{item.content || 'No comment'}</Text>
+//                 </View>
+//               </View>
+//             </View>
+//           )}
+//         />
+//       </ScrollView>
+//     </View>
+//   );
+// }
+
+
+// const styles = StyleSheet.create({
+//   container: {
+//     flex: 1,
+//     backgroundColor: "#641346",
+//   },
+//   scrollView: {
+//     flex: 1,
+//   },
+//   profileCard: {
+//     backgroundColor: "#F8D0DD",
+//     borderRadius: 25,
+//     margin: 20,
+//     padding: 15,
+//   },
+//   profileHeader: {
+//     flexDirection: "row",
+//     alignItems: "center",
+//   },
+//   profileImageContainer: {
+//     width: 80,
+//     height: 80,
+//     borderRadius: 40,
+//     backgroundColor: "#000",
+//     justifyContent: "center",
+//     alignItems: "center",
+//     overflow: "hidden",
+//   },
+//   profileImage: {
+//     width: 70,
+//     height: 70,
+//     borderRadius: 35,
+//   },
+//   profileInfo: {
+//     marginLeft: 20,
+//   },
+//   profileName: {
+//     fontSize: 24,
+//     fontWeight: "bold",
+//     color: "#000",
+//   },
+//   profileSubtitle: {
+//     fontSize: 16,
+//     color: "#000",
+//   },
+//   musicPost: {
+//     alignItems: "center",
+//     paddingHorizontal: 20,
+//     paddingBottom: 20,
+//   },
+//   albumCovers: {
+//     height: 300,
+//     width: "100%",
+//     position: "relative",
+//     alignItems: "center",
+//     justifyContent: "center",
+//   },
+//   albumCoverBase: {
+//     width: "80%",
+//     height: 280,
+//     position: "absolute",
+//   },
+//   albumCoverBack2: {
+//     top: 20,
+//     left: "10%",
+//   },
+//   albumCoverBack1: {
+//     top: 10,
+//     left: "5%",
+//   },
+//   albumCoverFront: {
+//     width: "90%",
+//     height: 280,
+//     borderRadius: 5,
+//   },
+//   songInfoContainer: {
+//     width: "100%",
+//     alignItems: "center",
+//     marginTop: 20,
+//     marginBottom: 20,
+//   },
+//   songTitle: {
+//     fontSize: 28,
+//     fontWeight: "bold",
+//     color: "white",
+//     textAlign: "center",
+//   },
+//   artistName: {
+//     fontSize: 24,
+//     color: "white",
+//     textAlign: "center",
+//   },
+//   commentSection: {
+//     backgroundColor: "white",
+//     borderRadius: 20,
+//     padding: 15,
+//     width: "100%",
+//   },
+//   commentHeader: {
+//     flexDirection: "row",
+//     justifyContent: "space-between",
+//     alignItems: "center",
+//     marginBottom: 10,
+//   },
+//   username: {
+//     fontSize: 16,
+//     fontWeight: "bold",
+//     color: "#641346",
+//   },
+//   interactionButtons: {
+//     flexDirection: "row",
+//     alignItems: "center",
+//   },
+//   playButton: {
+//     marginLeft: 15,
+//   },
+//   commentText: {
+//     fontSize: 14,
+//     color: "#333",
+//     lineHeight: 20,
+//   },
+// });

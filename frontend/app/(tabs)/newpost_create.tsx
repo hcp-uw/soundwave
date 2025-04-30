@@ -131,7 +131,7 @@ export default function NewPostScreen() {
         <TextInput
           style={styles.input}
           placeholder="Spill your thoughts..."
-          //placeholder="hey poopy..."
+          
           
           placeholderTextColor="gray"
           multiline={true}

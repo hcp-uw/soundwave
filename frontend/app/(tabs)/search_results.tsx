@@ -12,6 +12,9 @@ import { StackNavigationProp } from "@react-navigation/stack";
 </style>
 import { useRoute } from "@react-navigation/native";
 import Config from "react-native-config";
+import { useFocusEffect } from '@react-navigation/native';
+import { useCallback } from 'react';
+
 
 
 // const CLIENT_ID = process.env.EXPO_PUBLIC_SPOTIFY_CLIENT_ID;
@@ -77,6 +80,23 @@ export default function NewPostScreen() {
 
     fetchAccessToken();
   }, []);
+
+
+  useFocusEffect(
+    useCallback(() => {
+      // Reset everything when the page is opened
+      setSearchQuery("");
+      setResults([]);
+      setSelectedSong(null);
+
+      // Optionally re-fetch token if you want
+      // fetchAccessToken();
+
+      return () => {
+        // Any cleanup (usually not needed here)
+      };
+    }, [])
+  );
 
   const search = async () => {
     if (!searchQuery.trim() || !accessToken) return;

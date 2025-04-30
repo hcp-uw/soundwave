@@ -62,7 +62,7 @@ export default function TabLayout() {
       }}>
       <Tabs.Screen
       
-        name="home"
+        name="index"
         options={{
           
           title: 'Home',
@@ -87,8 +87,6 @@ export default function TabLayout() {
           
         }}
       />
-      
-     
       <Tabs.Screen
         name="search_results"
         options={{
@@ -98,6 +96,12 @@ export default function TabLayout() {
             
           ),
           
+        }}
+        />
+        <Tabs.Screen
+        name="postfocus"
+        options={{
+          href:null,
         }}
         />
         <Tabs.Screen
@@ -116,7 +120,7 @@ export default function TabLayout() {
           }}
         />
         <Tabs.Screen
-          name="index"
+          name="home"
           options={{
             href: null, // hides it from the tab bar
           }}

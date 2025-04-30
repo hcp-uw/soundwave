@@ -48,7 +48,7 @@ const navigation = useNavigation<ProfileNavProp>();
             
           </View>
           <Text style={styles.subtitle}>{songArtist}</Text>
-          <Text style={styles.handle}>@mirandas_music</Text>
+          <Text style={styles.handle}>@hanni_pham</Text>
 
           {/* Circular cover */}
           <View style={styles.circleOuter}>
