@@ -60,11 +60,7 @@ export default function NewPostScreen() {
   
   const route = useRoute();
   const { songTitle, songArtist, cover } = route.params as { songTitle: string; songArtist: string, cover:string };
-  // const { songTitle, songArtist, cover } = route.params ?? {
-  //   songTitle: "Unknown Song",
-  //   songArtist: "Unknown Artist",
-  //   cover: "https://via.placeholder.com/100", // fallback image
-  // };
+
 
   const [textBoxInput, setTextBoxInput] = useState(""); // Textbox state
   const songName = songTitle;
