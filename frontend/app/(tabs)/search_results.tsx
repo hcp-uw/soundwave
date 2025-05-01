@@ -12,9 +12,6 @@ import { StackNavigationProp } from "@react-navigation/stack";
 </style>
 import { useRoute } from "@react-navigation/native";
 import Config from "react-native-config";
-import { useFocusEffect } from '@react-navigation/native';
-import { useCallback } from 'react';
-
 
 
 // const CLIENT_ID = process.env.EXPO_PUBLIC_SPOTIFY_CLIENT_ID;
