@@ -1,8 +1,23 @@
-import React, { useState, useCallback } from 'react';
-import { useFocusEffect } from '@react-navigation/native';
-import { View, Text, Image, ScrollView, StyleSheet, FlatList, ActivityIndicator } from 'react-native';
+import React, { useState, useCallback, useEffect } from 'react';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import { View, Text, Image, ScrollView, StyleSheet, FlatList, ActivityIndicator, TouchableOpacity } from 'react-native';
 import { fetchData } from '@/api';
 import { PostData } from './newpost_create'; 
+import type { StackNavigationProp } from "@react-navigation/stack";
+
+type RootStackParamList = {
+  Profile: undefined;
+  postfocus: {
+    songTitle: string;
+    songArtist: string;
+    cover: string;
+    content: string;
+  };
+  // …other screens if you have them
+};
+
+type NavigationProp = StackNavigationProp<RootStackParamList, "postfocus">;
+
 
 // parameters for review card
 type Review = {
@@ -43,6 +58,9 @@ export default function ProfileScreen() {
   const [reviews, setReviews] = useState<Review[]>([]);
   const [loading, setLoading] = useState(true);
   // refresh each time page is loaded
+
+
+  
   useFocusEffect(
     useCallback(() => {
       async function loadReviews() {
