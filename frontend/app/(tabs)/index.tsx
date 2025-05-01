@@ -5,6 +5,7 @@ import { fetchData } from '@/api';
 import { PostData } from './newpost_create';
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import { CoverStack } from '@/components/albumStack'
 
 type Review = {
   song: string;
@@ -83,7 +84,7 @@ export default function HomeScreen() {
               <View style={styles.musicPost}>
                 {/* Album Cover */}
                 <View style={styles.albumCovers}>
-                  <Image
+                  {/* <Image
                     source={{ uri: item.cover || 'https://via.placeholder.com/300' }}
                     style={[styles.albumCoverBase, styles.albumCoverBack2]}
                   />
@@ -94,7 +95,8 @@ export default function HomeScreen() {
                   <Image
                     source={{ uri: item.cover || 'https://via.placeholder.com/300' }}
                     style={styles.albumCoverFront}
-                  />
+                  /> */}
+                  
                 </View>
 
                 {/* Song Title */}
@@ -182,7 +184,7 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
   },
   albumCovers: {
-    height: 300,
+    height: 100,
     width: "100%",
     position: "relative",
     alignItems: "center",
@@ -190,7 +192,7 @@ const styles = StyleSheet.create({
   },
   albumCoverBase: {
     width: "80%",
-    height: 280,
+    height: 180,
     position: "absolute",
   },
   albumCoverBack2: {
