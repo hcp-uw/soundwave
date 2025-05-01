@@ -7,6 +7,8 @@ import { NextButton } from "@/components/nextButton";
 import { sendData } from "../../api";
 //import { FormControl, InputGroup, Container, Button } from "react-bootstrap";
 import { useRoute } from "@react-navigation/native";
+//import {auth} from "@/firebaseConfig";
+import { useAuth } from "./AuthContext";
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Afacad:ital,wght@0,400..700;1,400..700&display=swap');
 </style>
@@ -51,6 +53,7 @@ export interface PostData {
     artist: string;
     content: string;
     cover: string;
+    uid: string | null| undefined;
   }
 
   
@@ -66,7 +69,8 @@ export default function NewPostScreen() {
   const songName = songTitle;
   const artistName = songArtist;
   const songCover = cover;
-
+  const { currentUser } = useAuth();
+  const uid = currentUser?.email;
   
 
   const [idNum, setIdNum] = useState(0);
@@ -82,6 +86,7 @@ export default function NewPostScreen() {
             artist: artistName,
             content: textBoxInput,
             cover: songCover,
+            uid: uid,
           };
         console.log("hiiiii");
         console.log(postData.postId);
