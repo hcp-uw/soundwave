@@ -1,11 +1,14 @@
 import { useState, useEffect } from "react";
-import { View, Text, Image, StyleSheet, FlatList, TouchableOpacity, Dimensions } from "react-native";
+import { View, Text, Image, StyleSheet, FlatList, ScrollView, TouchableOpacity, Dimensions } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { fetchData } from "../../api";
 import { useFocusEffect } from "@react-navigation/native";
 import { useCallback } from "react";
+import { CoverStack } from '@/components/albumStack'
+import { LinearGradient } from 'expo-linear-gradient';
 
+const SCREEN_HEIGHT = Dimensions.get('window').height;
 
 export default function HomeScreen() {
   const navigation = useNavigation();
@@ -26,6 +29,7 @@ export default function HomeScreen() {
 
 
   const renderPost = ({ item }) => (
+    <View style={{ height: SCREEN_HEIGHT }}>
     <View style={styles.musicPost}>
       
       {/* Pink Album + Artist Header */}
@@ -46,10 +50,11 @@ export default function HomeScreen() {
   
       {/* Album Cover */}
       <View style={styles.albumCovers}>
-        <Image 
+        {/* <Image 
           source={{ uri: item.cover || 'https://via.placeholder.com/300' }} 
           style={[styles.albumCoverBase, styles.albumCoverBack2]} 
-        />
+        /> */}
+        <CoverStack uri={item.cover} />
       </View>
   
       {/* Song Title */}
@@ -79,11 +84,18 @@ export default function HomeScreen() {
       </View>
   
     </View>
+    </View>
   );
   
 
 
   return (
+    <LinearGradient
+      //colors={['#', '#']} // or whatever colors you want!
+      //colors={['#F8D0DD', '#641346']}
+      colors={['#9E0466', '#000000']}
+      style={styles.container}        // make sure container is flex: 1
+    >
     <View style={styles.container}>
 
       {/* Music Posts */}
@@ -98,6 +110,7 @@ export default function HomeScreen() {
         snapToInterval={height}
       />
     </View>
+    </LinearGradient>
   );
 }
 
@@ -106,7 +119,7 @@ const { height } = Dimensions.get('window');
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#641346",
+    //backgroundColor: "#641346",
   },
   
   profileCard: {
@@ -135,6 +148,11 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     overflow: "hidden",
+    shadowColor: '#000',           // iOS
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    elevation: 6,
   },
   profileImage: {
     width: 70,
@@ -154,30 +172,41 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingHorizontal: 20,
     paddingTop: 100, // ⬅️ reduce this to move content up
-    marginTop: -10, // ⬅️ optional: shift whole post upward
+    marginTop: -20, // ⬅️ optional: shift whole post upward
+    shadowColor: '#000',           // iOS
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    elevation: 6,
+    
   },
   
-  
   albumCovers: {
-    height: 300,
+    height: 380,
     width: "100%",
     position: "relative",
     alignItems: "center",
     justifyContent: "center",
+    marginLeft: -16,
+    shadowColor: '#000',           // iOS
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.5,
+    shadowRadius: 4,
+    elevation: 6,
   },
   albumCoverBase: {
     width: "80%",
-    height: 280,
+    height: 80,
     position: "absolute",
   },
   albumCoverBack2: {
-    top: 20,
+    top: 10,
     left: "10%",
   },
   songInfoContainer: {
     width: "100%",
     alignItems: "center",
-    marginTop: 20,
+    marginTop: -25,
     marginBottom: 20,
   },
   commentSection: {
