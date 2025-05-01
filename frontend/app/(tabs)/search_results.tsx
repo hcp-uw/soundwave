@@ -11,7 +11,7 @@ import { StackNavigationProp } from "@react-navigation/stack";
 @import url('https://fonts.googleapis.com/css2?family=Afacad:ital,wght@0,400..700;1,400..700&display=swap');
 </style>
 import { useRoute } from "@react-navigation/native";
-//import Config from "@react-native-config";
+import Config from "react-native-config";
 
 
 // const CLIENT_ID = process.env.EXPO_PUBLIC_SPOTIFY_CLIENT_ID;
@@ -77,6 +77,23 @@ export default function NewPostScreen() {
 
     fetchAccessToken();
   }, []);
+
+
+  useFocusEffect(
+    useCallback(() => {
+      // Reset everything when the page is opened
+      setSearchQuery("");
+      setResults([]);
+      setSelectedSong(null);
+
+      // Optionally re-fetch token if you want
+      // fetchAccessToken();
+
+      return () => {
+        // Any cleanup (usually not needed here)
+      };
+    }, [])
+  );
 
   const search = async () => {
     if (!searchQuery.trim() || !accessToken) return;
@@ -214,7 +231,6 @@ export default function NewPostScreen() {
             placeholderTextColor="black"
             value={searchQuery}
             onChangeText={(text) => {
-              //console.log("Search query updated:", text); // Debugging
               setSearchQuery(text);
             }}
             onSubmitEditing={handleSearchSubmit}
@@ -234,7 +250,7 @@ export default function NewPostScreen() {
             <SongGrid setSelectedSong={setSelectedSong} />
 
           ) : (
-            <Text style={styles.noResultsText}>No results found</Text>
+            <Text style={styles.noResultsText}>search for a song!</Text>
           )}
         </View>
 

@@ -6,11 +6,15 @@ import { fetchData } from "../../api";
 import { useFocusEffect } from "@react-navigation/native";
 import { useCallback } from "react";
 
+interface Post {
+  cover?: string;
+  content?: string;
+}
 
 export default function HomeScreen() {
   const navigation = useNavigation();
   const [isFavorited, setIsFavorited] = useState(false);
-  const [posts, setPosts] = useState([]);
+  const [posts, setPosts] = useState<Post[]>([]);
 
   const toggleFavorite = () => {
     setIsFavorited(!isFavorited);
@@ -24,77 +28,72 @@ export default function HomeScreen() {
     getPosts();
   }, []);
 
-
-  const renderPost = ({ item }) => (
-    <View style={styles.musicPost}>
-      
-      {/* Pink Album + Artist Header */}
-      <View style={styles.profileCard}>
-        <View style={styles.profileHeader}>
-          <View style={styles.profileImageContainer}>
-            <Image 
-              source={{ uri: item.cover || 'https://via.placeholder.com/150' }} 
-              style={styles.profileImage} 
-            />
-          </View>
-          <View style={styles.profileInfo}>
-            <Text style={styles.profileName}>{item.album || "Unknown Album"}</Text>
-            <Text style={styles.profileSubtitle}>{item.artist || "Unknown Artist"}</Text>
-          </View>
-        </View>
-      </View>
-  
-      {/* Album Cover */}
-      <View style={styles.albumCovers}>
-        <Image 
-          source={{ uri: item.cover || 'https://via.placeholder.com/300' }} 
-          style={[styles.albumCoverBase, styles.albumCoverBack2]} 
-        />
-      </View>
-  
-      {/* Song Title */}
-      <View style={styles.songInfoContainer}>
-        <Text style={styles.songTitle}>{item.song || "No title found"}</Text>
-      </View>
-  
-      {/* User Review Section */}
-      <View style={styles.commentSection}>
-        <View style={styles.commentHeader}>
-          <Text style={styles.username}>@username</Text>
-          <View style={styles.interactionButtons}>
-            <TouchableOpacity onPress={toggleFavorite}>
-              <Ionicons 
-                name={isFavorited ? "star" : "star-outline"} 
-                size={24} 
-                color="#641346" 
-              />
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.playButton}>
-              <Ionicons name="play" size={24} color="#641346" />
-            </TouchableOpacity>
-          </View>
-        </View>
-        <Text style={styles.commentText}numberOfLines={3} ellipsizeMode="tail">{item.review}{item.content || "No comment"}</Text>
-      </View>
-  
-    </View>
-  );
-  
-
-
   return (
     <View style={styles.container}>
+      <ScrollView style={styles.scrollView}>
+        {/* User Profile Header */}
+        <View style={styles.profileCard}>
+          <View style={styles.profileHeader}>
+            <View style={styles.profileImageContainer}>
+              <Image 
+                source={{ uri: 'https://via.placeholder.com/150' }} 
+                style={styles.profileImage} 
+              />
+            </View>
+            <View style={styles.profileInfo}>
+              <Text style={styles.profileName}>Igor</Text>
+              <Text style={styles.profileSubtitle}>poop, the Creator</Text>
+            </View>
+          </View>
+        </View>
 
-      {/* Music Posts */}
-      <FlatList
-        data={posts}
-        renderItem={renderPost}
-        keyExtractor={(item, index) => index.toString()}
-        pagingEnabled
-        showsVerticalScrollIndicator={false}
-        snapToAlignment="start"
-        decelerationRate={"fast"}
-      />
+        {/* Music Post */}
+        {posts.map((post, index) => (
+        <View style={styles.musicPost}>
+          {/* Album Cover */}
+          <View style={styles.albumCovers}>
+            <Image 
+              source={{ uri: post.cover || 'https://via.placeholder.com/300' }} 
+              style={[styles.albumCoverBase, styles.albumCoverBack2]} 
+            />
+            <Image 
+              source={{ uri: 'https://via.placeholder.com/300' }} 
+              style={[styles.albumCoverBase, styles.albumCoverBack1]} 
+            />
+            <Image 
+              source={{ uri: 'https://via.placeholder.com/300' }} 
+              style={styles.albumCoverFront} 
+            />
+          </View>
+
+          {/* Song Title */}
+          <View style={styles.songInfoContainer}>
+            <Text style={styles.songTitle}>I THINK</Text>
+            <Text style={styles.artistName}>Tyler, the Creator</Text>
+          </View>
+
+          {/* User Comment Section */}
+          <View style={styles.commentSection}>
+            <View style={styles.commentHeader}>
+              <Text style={styles.username}>@username</Text>
+              <View style={styles.interactionButtons}>
+                <TouchableOpacity onPress={toggleFavorite}>
+                  <Ionicons 
+                    name={isFavorited ? "star" : "star-outline"} 
+                    size={24} 
+                    color="#641346" 
+                  />
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.playButton}>
+                  <Ionicons name="play" size={24} color="#641346" />
+                </TouchableOpacity>
+              </View>
+            </View>
+            <Text style={styles.commentText}>{post.content || "No comment"} </Text>
+          </View>
+        </View>
+        ))}
+      </ScrollView>
     </View>
   );
 }
@@ -151,8 +150,7 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     alignItems: "center",
     paddingHorizontal: 20,
-    paddingTop: 10, // ⬅️ reduce this to move content up
-    marginTop: -10, // ⬅️ optional: shift whole post upward
+    paddingBottom: 20,
   },
   
   
@@ -197,43 +195,10 @@ const styles = StyleSheet.create({
   playButton: {
     marginLeft: 15,
   },
-
-  profileName: {
-    fontSize: 24,
-    fontWeight: "bold",
-    color: "#000",
-    fontFamily: "Afacad",
-  },
-  profileSubtitle: {
-    fontSize: 16,
-    color: "#000",
-    fontFamily: "Afacad",
-  },
-  songTitle: {
-    fontSize: 24,
-    fontWeight: "bold",
-    color: "white",
-    textAlign: "center",
-    fontFamily: "Afacad",
-  },
-  artistName: {
-    fontSize: 24,
-    color: "white",
-    textAlign: "center",
-    fontFamily: "Afacad",
-  },
-  username: {
-    fontSize: 16,
-    fontWeight: "bold",
-    color: "#641346",
-    fontFamily: "Afacad",
-  },
   commentText: {
     fontSize: 14,
     color: "#333",
     lineHeight: 20,
-    fontFamily: "Afacad",
   },
-  
 });
 
