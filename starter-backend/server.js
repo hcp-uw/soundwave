@@ -42,6 +42,7 @@ app.post('/create', async (req, res) => {
             artist: req.body.artist,
             content: req.body.content,
             cover: req.body.cover,
+            uid: req.body.uid,
             //rating: req.body.rating
         };
         const response = await db.collection("posts").doc(postId).set(postJson);
