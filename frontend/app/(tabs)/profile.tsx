@@ -3,6 +3,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import { View, Text, Image, ScrollView, StyleSheet, FlatList, ActivityIndicator } from 'react-native';
 import { fetchData } from '@/api';
 import { PostData } from './newpost_create'; 
+import { useAuth } from "./AuthContext";
 
 // parameters for review card
 type Review = {
@@ -42,22 +43,30 @@ const albumLists = [
 export default function ProfileScreen() {
   const [reviews, setReviews] = useState<Review[]>([]);
   const [loading, setLoading] = useState(true);
+  const { currentUser } = useAuth();
   // refresh each time page is loaded
   useFocusEffect(
     useCallback(() => {
       async function loadReviews() {
         setLoading(true);
+        try {
         const posts = await fetchData();
-        if (posts) {
-          const formatted: Review[] = posts.map((p: PostData) => ({
+        const uid = currentUser?.email;      
+        if (posts && currentUser) {
+          const filteredPosts = posts.filter((p: PostData) => p.uid === uid);
+
+          const formatted: Review[] = filteredPosts.map((p: PostData) => ({
             title: p.song,
             artist: p.artist,
             review: p.content,
             image: p.cover,
           }));
           setReviews(formatted);
-        }
+        } } catch (err) {
+          console.error("Error loading posts", err);
+        } finally {
         setLoading(false);
+        }
       }
   
       loadReviews();

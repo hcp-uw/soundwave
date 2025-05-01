@@ -3,7 +3,7 @@ import { View, TextInput, Text, Alert, StyleSheet } from "react-native";
 import RoundedRectangle from "@/components/RoundedRectangle"; // Ensure this exists
 import { NextButton } from "@/components/nextButton";
 import { Button } from "@/components/Button";
-import { auth } from "@/firebaseConfig"; // ✅ Properly initialized
+import { auth } from "@/firebaseConfig";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";

@@ -11,6 +11,7 @@ import { IconSymbol } from '@/components/ui/IconSymbol';
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
 // import { Home, icon, Plus } from '@/assets/icons_custom';
+import { AuthProvider } from './AuthContext';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -36,7 +37,8 @@ export default function TabLayout() {
   }
   // Tab bars
   return (
-    <Tabs
+    <AuthProvider>
+       <Tabs
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme ?? 'light'].navIconSelected,
         tabBarInactiveTintColor: Colors.background.tabIconDefault,
@@ -115,5 +117,7 @@ export default function TabLayout() {
           }}
         />
     </Tabs>
+    </AuthProvider>
+   
   );
 }
