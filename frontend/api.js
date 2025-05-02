@@ -8,9 +8,10 @@ import axios from 'axios';
 
 //REMEMBER TO UPDATE IP ADDRESS!!!!!
 
- const API_URL = 'http://10.19.93.207:3001'; // miranda
+//const API_URL = 'http://10.19.118.56:3001'; // rachel
+const API_URL = 'http://10.0.0.183:3001'; // miranda
 //const API_URL = 'http://localhost:3001';
-//const API_URL = 'http://10.18.41.37:3001'; // aditi
+//const API_URL = 'http://10.19.71.196:3001'; // aditi
 
 export const fetchData = async () => {
     try {

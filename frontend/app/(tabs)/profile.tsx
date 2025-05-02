@@ -1,8 +1,11 @@
-import React, { useState, useCallback } from 'react';
-import { useFocusEffect } from '@react-navigation/native';
-import { View, Text, Image, ScrollView, StyleSheet, FlatList, ActivityIndicator } from 'react-native';
+import React, { useState, useCallback, useEffect } from 'react';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import { View, Text, Image, ScrollView, StyleSheet, FlatList, ActivityIndicator, TouchableOpacity } from 'react-native';
 import { fetchData } from '@/api';
 import { PostData } from './newpost_create'; 
+import { useAuth } from "./AuthContext";
+import { NavigationProp } from '@react-navigation/native';
+
 
 // parameters for review card
 type Review = {
@@ -11,6 +14,17 @@ type Review = {
   review: string;
   image: string;
 };
+
+type RootStackParamList = {
+  postfocus: {
+    songTitle: string;
+    songArtist: string;
+    cover: string;
+    content: string;
+  };
+  // add more screens here if needed
+};
+
 
 // hardcoded list of albums until lists are created
 const albumLists = [
@@ -40,29 +54,66 @@ const albumLists = [
 ];
 
 export default function ProfileScreen() {
+
+  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+
   const [reviews, setReviews] = useState<Review[]>([]);
   const [loading, setLoading] = useState(true);
+  const { currentUser } = useAuth();
+
+  const [selectedSong, setSelectedSong] = useState<Review | null>(null);
+
   // refresh each time page is loaded
+
+
+  
   useFocusEffect(
     useCallback(() => {
       async function loadReviews() {
         setLoading(true);
+        try {
         const posts = await fetchData();
-        if (posts) {
-          const formatted: Review[] = posts.map((p: PostData) => ({
+        const uid = currentUser?.email;      
+        if (posts && currentUser) {
+          console.log("🏷️ fetchData returned:", posts);
+          console.log("🏷️ currentUser:", {
+            email: currentUser?.email,
+            uid: currentUser?.uid,
+          });
+          const filteredPosts = posts.filter((p: PostData) => p.uid === uid);
+          console.log(filteredPosts);
+
+          const formatted: Review[] = filteredPosts.map((p: PostData) => ({
             title: p.song,
             artist: p.artist,
             review: p.content,
             image: p.cover,
           }));
           setReviews(formatted);
-        }
+        } } catch (err) {
+          console.error("Error loading posts", err);
+        } finally {
         setLoading(false);
+        }
       }
   
       loadReviews();
     }, [])
   );
+
+  useEffect(() => {
+  if (selectedSong) {
+    navigation.navigate("postfocus", {
+      songTitle: selectedSong.title,
+      songArtist: selectedSong.artist,
+      cover: selectedSong.image,
+      content: selectedSong.review, // pass the review text too
+    });
+    // optionally clear selection if you revisit
+    setSelectedSong(null);
+  }
+  }, [selectedSong, navigation]);
+
   if (loading) {
     return <ActivityIndicator style={{ flex: 1 }} size="large" />;
   }
@@ -92,14 +143,27 @@ export default function ProfileScreen() {
         decelerationRate="fast"
         showsHorizontalScrollIndicator={false}
         renderItem={({ item }) => (
+          <TouchableOpacity
+            onPress={() =>
+              setSelectedSong({
+                title: item.title,
+                artist: item.artist,
+                image: item.image,
+                review: item.review,
+              })
+            }
+            style={{ marginLeft: 16, marginTop: 10 }}
+            activeOpacity={0.7}
+          >
           <View style={styles.reviewCard}>
             <Image source={{ uri: item.image }} style={styles.reviewImage} />
             <View style={styles.reviewTextContainer}>
               <Text style={styles.reviewTitle}>{item.title}</Text>
               <Text style={styles.reviewSubtitle}>{item.artist}</Text>
-              <Text style={styles.reviewBody}>{item.review}</Text>
+              <Text style={styles.reviewBody} numberOfLines={6} ellipsizeMode="tail">{item.review}</Text>
             </View>
           </View>
+          </TouchableOpacity>
         )}
       />
 
@@ -209,7 +273,7 @@ const styles = StyleSheet.create({
       textAlign: 'center'
     },
     reviewBody: {
-      fontSize: 13,
+      fontSize: 14,
       fontFamily: "Afacad",
       color: 'white' 
     },
