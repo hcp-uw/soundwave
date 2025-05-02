@@ -53,6 +53,7 @@ export interface PostData {
     artist: string;
     content: string;
     cover: string;
+    album: string;
     uid: string | null| undefined;
   }
 
@@ -62,7 +63,7 @@ export default function NewPostScreen() {
 
   
   const route = useRoute();
-  const { songTitle, songArtist, cover } = route.params as { songTitle: string; songArtist: string, cover:string };
+  const { songTitle, songArtist, cover, album } = route.params as { songTitle: string; songArtist: string, cover:string, album:string };
 
 
   const [textBoxInput, setTextBoxInput] = useState(""); // Textbox state
@@ -71,6 +72,7 @@ export default function NewPostScreen() {
   const songCover = cover;
   const { currentUser } = useAuth();
   const uid = currentUser?.email;
+  const songAlbum = album;
   
 
   const [idNum, setIdNum] = useState(0);
@@ -86,6 +88,7 @@ export default function NewPostScreen() {
             artist: artistName,
             content: textBoxInput,
             cover: songCover,
+            album: songAlbum,
             uid: uid,
           };
         console.log("hiiiii");

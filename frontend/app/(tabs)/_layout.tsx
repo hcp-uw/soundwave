@@ -36,6 +36,7 @@ export default function TabLayout() {
   }
   // Tab bars
   return (
+    <AuthProvider>
     <Tabs
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme ?? 'light'].navIconSelected,
@@ -113,6 +114,12 @@ export default function TabLayout() {
       />
         <Tabs.Screen
           name="newpost_create"
+          options={{
+            href: null, // hides it from the tab bar
+          }}
+        />
+        <Tabs.Screen
+          name="master_login"
           options={{
             href: null, // hides it from the tab bar
           }}

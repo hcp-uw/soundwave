@@ -42,6 +42,7 @@ app.post('/create', async (req, res) => {
             artist: req.body.artist,
             content: req.body.content,
             cover: req.body.cover,
+            album: req.body.album,
             uid: req.body.uid,
             //rating: req.body.rating
         };

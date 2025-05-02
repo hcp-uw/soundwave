@@ -13,7 +13,7 @@ const SCREEN_HEIGHT = Dimensions.get('window').height;
 export default function HomeScreen() {
   const navigation = useNavigation();
   const [isFavorited, setIsFavorited] = useState(false);
-  const [posts, setPosts] = useState<Post[]>([]);
+  const [posts, setPosts] = useState([]);
 
   const toggleFavorite = () => {
     setIsFavorited(!isFavorited);
@@ -148,11 +148,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     overflow: "hidden",
-    shadowColor: '#000',           // iOS
-    shadowOffset: { width: 0, height: 8 },
-    shadowOpacity: 0.3,
-    shadowRadius: 4,
-    elevation: 6,
   },
   profileImage: {
     width: 70,
@@ -172,13 +167,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingHorizontal: 20,
     paddingTop: 100, // ⬅️ reduce this to move content up
-    marginTop: -20, // ⬅️ optional: shift whole post upward
-    shadowColor: '#000',           // iOS
-    shadowOffset: { width: 0, height: 8 },
-    shadowOpacity: 0.3,
-    shadowRadius: 4,
-    elevation: 6,
-    
+    marginTop: -10, // ⬅️ optional: shift whole post upward
   },
   
   albumCovers: {
@@ -188,11 +177,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     marginLeft: -16,
-    shadowColor: '#000',           // iOS
-    shadowOffset: { width: 0, height: 8 },
-    shadowOpacity: 0.5,
-    shadowRadius: 4,
-    elevation: 6,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 3,
+    color: "#551A2D",
   },
   albumCoverBase: {
     width: "80%",
@@ -228,10 +217,43 @@ const styles = StyleSheet.create({
   playButton: {
     marginLeft: 15,
   },
+
+  profileName: {
+    fontSize: 24,
+    fontWeight: "bold",
+    color: "#000",
+    fontFamily: "Afacad",
+  },
+  profileSubtitle: {
+    fontSize: 16,
+    color: "#000",
+    fontFamily: "Afacad",
+  },
+  songTitle: {
+    fontSize: 28,
+    fontWeight: "bold",
+    color: "white",
+    textAlign: "center",
+    fontFamily: "Afacad",
+  },
+  artistName: {
+    fontSize: 20,
+    color: "#C5BCBC",
+    textAlign: "center",
+    fontFamily: "Afacad",
+  },
+  username: {
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "#641346",
+    fontFamily: "Afacad",
+  },
   commentText: {
     fontSize: 14,
     color: "#333",
     lineHeight: 20,
+    fontFamily: "Afacad",
   },
+  
 });
 

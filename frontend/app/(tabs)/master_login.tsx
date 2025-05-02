@@ -7,6 +7,7 @@ import { auth } from "@/firebaseConfig";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
+// import { logo_dark, logo_light } from "@/components/logos";
 
 interface master_login {
   email: string;
@@ -59,6 +60,7 @@ export default function MasterLogin() {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>welcome to soundwave!</Text>
+      {/* <Image source={}></Image> */}
 
       <TextInput
         placeholder="email"

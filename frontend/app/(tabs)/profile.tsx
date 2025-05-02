@@ -4,6 +4,8 @@ import { View, Text, Image, ScrollView, StyleSheet, FlatList, ActivityIndicator,
 import { fetchData } from '@/api';
 import { PostData } from './newpost_create'; 
 import { useAuth } from "./AuthContext";
+import { NavigationProp } from '@react-navigation/native';
+
 
 // parameters for review card
 type Review = {
@@ -12,6 +14,17 @@ type Review = {
   review: string;
   image: string;
 };
+
+type RootStackParamList = {
+  postfocus: {
+    songTitle: string;
+    songArtist: string;
+    cover: string;
+    content: string;
+  };
+  // add more screens here if needed
+};
+
 
 // hardcoded list of albums until lists are created
 const albumLists = [
@@ -42,7 +55,7 @@ const albumLists = [
 
 export default function ProfileScreen() {
 
-  const navigation = useNavigation<NavigationProp>();
+  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
 
   const [reviews, setReviews] = useState<Review[]>([]);
   const [loading, setLoading] = useState(true);
@@ -62,7 +75,13 @@ export default function ProfileScreen() {
         const posts = await fetchData();
         const uid = currentUser?.email;      
         if (posts && currentUser) {
+          console.log("🏷️ fetchData returned:", posts);
+          console.log("🏷️ currentUser:", {
+            email: currentUser?.email,
+            uid: currentUser?.uid,
+          });
           const filteredPosts = posts.filter((p: PostData) => p.uid === uid);
+          console.log(filteredPosts);
 
           const formatted: Review[] = filteredPosts.map((p: PostData) => ({
             title: p.song,
