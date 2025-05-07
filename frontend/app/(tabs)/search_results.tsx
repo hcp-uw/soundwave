@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import React from "react";
 import { Image } from 'react-native';
 import { View, TextInput, TouchableOpacity, Text, FlatList, StyleSheet, Keyboard, ActivityIndicator } from "react-native";
@@ -7,6 +7,8 @@ import RoundedRectangle from "@/components/RoundedRectangle";
 import { NextButton } from "@/components/nextButton";
 import { useNavigation } from "@react-navigation/native"; 
 import { StackNavigationProp } from "@react-navigation/stack";
+import { useFocusEffect } from '@react-navigation/native';
+
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Afacad:ital,wght@0,400..700;1,400..700&display=swap');
 </style>
@@ -27,7 +29,7 @@ console.log("CLIENT_SECRET:", CLIENT_SECRET);
 
 type RootStackParamList = {
   NewPost: undefined;
-  newpost_create: { songTitle: string; songArtist: string, cover: string }; // ✅ Expect parameters
+  newpost_create: { songTitle: string; songArtist: string, cover: string, songAlbum: string }; // ✅ Expect parameters
 };
 
 type Song = {
@@ -35,6 +37,7 @@ type Song = {
   title: string;
   artist: string;
   cover: string;
+  album: string;
 };
 
 
@@ -78,6 +81,23 @@ export default function NewPostScreen() {
     fetchAccessToken();
   }, []);
 
+
+  useFocusEffect(
+    useCallback(() => {
+      // Reset everything when the page is opened
+      setSearchQuery("");
+      setResults([]);
+      setSelectedSong(null);
+
+      // Optionally re-fetch token if you want
+      // fetchAccessToken();
+
+      return () => {
+        // Any cleanup (usually not needed here)
+      };
+    }, [])
+  );
+
   const search = async () => {
     if (!searchQuery.trim() || !accessToken) return;
 
@@ -108,6 +128,7 @@ export default function NewPostScreen() {
             title: track.name,
             artist: track.artists.map((artist: any) => artist.name).join(", "),
             cover: track.album.images?.[1]?.url || track.album.images?.[0]?.url || "",
+            album: track.album.name,
           }))
         );
       } else {
@@ -168,6 +189,7 @@ export default function NewPostScreen() {
             title: item.title,
             artist: item.artist,
             cover: item.cover,
+            album: item.album,
           })
         }
       >
@@ -199,6 +221,7 @@ export default function NewPostScreen() {
         songTitle: selectedSong.title,
         songArtist: selectedSong.artist,
         cover: selectedSong.cover,
+        songAlbum: selectedSong.album,
       });
     }
   }, [selectedSong]);
@@ -214,7 +237,6 @@ export default function NewPostScreen() {
             placeholderTextColor="black"
             value={searchQuery}
             onChangeText={(text) => {
-              //console.log("Search query updated:", text); // Debugging
               setSearchQuery(text);
             }}
             onSubmitEditing={handleSearchSubmit}
@@ -234,7 +256,7 @@ export default function NewPostScreen() {
             <SongGrid setSelectedSong={setSelectedSong} />
 
           ) : (
-            <Text style={styles.noResultsText}>No results found</Text>
+            <Text style={styles.noResultsText}>search for a song!</Text>
           )}
         </View>
 
@@ -247,6 +269,7 @@ export default function NewPostScreen() {
                 songTitle: selectedSong.title,
                 songArtist: selectedSong.artist,
                 cover: selectedSong.cover,
+                songAlbum: selectedSong.album,
               });
             } else {
               alert("Please select a song first!"); // Prevents navigation if no song is selected

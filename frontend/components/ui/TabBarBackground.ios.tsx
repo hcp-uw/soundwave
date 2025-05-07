@@ -24,9 +24,22 @@ import { View, StyleSheet } from 'react-native';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { Colors } from '@/constants/Colors';
 
+// export default function SolidTabBarBackground() {
+//   const colorScheme = useColorScheme();
+//   const backgroundColor = Colors[colorScheme ?? 'light'].navBackground;
+
+//   return <View style={[StyleSheet.absoluteFill, { backgroundColor }]} />;
+// }
 export default function SolidTabBarBackground() {
   const colorScheme = useColorScheme();
   const backgroundColor = Colors[colorScheme ?? 'light'].navBackground;
 
-  return <View style={[StyleSheet.absoluteFill, { backgroundColor }]} />;
+  return (
+    <View
+      style={[
+        StyleSheet.absoluteFill,
+        { backgroundColor, opacity: 0.5 }, // ← 80% opaque
+      ]}
+    />
+  );
 }

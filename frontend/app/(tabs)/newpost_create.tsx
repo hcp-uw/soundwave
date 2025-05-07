@@ -1,12 +1,14 @@
 import { useState, useEffect, useRef} from "react";
 import { View, TextInput, Text, Alert, StyleSheet, Image, Animated } from "react-native";
-import { Keyboard, TouchableWithoutFeedback } from 'react-native';
+import { Keyboard, TouchableWithoutFeedback, Easing} from 'react-native';
 
 import RoundedRectangle from "@/components/RoundedRectangle"; // Ensure this exists
 import { NextButton } from "@/components/nextButton";
 import { sendData } from "../../api";
 //import { FormControl, InputGroup, Container, Button } from "react-bootstrap";
 import { useRoute } from "@react-navigation/native";
+//import {auth} from "@/firebaseConfig";
+import { useAuth } from "./AuthContext";
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Afacad:ital,wght@0,400..700;1,400..700&display=swap');
 </style>
@@ -20,9 +22,10 @@ const SpinningImage = ({ songCover }: { songCover: string }) => {
   useEffect(() => {
     Animated.loop(
       Animated.timing(spinValue, {
-        toValue: 0,  // End value of the animation (1 full rotation)
-        duration: 2000, // Time for one rotation (in milliseconds)
+        toValue: 1,  // End value of the animation (1 full rotation)
+        duration: 4000, // Time for one rotation (in milliseconds)
         useNativeDriver: true, // Enable native driver for better performance
+        easing: Easing.linear, // make spinning consistent
       })
     ).start();
   }, [spinValue]);
@@ -50,6 +53,8 @@ export interface PostData {
     artist: string;
     content: string;
     cover: string;
+    album: string;
+    uid: string | null| undefined;
   }
 
   
@@ -58,18 +63,16 @@ export default function NewPostScreen() {
 
   
   const route = useRoute();
-  const { songTitle, songArtist, cover } = route.params as { songTitle: string; songArtist: string, cover:string };
-  // const { songTitle, songArtist, cover } = route.params ?? {
-  //   songTitle: "Unknown Song",
-  //   songArtist: "Unknown Artist",
-  //   cover: "https://via.placeholder.com/100", // fallback image
-  // };
+  const { songTitle, songArtist, cover, album } = route.params as { songTitle: string; songArtist: string, cover:string, album:string };
+
 
   const [textBoxInput, setTextBoxInput] = useState(""); // Textbox state
   const songName = songTitle;
   const artistName = songArtist;
   const songCover = cover;
-
+  const { currentUser } = useAuth();
+  const uid = currentUser?.email;
+  const songAlbum = album;
   
 
   const [idNum, setIdNum] = useState(0);
@@ -78,12 +81,15 @@ export default function NewPostScreen() {
 
   const handleNext = async () => {
     console.log("test 1");
+    const newId = idNum + 1;
     const postData: PostData = {
-            postId: idNum.toString(),
+            postId: newId.toString(),
             song: songName,
             artist: artistName,
             content: textBoxInput,
             cover: songCover,
+            album: songAlbum,
+            uid: uid,
           };
         console.log("hiiiii");
         console.log(postData.postId);
@@ -94,7 +100,7 @@ export default function NewPostScreen() {
         console.log("test2");
         if (response) {
         Alert.alert("slay", "post created!");
-        setIdNum((prevId) => prevId + 1);
+        setIdNum(newId);
         } else {
         Alert.alert("Error", "Failed to send data");
         }
@@ -133,7 +139,7 @@ export default function NewPostScreen() {
         <TextInput
           style={styles.input}
           placeholder="Spill your thoughts..."
-          //placeholder="hey poopy..."
+          
           
           placeholderTextColor="gray"
           multiline={true}

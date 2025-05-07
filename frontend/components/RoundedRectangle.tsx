@@ -32,5 +32,6 @@ const styles = StyleSheet.create({
     fontFamily: 'Afacad',
     paddingBottom: 15,
     color: 'black',
+    fontWeight: 'semibold',
   },
 });
