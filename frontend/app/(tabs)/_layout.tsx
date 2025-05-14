@@ -10,7 +10,7 @@ import { IconSymbol } from '@/components/ui/IconSymbol';
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
 // import { Home, icon, Plus } from '@/assets/icons_custom';
-import { AuthProvider } from './AuthContext';
+import { AuthProvider } from '../../components/AuthContext';
 
 SplashScreen.preventAutoHideAsync();
 
