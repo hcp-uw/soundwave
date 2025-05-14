@@ -54,6 +54,10 @@ export default function TabLayout() {
         name="postfocus"
         options={{href:null,}} 
         />
+        <Tabs.Screen
+        name="home"
+        options={{href:null,}} 
+        />
 
       {/* Search / New Post */}
       <Tabs.Screen
@@ -62,16 +66,6 @@ export default function TabLayout() {
           title: 'New Post',
           tabBarIcon: ({ color, size }) => (
             <IconSymbol size={40} name="plus.fill" color={color} />
-          ),
-        }}
-      />
-      
-      <Tabs.Screen
-        name="home"
-        options={{
-          title: 'Profile',
-          tabBarIcon: ({ color, size }) => (
-            <IconSymbol size={35} name="profile.fill" color={color} />
           ),
         }}
       />
@@ -185,7 +179,6 @@ export default function TabLayout() {
 //             <IconSymbol size={40} name="plus.fill" color={color} />
             
 //           ),
-          
 //         }}
 //         />
 //         <Tabs.Screen

@@ -4,6 +4,7 @@ import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
+import { NavigationContainer } from '@react-navigation/native';
 import 'react-native-reanimated';
 
 import { useColorScheme } from '@/hooks/useColorScheme';
@@ -29,16 +30,19 @@ export default function RootLayout() {
   }
 
   return (
+    
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
       <Stack>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="home" options={{ title: "Home" }} />
+        <Stack.Screen name="home" options={{ headerShown: false }} />
         <Stack.Screen name="search_results" options={{ title: "Search Results" }} />
         <Stack.Screen name="newlist" options={{ headerShown: false }} />
-        <Stack.Screen name="profile" options={{ title: "Profile Page "}}/>
+        <Stack.Screen name="profile" options={{ title: "profile"}}/>
         <Stack.Screen name="postfocus" options={{ headerShown: false }}/>
+        <Stack.Screen name="newpost_create" options={{ headerShown: false }}/>
       </Stack>
       <StatusBar style="auto" />
     </ThemeProvider>
+    
   );
 }
