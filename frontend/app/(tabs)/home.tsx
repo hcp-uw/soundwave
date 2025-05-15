@@ -2,7 +2,7 @@ import React, { useState, useCallback, useEffect } from 'react';
 import { View, Text, Image, StyleSheet, ScrollView, FlatList, ActivityIndicator, TouchableOpacity} from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import { fetchData } from '@/api';
-import { PostData } from './newpost_create';
+import { PostData } from '../newpost_create';
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 

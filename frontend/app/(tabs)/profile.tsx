@@ -2,8 +2,8 @@ import React, { useState, useCallback, useEffect } from 'react';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { View, Text, Image, ScrollView, StyleSheet, FlatList, ActivityIndicator, TouchableOpacity } from 'react-native';
 import { fetchData } from '@/api';
-import { PostData } from './newpost_create'; 
-import { useAuth } from "./AuthContext";
+import { PostData } from '../newpost_create'; 
+import { useAuth } from "../AuthContext";
 import { NavigationProp } from '@react-navigation/native';
 
 
