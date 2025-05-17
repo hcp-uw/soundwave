@@ -8,7 +8,7 @@ import { sendData } from "../api";
 //import { FormControl, InputGroup, Container, Button } from "react-bootstrap";
 import { useRoute } from "@react-navigation/native";
 //import {auth} from "@/firebaseConfig";
-import { useAuth } from "./AuthContext";
+import { useAuth } from "../components/AuthContext";
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Afacad:ital,wght@0,400..700;1,400..700&display=swap');
 </style>
