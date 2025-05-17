@@ -1,259 +1,123 @@
-import { useState, useEffect } from "react";
-import { View, Text, Image, StyleSheet, FlatList, ScrollView, TouchableOpacity, Dimensions } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
+import { useState } from "react";
+import { View, TextInput, Text, Alert, StyleSheet } from "react-native";
+import RoundedRectangle from "@/components/RoundedRectangle"; // Ensure this exists
+import { NextButton } from "@/components/nextButton";
+import { Button } from "@/components/Button";
 import { useNavigation } from "@react-navigation/native";
-import { fetchData } from "../../api";
-import { useFocusEffect } from "@react-navigation/native";
-import { useCallback } from "react";
-import { CoverStack } from '@/components/albumStack'
-import { LinearGradient } from 'expo-linear-gradient';
+import { StackNavigationProp } from "@react-navigation/stack";
 
-const SCREEN_HEIGHT = Dimensions.get('window').height;
-
-export default function HomeScreen() {
-  const navigation = useNavigation();
-  const [isFavorited, setIsFavorited] = useState(false);
-  const [posts, setPosts] = useState([]);
-
-  const toggleFavorite = () => {
-    setIsFavorited(!isFavorited);
-  };
-
-  useEffect(() => {
-    const getPosts = async () => {
-      const data = await fetchData();
-      if (data) setPosts(data);
-    };
-    getPosts();
-  }, []);
-
-
-  const renderPost = ({ item }) => (
-    <View style={{ height: SCREEN_HEIGHT }}>
-    <View style={styles.musicPost}>
-      
-      {/* Pink Album + Artist Header */}
-      <View style={styles.profileCard}>
-        <View style={styles.profileHeader}>
-          <View style={styles.profileImageContainer}>
-            <Image 
-              source={{ uri: item.cover || 'https://via.placeholder.com/150' }} 
-              style={styles.profileImage} 
-            />
-          </View>
-          <View style={styles.profileInfo}>
-            <Text style={styles.profileName}>{item.album || "Unknown Album"}</Text>
-            <Text style={styles.profileSubtitle}>{item.artist || "Unknown Artist"}</Text>
-          </View>
-        </View>
-      </View>
-  
-      {/* Album Cover */}
-      <View style={styles.albumCovers}>
-        {/* <Image 
-          source={{ uri: item.cover || 'https://via.placeholder.com/300' }} 
-          style={[styles.albumCoverBase, styles.albumCoverBack2]} 
-        /> */}
-        <CoverStack uri={item.cover} />
-      </View>
-  
-      {/* Song Title */}
-      <View style={styles.songInfoContainer}>
-        <Text style={styles.songTitle}>{item.song || "No title found"}</Text>
-        <Text style={styles.artistName}>{item.artist || "No title found"}</Text>
-      </View>
-  
-      {/* User Review Section */}
-      <View style={styles.commentSection}>
-        <View style={styles.commentHeader}>
-          <Text style={styles.username}>@username</Text>
-          <View style={styles.interactionButtons}>
-            <TouchableOpacity onPress={toggleFavorite}>
-              <Ionicons 
-                name={isFavorited ? "star" : "star-outline"} 
-                size={24} 
-                color="#641346" 
-              />
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.playButton}>
-              <Ionicons name="play" size={24} color="#641346" />
-            </TouchableOpacity>
-          </View>
-        </View>
-        <Text style={styles.commentText}numberOfLines={3} ellipsizeMode="tail">{item.review}{item.content || "No comment"}</Text>
-      </View>
-  
-    </View>
-    </View>
-  );
-  
-
-
-  return (
-    <LinearGradient
-      //colors={['#', '#']} // or whatever colors you want!
-      //colors={['#F8D0DD', '#641346']}
-      colors={['#9E0466', '#000000']}
-      style={styles.container}        // make sure container is flex: 1
-    >
-    <View style={styles.container}>
-
-      {/* Music Posts */}
-      <FlatList
-        data={posts}
-        renderItem={renderPost}
-        keyExtractor={(item, index) => index.toString()}
-        pagingEnabled
-        showsVerticalScrollIndicator={false}
-        snapToAlignment="start"
-        decelerationRate={"fast"}
-        snapToInterval={height}
-      />
-    </View>
-    </LinearGradient>
-  );
+interface master_login {
+  email: string;
+  password: string;
 }
 
-const { height } = Dimensions.get('window');
+type RootStackParamList = {
+  home: undefined;
+};
+
+type NavigationProp = StackNavigationProp<RootStackParamList, "home">;
+
+export default function MasterLogin() {
+  const navigation = useNavigation<NavigationProp>();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleSignUp = (email: string, password: string) => {
+  //   createUserWithEmailAndPassword(auth, email, password)
+  //     .then((userCredential: any) => {
+  //       const user = userCredential.user;
+  //       console.log("User signed up:", user);
+        navigation.navigate("home");
+  //     })
+  //     .catch((error: unknown) => {
+  //       if (error instanceof Error) {
+  //         console.error("Error signing up:", error.message);
+  //       } else {
+  //         console.error("Unknown error signing up:", error);
+  //       }
+  //     });
+  };
+
+  const handleSignIn = (email: string, password: string) => {
+  //   signInWithEmailAndPassword(auth, email, password)
+  //     .then((userCredential: any) => {
+  //       const user = userCredential.user;
+  //       console.log("User signed in:", user);
+         navigation.navigate("home");
+  //     })
+  //     .catch((error: unknown) => {
+  //       if (error instanceof Error) {
+  //         console.error("Error signing in:", error.message);
+  //       } else {
+  //         console.error("Unknown error signing in:", error);
+  //       }
+  //     });
+  };
+
+  return (
+    <View style={styles.container}>
+      <Text style={styles.title}>welcome to soundwave!</Text>
+      {/* <Image source={}></Image> */}
+
+      <TextInput
+        placeholder="email"
+        placeholderTextColor="gray"
+        value={email}
+        onChangeText={setEmail}
+        style={styles.input}
+      />
+
+      <TextInput
+        placeholder="password"
+        placeholderTextColor="gray"
+        value={password}
+        onChangeText={setPassword}
+        secureTextEntry
+        style={styles.input}
+      />
+
+      <View style={styles.buttonContainer}>
+        <Button label="Sign Up" onPress={() => handleSignUp(email, password)} />
+        <Button label="Sign In" onPress={() => handleSignIn(email, password)} />
+          
+      </View>
+    </View>
+  );
+}
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    //backgroundColor: "#641346",
-  },
-  
-  profileCard: {
-    backgroundColor: "#F8D0DD",
-    borderRadius: 25,
-    // marginTop: 0,
-    // marginBottom: 15,
-
-    padding: 15,
-    width: 360,  // 👈 Set a fixed width
-    height: 120, // 👈 Set a fixed height (same as width to make it square)
-    justifyContent: "center", // Optional for centering content
-    alignItems: "center", // Optional for centering content
-  },
-  
-
-  profileHeader: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  profileImageContainer: {
-    width: 80,
-    height: 80,
-    borderRadius: 40,
-    backgroundColor: "#000",
+    backgroundColor: "#e6a8b8",
     justifyContent: "center",
-    alignItems: "center",
-    overflow: "hidden",
-  },
-  profileImage: {
-    width: 70,
-    height: 70,
-    borderRadius: 35,
-  },
-  profileInfo: {
-    marginLeft: 20,
-    justifyContent: "flex-start",
-    flexShrink: 1,         // allows text to shrink if needed
-    maxWidth: 250,         // adjust based on your layout
-  },
-
-  musicPost: {
-    height: height,
-    justifyContent: "flex-start",
     alignItems: "center",
     paddingHorizontal: 20,
-    paddingTop: 100, // ⬅️ reduce this to move content up
-    marginTop: -10, // ⬅️ optional: shift whole post upward
   },
-  
-  albumCovers: {
-    height: 380,
-    width: "100%",
-    position: "relative",
-    alignItems: "center",
-    justifyContent: "center",
-    marginLeft: -16,
+  title: {
+    fontSize: 35,
+    fontFamily: "Afacad",
+    color: "black",
+    marginBottom: 30,
+  },
+  input: {
+    width: "90%",
+    height: 50,
+    backgroundColor: "white",
+    borderRadius: 20,
+    paddingHorizontal: 15,
+    fontSize: 16,
+    marginBottom: 15,
+    fontFamily: "Afacad",
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 3,
     color: "#551A2D",
   },
-  albumCoverBase: {
-    width: "80%",
-    height: 80,
-    position: "absolute",
+  buttonContainer: {
+    marginTop: 20,
+    gap: 10,
+    width: "35%",
   },
-  albumCoverBack2: {
-    top: 10,
-    left: "10%",
-  },
-  songInfoContainer: {
-    width: "100%",
-    alignItems: "center",
-    marginTop: -25,
-    marginBottom: 20,
-  },
-  commentSection: {
-    backgroundColor: "white",
-    borderRadius: 20,
-    padding: 15,
-    width: "100%",
-  },
-  commentHeader: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: 10,
-  },
-  interactionButtons: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  playButton: {
-    marginLeft: 15,
-  },
-
-  profileName: {
-    fontSize: 24,
-    fontWeight: "bold",
-    color: "#000",
-    fontFamily: "Afacad",
-  },
-  profileSubtitle: {
-    fontSize: 16,
-    color: "#000",
-    fontFamily: "Afacad",
-  },
-  songTitle: {
-    fontSize: 28,
-    fontWeight: "bold",
-    color: "white",
-    textAlign: "center",
-    fontFamily: "Afacad",
-  },
-  artistName: {
-    fontSize: 20,
-    color: "#C5BCBC",
-    textAlign: "center",
-    fontFamily: "Afacad",
-  },
-  username: {
-    fontSize: 16,
-    fontWeight: "bold",
-    color: "#641346",
-    fontFamily: "Afacad",
-  },
-  commentText: {
-    fontSize: 14,
-    color: "#333",
-    lineHeight: 20,
-    fontFamily: "Afacad",
-  },
-  
 });
 

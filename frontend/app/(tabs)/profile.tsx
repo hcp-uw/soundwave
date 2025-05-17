@@ -2,8 +2,8 @@ import React, { useState, useCallback, useEffect } from 'react';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { View, Text, Image, ScrollView, StyleSheet, FlatList, ActivityIndicator, TouchableOpacity } from 'react-native';
 import { fetchData } from '@/api';
-import { PostData } from '../newpost_create'; 
-import { useAuth } from "../../components/AuthContext";
+import { PostData } from './newpost_create'; 
+//import { useAuth } from "../../components/AuthContext";
 import { NavigationProp } from '@react-navigation/native';
 
 
@@ -59,7 +59,7 @@ export default function ProfileScreen() {
 
   const [reviews, setReviews] = useState<Review[]>([]);
   const [loading, setLoading] = useState(true);
-  const { currentUser } = useAuth();
+  //const { currentUser } = useAuth();
 
   const [selectedSong, setSelectedSong] = useState<Review | null>(null);
 
@@ -73,16 +73,17 @@ export default function ProfileScreen() {
         setLoading(true);
         try {
         const posts = await fetchData();
-        const uid = currentUser?.email;      
-        if (posts && currentUser) {
-          console.log("🏷️ fetchData returned:", posts);
-          console.log("🏷️ currentUser:", {
-            email: currentUser?.email,
-            uid: currentUser?.uid,
-          });
-          const filteredPosts = posts.filter((p: PostData) => p.uid === uid);
-          console.log(filteredPosts);
+        //const uid = currentUser?.email;      
+        //if (posts && currentUser) {
+          // console.log("🏷️ fetchData returned:", posts);
+          // console.log("🏷️ currentUser:", {
+          //   email: currentUser?.email,
+          //   uid: currentUser?.uid,
+          // });
+          // const filteredPosts = posts.filter((p: PostData) => p.uid === uid);
+          // console.log(filteredPosts);
 
+          const filteredPosts = posts.filter((p: PostData) => p.uid === "rachel@gmail.com");
           const formatted: Review[] = filteredPosts.map((p: PostData) => ({
             title: p.song,
             artist: p.artist,
@@ -90,7 +91,7 @@ export default function ProfileScreen() {
             image: p.cover,
           }));
           setReviews(formatted);
-        } } catch (err) {
+        } catch (err) {
           console.error("Error loading posts", err);
         } finally {
         setLoading(false);
@@ -126,8 +127,8 @@ export default function ProfileScreen() {
           style={styles.profilePic}
         />
         <View>
-          <Text style={styles.name}>hanni pham</Text>
-          <Text style={styles.bio}>member of newjeans 🎵</Text>
+          <Text style={styles.name}>rachel hines</Text>
+          <Text style={styles.bio}>music lover & soundwave ceo</Text>
         </View>
       </View>
 

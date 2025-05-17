@@ -1,14 +1,13 @@
 import { useState, useEffect, useRef} from "react";
 import { View, TextInput, Text, Alert, StyleSheet, Image, Animated } from "react-native";
 import { Keyboard, TouchableWithoutFeedback, Easing} from 'react-native';
-
 import RoundedRectangle from "@/components/RoundedRectangle"; // Ensure this exists
 import { NextButton } from "@/components/nextButton";
-import { sendData } from "../api";
-//import { FormControl, InputGroup, Container, Button } from "react-bootstrap";
-import { useRoute } from "@react-navigation/native";
-//import {auth} from "@/firebaseConfig";
-import { useAuth } from "../components/AuthContext";
+import { sendData } from "../../api";
+import { useRoute, useNavigation } from "@react-navigation/native";
+import { StackNavigationProp } from "@react-navigation/stack";
+
+
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Afacad:ital,wght@0,400..700;1,400..700&display=swap');
 </style>
@@ -46,6 +45,12 @@ const SpinningImage = ({ songCover }: { songCover: string }) => {
   );
 };
 
+type RootStackParamList = {
+  home: undefined;
+};
+
+type NavigationProp = StackNavigationProp<RootStackParamList, "home">;
+
 
 export interface PostData {
     postId: string;
@@ -55,14 +60,13 @@ export interface PostData {
     cover: string;
     album: string;
     uid: string | null| undefined;
-  }
-
-  
+}
 
 export default function NewPostScreen() {
 
   
   const route = useRoute();
+  const navigation = useNavigation<NavigationProp>();
   const { songTitle, songArtist, cover, album } = route.params as { songTitle: string; songArtist: string, cover:string, album:string };
 
 
@@ -70,8 +74,8 @@ export default function NewPostScreen() {
   const songName = songTitle;
   const artistName = songArtist;
   const songCover = cover;
-  const { currentUser } = useAuth();
-  const uid = currentUser?.email;
+  //const { currentUser } = useAuth();
+  const uid = "rachel@gmail.com";
   const songAlbum = album;
   
 
@@ -99,12 +103,17 @@ export default function NewPostScreen() {
         const response = await sendData(postData); // Use the function from api.js
         console.log("test2");
         if (response) {
-        Alert.alert("slay", "post created!");
+          Alert.alert("slay", "post created!",
+          [{text: "OK", onPress: () => navigation.navigate("home"), // ✅ Navigate after pressing OK
+            },
+          ],
+          { cancelable: false }
+        );
         setIdNum(newId);
         } else {
-        Alert.alert("Error", "Failed to send data");
+          Alert.alert("Error", "Failed to send data");
         }
-    };
+  };
   
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>

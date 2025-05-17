@@ -27,14 +27,14 @@ app.use(cors({ origin: "*"}));
 // }));
 
 app.use(express.urlencoded({extended: true}));
+app.use(express.json()); 
 
 const db = admin.firestore();
 
 //post endpoint! to create!
 app.post('/create', async (req, res) => {
     try {
-        console.log("Received request at /create", req.body); 
-        //onsole.log(req.body);
+        console.log("THIS IS WHAT I GOT:", req.body); 
         const postId = req.body.postId;
         const postJson = {
             //username: req.body.username,

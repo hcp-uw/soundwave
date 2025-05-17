@@ -29,8 +29,8 @@ console.log("CLIENT_SECRET:", CLIENT_SECRET);
 
 type RootStackParamList = {
   NewPost: undefined;
-  newpost_create: { songTitle: string; songArtist: string, cover: string, songAlbum: string }; // ✅ Expect parameters
-};
+  newpost_create: { songTitle: string; songArtist: string, cover: string, album: string }; // ✅ Expect parameters
+}
 
 type Song = {
   id: string;
@@ -221,7 +221,7 @@ export default function NewPostScreen() {
         songTitle: selectedSong.title,
         songArtist: selectedSong.artist,
         cover: selectedSong.cover,
-        songAlbum: selectedSong.album,
+        album: selectedSong.album,
       });
     }
   }, [selectedSong]);
@@ -269,7 +269,7 @@ export default function NewPostScreen() {
                 songTitle: selectedSong.title,
                 songArtist: selectedSong.artist,
                 cover: selectedSong.cover,
-                songAlbum: selectedSong.album,
+                album: selectedSong.album,
               });
             } else {
               alert("Please select a song first!"); // Prevents navigation if no song is selected
