@@ -1,9 +1,3 @@
-<<<<<<< Updated upstream
-import { initializeApp } from 'firebase/app';
-import { getAuth } from 'firebase/auth';
-import { getFirestore } from 'firebase/firestore'; // Only if using Firestore
-import { getAnalytics } from 'firebase/analytics'; // Only if using Analytics
-=======
 // import { initializeApp, initializeAuth } from "firebase/app";
 // //import { getFirestore } from "firebase/firestore";
 // import { getAuth } from "firebase/auth";
@@ -33,7 +27,6 @@ import { getAnalytics } from 'firebase/analytics'; // Only if using Analytics
 
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
->>>>>>> Stashed changes
 
 const firebaseConfig = {
   apiKey: 'AIzaSyDtN86v7IyT-Qk9IdxzWrvZ4U9qk4itS6M',
@@ -47,13 +40,4 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app); // ✅ Works in Expo Go
 
-<<<<<<< Updated upstream
-// Initialize Firebase services
-const auth = getAuth(app);
-// const db = getFirestore(app); // Uncomment if you're using Firestore
-const analytics = getAnalytics(app);
-
-export { app, auth, analytics }; // Export the app and services as needed
-=======
 export { auth };
->>>>>>> Stashed changes
