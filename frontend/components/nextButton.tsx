@@ -9,7 +9,7 @@ interface NextButtonProps {
   const NextButton: React.FC<NextButtonProps> = ({ onPress }) => {
     return (
       <TouchableOpacity style={styles.nextButton} onPress={onPress}>
-        <Text style={styles.nextButtonText}>next</Text>
+        <Text style={styles.nextButtonText}>post!</Text>
       </TouchableOpacity>
     );
   };

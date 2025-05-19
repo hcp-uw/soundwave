@@ -5,6 +5,7 @@ import { fetchData } from '@/api';
 import { PostData } from './newpost_create'; 
 //import { useAuth } from "../../components/AuthContext";
 import { NavigationProp } from '@react-navigation/native';
+import { LinearGradient } from 'expo-linear-gradient';
 
 
 // parameters for review card
@@ -119,7 +120,9 @@ export default function ProfileScreen() {
     return <ActivityIndicator style={{ flex: 1 }} size="large" />;
   }
   return (
+    <LinearGradient colors={['#740D4B', '#000000']} style={styles.container}>
     <ScrollView style={styles.container}>
+      
       {/* profile header */}
       <View style={styles.header}>
         <Image
@@ -191,7 +194,9 @@ export default function ProfileScreen() {
           </View>
         )}
       />
-    </ScrollView>
+      </ScrollView>
+    </LinearGradient>
+    
   );
 }
 
@@ -199,7 +204,7 @@ export default function ProfileScreen() {
 const styles = StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: '#641346',
+      //backgroundColor: '#641346',
     },
     header: { // bio area
       flexDirection: 'row',
@@ -295,6 +300,11 @@ const styles = StyleSheet.create({
       width: 330,
       
     },
+    gradientBackground: {
+  flex: 1,
+  // justifyContent: "center",
+  // alignItems: "center",
+},
     listTitle: {
       fontWeight: 500,
       fontSize: 20,

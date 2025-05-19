@@ -274,7 +274,7 @@ export default function NewPostScreen() {
         </View>
 
         {/* Next Button */}
-        <View style={styles.nextButtonContainer}>
+        {/* <View style={styles.nextButtonContainer}>
         <NextButton
           onPress={() => {
             if (selectedSong) {
@@ -289,7 +289,7 @@ export default function NewPostScreen() {
             }
           }}
         />
-        </View>
+        </View> */}
       </RoundedRectangle>
     </View>
     </LinearGradient>
@@ -351,7 +351,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     padding: 5,
     width: "100%",
-    height: "70%",
+    height: "82%",
     alignSelf: "center",
     alignItems: "center",
     justifyContent: "center",

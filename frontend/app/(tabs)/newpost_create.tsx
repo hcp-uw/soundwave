@@ -38,11 +38,21 @@ const SpinningImage = ({ songCover }: { songCover: string }) => {
 
   return (
     <View style={styles.record}>
+       <Image 
+            source={require('../../components/ui/icons/record.png')}
+            style={{ 
+                width: 35,
+                height: 35, 
+                // marginBottom: -25, 
+                // marginLeft: 40,
+            }} 
+        />
       <Animated.Image
         source={{ uri: songCover }}
         style={[styles.album, { transform: [{ rotate: spin }] }]} // Apply the spinning animation
       />
     </View>
+    
   );
 };
 
@@ -181,6 +191,13 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontWeight: "bold",
   },
+  recordContainer: {
+  width: 140,
+  height: 140,
+  justifyContent: "center",
+  alignItems: "center",
+  position: "relative",
+},
   artistName: { 
     fontFamily: "Afacad",
     fontSize: 20,
@@ -201,7 +218,7 @@ const styles = StyleSheet.create({
     
   }, 
   record: { 
-    backgroundColor: "gray",
+    backgroundColor: "#353333",
     paddingBottom: 20,
     width: 120,
     height: 120,
@@ -213,7 +230,8 @@ const styles = StyleSheet.create({
     
   }, 
   recordOuter: { 
-    backgroundColor: "black",
+    backgroundColor: "#1B1919",
+    //opacity: 0,
     paddingBottom: 20,
     width: 140,
     height: 140,
