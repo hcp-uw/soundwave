@@ -48,7 +48,7 @@ const navigation = useNavigation<ProfileNavProp>();
             
           </View>
           <Text style={styles.subtitle}>{songArtist}</Text>
-          <Text style={styles.handle}>@hanni_pham</Text>
+          <Text style={styles.handle}>@rachel</Text>
 
           {/* Circular cover */}
           <View style={styles.circleOuter}>
@@ -100,8 +100,9 @@ const styles = StyleSheet.create({
     marginBottom: 4,
   },
   titleText: {
+    marginTop: 40,
     flex: 1,
-    fontSize:  30,
+    fontSize: 24,
     fontWeight: 'bold',
     textAlign: 'center',
     fontFamily: 'Afacad',
@@ -114,8 +115,9 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   handle: {
-    fontSize: 14,
+    fontSize: 19,
     color: '#999',
+    fontFamily: 'Afacad',
     marginBottom: 20,
     textAlign: 'center',
   },
@@ -132,12 +134,11 @@ const styles = StyleSheet.create({
     width: 50,
     height: 50,
     borderRadius: 25,
-    backgroundColor: '#F3F3F3', // optional: if you want a circle behind the arrow
     alignItems: 'center',
     justifyContent: 'center',
     position: 'absolute',
     top: -4,
-    left: 10,
+    left: -7,
   },
   circleInner: {
     width: 180,
@@ -153,7 +154,7 @@ const styles = StyleSheet.create({
     borderRadius: 75,
   },
   contentText: {
-    fontSize: 14,
+    fontSize: 19,
     color: '#333',
     lineHeight: 20,
     textAlign: 'left',

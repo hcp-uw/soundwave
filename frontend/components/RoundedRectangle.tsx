@@ -3,13 +3,14 @@ import { ReactNode } from 'react';
 
 interface RoundedRectangleProps {
   children?: ReactNode; // 👈 Ensures children can be any valid React element(s)
-  style?: ViewStyle; // Add style prop to accept custom styles
+  style?: ViewStyle;
+  label?: string;  // Add style prop to accept custom styles
 }
 
-export default function RoundedRectangle({ children, style }: RoundedRectangleProps) {
+export default function RoundedRectangle({ children, style, label }: RoundedRectangleProps) {
   return (
-    <View style={[styles.rectangle, style]}> {/* Merge default styles with custom style */}
-      <Text style={styles.text}>new post</Text>
+    <View style={[styles.rectangle, style]}>
+      {label && <Text style={styles.text}>{label}</Text>}
       {children}
     </View>
   );
@@ -28,10 +29,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   text: {
-    fontSize: 35,
+    fontSize: 30,
     fontFamily: 'Afacad',
     paddingBottom: 15,
     color: 'black',
-    fontWeight: 'semibold',
+    fontWeight: 'bold',
   },
 });

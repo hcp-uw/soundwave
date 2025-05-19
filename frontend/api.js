@@ -8,8 +8,8 @@ import axios from 'axios';
 
 //REMEMBER TO UPDATE IP ADDRESS!!!!!
 
-const API_URL = 'http://10.21.0.16:3001'; // rachel
-//const API_URL = 'http://10.19.52.169:3001'; // miranda
+//const API_URL = 'http://10.21.0.16:3001'; // rachel
+const API_URL = 'http://10.0.0.183:3001'; // miranda
 //const API_URL = 'http://localhost:3001';
 //const API_URL = 'http://10.19.71.196:3001'; // aditi
 

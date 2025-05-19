@@ -1,6 +1,6 @@
 import { Tabs } from 'expo-router';
 import React, { useEffect } from 'react';
-import { Platform } from 'react-native';
+import { Platform, Image } from 'react-native';
 import * as SplashScreen from 'expo-splash-screen';
 import { useFonts } from 'expo-font';
 import { Colors } from '@/constants/Colors';
@@ -8,6 +8,11 @@ import { useColorScheme } from '@/hooks/useColorScheme';
 import TabBarBackground from '@/components/ui/TabBarBackground';
 import { HapticTab } from '@/components/HapticTab';
 import { IconSymbol } from '@/components/ui/IconSymbol';
+import homeIcon from '../../components/ui/icons/Home.png';
+import plus from '../../components/ui/icons/Plus.png';
+import profile from '../../components/ui/icons/Profile.png';
+
+
 
 SplashScreen.preventAutoHideAsync();
 
@@ -44,9 +49,19 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Home',
-          tabBarIcon: ({ color, size }) => (
-            <IconSymbol size={30} name="homeIcon.fill" color={color} />
+          tabBarLabel: () => null,
+          tabBarIcon: ({ color, size, focused }) => (
+            <Image 
+              source={require('../../components/ui/icons/Home.png')}
+              style={{ 
+                  width: 35,
+                  height: 35, 
+                  tintColor: focused ? '#F5C1CC' : 'white',
+                  //tintColor: focused ? '#9747FF' : 'white',
+                  marginBottom: -25, 
+                  marginLeft: 40,
+                }} 
+            />
           ),
         }}
       />
@@ -58,23 +73,44 @@ export default function TabLayout() {
         name="home"
         options={{href:null,}} 
         />
+        <Tabs.Screen
+        name="newpost_create"
+        options={{href:null,}} 
+        />
 
       {/* Search / New Post */}
       <Tabs.Screen
         name="search_results"
         options={{
-          title: 'New Post',
-          tabBarIcon: ({ color, size }) => (
-            <IconSymbol size={40} name="plus.fill" color={color} />
+          tabBarLabel: () => null,
+          tabBarIcon: ({ color, size, focused }) => (
+             <Image source={require('../../components/ui/icons/Plus.png')}
+              style={{ 
+                  width: 50,
+                  height: 50, 
+                  tintColor: focused ? '#F5C1CC' : 'white',
+                  //tintColor: focused ? '#9747FF' : 'white',
+                  marginBottom: -20 
+                }} 
+             />
           ),
         }}
       />
       <Tabs.Screen
         name="profile"
         options={{
-          title: 'Profile',
-          tabBarIcon: ({ color, size }) => (
-            <IconSymbol size={35} name="profile.fill" color={color} />
+           tabBarLabel: () => null,
+          tabBarIcon: ({ color, size, focused }) => (
+            <Image source={require('../../components/ui/icons/Profile.png')}
+              style={{ 
+                  width: 43,
+                  height: 43, 
+                  tintColor: focused ? '#F5C1CC' : 'white',
+                  //tintColor: focused ? '#9747FF' : 'white',
+                  marginBottom: -20,
+                  marginRight: 40,
+                }} 
+             />
           ),
         }}
       />

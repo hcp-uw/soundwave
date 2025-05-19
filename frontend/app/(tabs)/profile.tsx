@@ -123,7 +123,8 @@ export default function ProfileScreen() {
       {/* profile header */}
       <View style={styles.header}>
         <Image
-          source={{ uri: 'https://preview.redd.it/220728-phoning-update-hanni-photos-v0-i5cdr2pcy9e91.jpg?width=640&crop=smart&auto=webp&s=2f52e1438ebf3a27f58627d9f03c506d65895251' }} // default profile pic
+          //source={{ uri: 'https://preview.redd.it/220728-phoning-update-hanni-photos-v0-i5cdr2pcy9e91.jpg?width=640&crop=smart&auto=webp&s=2f52e1438ebf3a27f58627d9f03c506d65895251' }} // default profile pic
+          source={require('../../components/rachel.png')}
           style={styles.profilePic}
         />
         <View>
@@ -159,9 +160,9 @@ export default function ProfileScreen() {
           <View style={styles.reviewCard}>
             <Image source={{ uri: item.image }} style={styles.reviewImage} />
             <View style={styles.reviewTextContainer}>
-              <Text style={styles.reviewTitle}>{item.title}</Text>
-              <Text style={styles.reviewSubtitle}>{item.artist}</Text>
-              <Text style={styles.reviewBody} numberOfLines={6} ellipsizeMode="tail">{item.review}</Text>
+              <Text style={styles.reviewTitle} numberOfLines={2} ellipsizeMode="tail">{item.title}</Text>
+              <Text style={styles.reviewSubtitle} numberOfLines={2} ellipsizeMode="tail">{item.artist}</Text>
+              <Text style={styles.reviewBody} numberOfLines={4} ellipsizeMode="tail">{item.review}</Text>
             </View>
           </View>
           </TouchableOpacity>
@@ -181,7 +182,7 @@ export default function ProfileScreen() {
         showsHorizontalScrollIndicator={false}
         renderItem={({ item }) => (
           <View style={styles.listCard}>
-            <Text style={styles.listTitle}>{item.title}</Text>
+            <Text style={styles.listTitle} numberOfLines={2} ellipsizeMode="tail">{item.title}</Text>
             <View style={styles.albumGrid}>
               {item.albums.map((uri, idx) => (
                 <Image key={idx} source={{ uri }} style={styles.albumImage} />
@@ -210,22 +211,25 @@ const styles = StyleSheet.create({
       paddingTop: 40
     },
     profilePic: {
-      width: 130,
-      height: 130,
-      borderRadius: 80,
-      marginRight: 20
+      width: 120,
+      height: 120,
+      borderRadius: 90,
+      marginRight: 30,
+      marginTop: 20
     },
     name: { // user name
       fontSize: 25,
       fontWeight: 'bold',
       fontFamily: "Afacad",
       letterSpacing: 1.5,
-      marginBottom: 5
+      marginBottom: -1,
+      marginLeft: -7
     },
     bio: { // user bio
       width: "100%",
       fontFamily: "Afacad",
-      fontSize: 17
+      fontSize: 17,
+      marginLeft: -7
     },
     sectionTitle: { // section headings
       fontFamily: "Afacad",
@@ -262,6 +266,7 @@ const styles = StyleSheet.create({
     reviewTitle: {
       fontWeight: 'bold',
       fontSize: 20,
+      lineHeight: 21,
       fontFamily: "Afacad",
       letterSpacing: 1,
       textAlign: 'center'
@@ -269,12 +274,13 @@ const styles = StyleSheet.create({
     reviewSubtitle: {
       fontFamily: "Afacad",
       letterSpacing: 1,
-      fontSize: 14,
+      lineHeight: 16,
+      fontSize: 15,
       marginBottom: 8,
       textAlign: 'center'
     },
     reviewBody: {
-      fontSize: 14,
+      fontSize: 17,
       fontFamily: "Afacad",
       color: 'white' 
     },

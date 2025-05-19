@@ -38,7 +38,7 @@ export default function SolidTabBarBackground() {
     <View
       style={[
         StyleSheet.absoluteFill,
-        { backgroundColor, opacity: 0.5 }, // ← 80% opaque
+        { backgroundColor, opacity: 1.0 }, // ← 80% opaque
       ]}
     />
   );

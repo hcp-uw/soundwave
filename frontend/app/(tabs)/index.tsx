@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { View, TextInput, Text, Alert, StyleSheet } from "react-native";
+import { View, TextInput, Text, Alert, StyleSheet, Image } from "react-native";
 import RoundedRectangle from "@/components/RoundedRectangle"; // Ensure this exists
 import { NextButton } from "@/components/nextButton";
 import { Button } from "@/components/Button";
@@ -56,7 +56,14 @@ export default function MasterLogin() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>welcome to soundwave!</Text>
+      <Image source={require('../../components/logos/logo2.png')}
+              style={{ 
+                    width: 175,
+                    height: 185, 
+              }} 
+        />
+      <Text style={styles.subtitle}>welcome to</Text>
+      <Text style={styles.title}>soundwave</Text>
       {/* <Image source={}></Image> */}
 
       <TextInput
@@ -95,9 +102,19 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 35,
+    letterSpacing: 3,
     fontFamily: "Afacad",
+    fontWeight: "bold",
     color: "black",
     marginBottom: 30,
+    marginTop: -7,
+  },
+  subtitle: {
+    fontSize: 22,
+    fontFamily: "Afacad",
+    fontWeight: "light",
+    marginTop: 10,
+    color: "#black",
   },
   input: {
     width: "90%",

@@ -8,6 +8,8 @@ import { NextButton } from "@/components/nextButton";
 import { useNavigation } from "@react-navigation/native"; 
 import { StackNavigationProp } from "@react-navigation/stack";
 import { useFocusEffect } from '@react-navigation/native';
+import { LinearGradient } from 'expo-linear-gradient';
+
 
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Afacad:ital,wght@0,400..700;1,400..700&display=swap');
@@ -227,8 +229,9 @@ export default function NewPostScreen() {
   }, [selectedSong]);
 
   return (
+    <LinearGradient colors={['#740D4B', '#000000']} style={styles.gradientBackground}>
     <View style={styles.screenContainer}>
-      <RoundedRectangle>
+      <RoundedRectangle label="new post">
         {/* Search Bar */}
         <View style={styles.searchBar}>
           <Ionicons name="search" size={20} color="black" />
@@ -256,7 +259,17 @@ export default function NewPostScreen() {
             <SongGrid setSelectedSong={setSelectedSong} />
 
           ) : (
-            <Text style={styles.noResultsText}>search for a song!</Text>
+            <View>
+            
+            <Image source={require('../../components/logos/logo2.png')}
+                  style={{ 
+                      width: 175,
+                      height: 185, 
+                
+                  }} 
+             />
+             <Text style={styles.noResultsText}>search for a song!</Text>
+            </View>
           )}
         </View>
 
@@ -279,17 +292,24 @@ export default function NewPostScreen() {
         </View>
       </RoundedRectangle>
     </View>
+    </LinearGradient>
   );
 }
 
 const styles = StyleSheet.create({
   screenContainer: {
     flex: 1,
-    backgroundColor: "#641346",
+    //backgroundColor: "white",
     justifyContent: "center",
     alignItems: "center",
     paddingHorizontal: 20,
   },
+  gradientBackground: {
+  flex: 1,
+  // justifyContent: "center",
+  // alignItems: "center",
+},
+
   searchBar: {
     flexDirection: "row",
     alignItems: "center",
@@ -321,8 +341,9 @@ const styles = StyleSheet.create({
   },
   searchInput: {
     flex: 1,
+    fontFamily: "Afacad",
     marginLeft: 10,
-    fontSize: 16,
+    fontSize: 19,
     color: "black",
   },
   rectangle: {
@@ -382,9 +403,11 @@ const styles = StyleSheet.create({
     
   },
   noResultsText: {
-    fontSize: 16,
+    fontSize: 18,
     color: "black",
+    fontStyle: "italic",
     textAlign: "center",
+    fontFamily: "Afacad",
     marginTop: 20,
   },
   

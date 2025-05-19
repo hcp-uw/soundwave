@@ -7,7 +7,25 @@ import { fetchData } from '@/api';
 import { CoverStack } from '@/components/albumStack';
 import { PostData } from './newpost_create';
 
+//adding navigation
+import { useRoute, useNavigation } from '@react-navigation/native';
+import type { StackNavigationProp } from "@react-navigation/stack";
+import { NavigationProp } from '@react-navigation/native';
+
 const SCREEN_HEIGHT = Dimensions.get('window').height;
+
+type RootStackParamList = {
+  postfocus: {
+    songTitle: string;
+    songArtist: string;
+    cover: string;
+    content: string;
+  };
+  // add more screens here if needed
+};
+
+type ProfileNavProp = StackNavigationProp<RootStackParamList, "postfocus">;
+
 
 type Review = {
   song: string;
@@ -19,6 +37,8 @@ type Review = {
 };
 
 export default function HomeScreen() {
+  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+  
   const [posts, setPosts] = useState<Review[]>([]);
   const [favoritedPosts, setFavoritedPosts] = useState<Record<string, boolean>>({});
   const [loading, setLoading] = useState(true);
@@ -64,8 +84,8 @@ export default function HomeScreen() {
               />
             </View>
             <View style={styles.profileInfo}>
-              <Text style={styles.profileName}>{item.album || 'Unknown Album'}</Text>
-              <Text style={styles.profileSubtitle}>{item.artist || 'Unknown Artist'}</Text>
+              <Text style={styles.profileName} numberOfLines={2} ellipsizeMode="tail">{item.album || 'Unknown Album'}</Text>
+              <Text style={styles.profileSubtitle} numberOfLines={1} ellipsizeMode="tail">{item.artist || 'Unknown Artist'}</Text>
             </View>
           </View>
         </View>
@@ -75,7 +95,7 @@ export default function HomeScreen() {
         </View>
 
         <View style={styles.songInfoContainer}>
-          <Text style={styles.songTitle}>{item.song || 'No title found'}</Text>
+          <Text style={styles.songTitle} numberOfLines={2} ellipsizeMode="tail">{item.song || 'No title found'}</Text>
           <Text style={styles.artistName}>{item.artist || 'No artist found'}</Text>
         </View>
 
@@ -90,12 +110,18 @@ export default function HomeScreen() {
                   color="#641346"
                 />
               </TouchableOpacity>
-              <TouchableOpacity style={styles.playButton}>
+              <TouchableOpacity style={styles.playButton} onPress={ () => navigation.navigate("postfocus", {
+                    songTitle: item.song,
+                    songArtist: item.artist,
+                    cover: item.cover,
+                    content: item.content, // pass the review text too
+                  })
+                  }>
                 <Ionicons name="play" size={24} color="#641346" />
               </TouchableOpacity>
             </View>
           </View>
-          <Text style={styles.commentText} numberOfLines={3} ellipsizeMode="tail">
+          <Text style={styles.commentText} numberOfLines={4} ellipsizeMode="tail">
             {item.content || 'No comment'}
           </Text>
         </View>
@@ -160,16 +186,23 @@ const styles = StyleSheet.create({
   profileInfo: {
     marginLeft: 20,
     justifyContent: 'flex-start',
+    fontFamily: "Afacad",
     flexShrink: 1,
     maxWidth: 250,
   },
+  //album title in top container
   profileName: {
     fontSize: 24,
+    //marginTop: -5,
+    lineHeight: 28,
+    fontFamily: "Afacad",
     fontWeight: 'bold',
     color: '#000',
   },
+  //artist name in top container
   profileSubtitle: {
-    fontSize: 16,
+    fontSize: 18,
+    fontFamily: "Afacad",
     color: '#000',
   },
   musicPost: {
@@ -181,7 +214,7 @@ const styles = StyleSheet.create({
     marginTop: -10,
   },
   albumCovers: {
-    height: 380,
+    height: 350,
     width: '100%',
     position: 'relative',
     alignItems: 'center',
@@ -195,14 +228,19 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   songTitle: {
-    fontSize: 28,
+    fontSize: 25,
+    lineHeight: 25,
     fontWeight: 'bold',
     color: 'white',
+    marginTop: 2,
+    fontFamily: "Afacad",
     textAlign: 'center',
   },
   artistName: {
-    fontSize: 24,
+    fontSize: 20,
+    lineHeight: 20,
     color: 'white',
+    fontFamily: "Afacad",
     textAlign: 'center',
   },
   commentSection: {
@@ -218,8 +256,9 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   username: {
-    fontSize: 16,
+    fontSize: 20,
     fontWeight: 'bold',
+    fontFamily: "Afacad",
     color: '#641346',
   },
   interactionButtons: {
@@ -230,8 +269,9 @@ const styles = StyleSheet.create({
     marginLeft: 15,
   },
   commentText: {
-    fontSize: 14,
+    fontSize: 19,
     color: '#333',
+    fontFamily: "Afacad",
     lineHeight: 20,
   },
 });

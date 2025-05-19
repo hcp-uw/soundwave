@@ -19,7 +19,7 @@ export const Colors = {
     navBackground: '#740D4B',
     navIcon: '#FFFFFF',
     navIconSelected: '#F5C1CC',
-    opacity: 0.9,
+    //opacity: 0.9,
   },
   dark: {
     text: '#ECEDEE',

@@ -4,6 +4,7 @@ import { Keyboard, TouchableWithoutFeedback, Easing} from 'react-native';
 import RoundedRectangle from "@/components/RoundedRectangle"; // Ensure this exists
 import { NextButton } from "@/components/nextButton";
 import { sendData } from "../../api";
+import { LinearGradient } from 'expo-linear-gradient';
 import { useRoute, useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 
@@ -81,7 +82,9 @@ export default function NewPostScreen() {
 
   const [idNum, setIdNum] = useState(0);
 
-  
+  useEffect(() => {
+  setTextBoxInput(""); // Clear the text box whenever the song changes
+  }, [songTitle]);
 
   const handleNext = async () => {
     console.log("test 1");
@@ -103,7 +106,7 @@ export default function NewPostScreen() {
         const response = await sendData(postData); // Use the function from api.js
         console.log("test2");
         if (response) {
-          Alert.alert("slay", "post created!",
+          Alert.alert("slay✨🔥", "post created!",
           [{text: "OK", onPress: () => navigation.navigate("home"), // ✅ Navigate after pressing OK
             },
           ],
@@ -116,18 +119,20 @@ export default function NewPostScreen() {
   };
   
   return (
+    <LinearGradient colors={['#740D4B', '#000000']} style={styles.gradientBackground}>
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
     <View
+    
       style={{
         flex: 1,
-        backgroundColor: "#641346", // Keep the same background color
+        //backgroundColor: "#641346", // Keep the same background color
         justifyContent: "center",
         alignItems: "center",
         paddingHorizontal: 20,
       }}
     >
       {/* Rounded Rectangle Container */}
-      <RoundedRectangle>
+      <RoundedRectangle label="new post">
         <View style={styles.recordOuter}>
           <View style={styles.record}>
               <Image source={{ uri: songCover}} style={styles.album}></Image> 
@@ -165,19 +170,20 @@ export default function NewPostScreen() {
       </RoundedRectangle>
     </View>
     </TouchableWithoutFeedback>
+    </LinearGradient>
   );
 }
 const styles = StyleSheet.create({
   songTitle: { 
     paddingTop: 15,
     fontFamily: "Afacad",
-    fontSize: 20,
+    fontSize: 26,
     textAlign: "center",
     fontWeight: "bold",
   },
   artistName: { 
     fontFamily: "Afacad",
-    fontSize: 18,
+    fontSize: 20,
     textAlign: "center",
     paddingBottom: 10,
   },
@@ -185,7 +191,7 @@ const styles = StyleSheet.create({
     textAlign: "left",        // ← horizontal alignment
     textAlignVertical: "top",
     fontFamily: "Afacad", 
-    fontSize: 16, 
+    fontSize: 19, 
     width: "100%",
     height: 200,
     paddingTop: 20,
@@ -216,6 +222,11 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
+  gradientBackground: {
+  flex: 1,
+  // justifyContent: "center",
+  // alignItems: "center",
+},
   album: { 
     width: 100,
     height: 100,

@@ -1,7 +1,7 @@
 import React from 'react'
 import { View, Image, StyleSheet, Dimensions } from 'react-native'
 
-const COVER_WIDTH = Dimensions.get('window').width * 0.8
+const COVER_WIDTH = Dimensions.get('window').width * 0.75
 const COVER_HEIGHT = COVER_WIDTH
 
 type CoverStackProps = { uri: string }
