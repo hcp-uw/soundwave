@@ -160,10 +160,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#F8D0DD',
     borderRadius: 25,
     padding: 15,
-    width: 360,
+    width: '100%',
+    maxWidth: 380,
     height: 120,
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'flex-start',
   },
   profileHeader: {
     flexDirection: 'row',
@@ -277,6 +278,6 @@ const styles = StyleSheet.create({
     fontSize: 19,
     color: '#333',
     fontFamily: "Afacad",
-    lineHeight: 20,
+    lineHeight: 25,
   },
 });

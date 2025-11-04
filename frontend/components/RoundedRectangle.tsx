@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   text: {
-    fontSize: 30,
+    fontSize: 25,
     fontFamily: 'Afacad',
     paddingBottom: 15,
     color: 'black',

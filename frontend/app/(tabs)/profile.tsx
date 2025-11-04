@@ -120,11 +120,19 @@ export default function ProfileScreen() {
     return <ActivityIndicator style={{ flex: 1 }} size="large" />;
   }
   return (
-    <LinearGradient colors={['#740D4B', '#000000']} style={styles.container}>
+    <LinearGradient colors={['#9E0466', '#000000']} style={styles.container}>
     <ScrollView style={styles.container}>
       
       {/* profile header */}
-      <View style={styles.header}>
+      
+      {/* <View style={styles.header}> */}
+      <LinearGradient
+        colors={['#e6a8b8', '#e6a8b8']}
+        locations={[0, 0.9999999999999]}
+        start={{ x: 0, y: 0.3 }}
+        end={{ x: 0, y: 1.5 }}
+        style={styles.header}
+      >
         <Image
           //source={{ uri: 'https://preview.redd.it/220728-phoning-update-hanni-photos-v0-i5cdr2pcy9e91.jpg?width=640&crop=smart&auto=webp&s=2f52e1438ebf3a27f58627d9f03c506d65895251' }} // default profile pic
           source={require('../../components/rachel.png')}
@@ -134,7 +142,8 @@ export default function ProfileScreen() {
           <Text style={styles.name}>rachel hines</Text>
           <Text style={styles.bio}>music lover & soundwave ceo</Text>
         </View>
-      </View>
+      </LinearGradient>
+      
 
       {/* my reviews */}
       <Text style={styles.sectionTitle}>My Reviews</Text>
@@ -206,14 +215,18 @@ const styles = StyleSheet.create({
       flex: 1,
       //backgroundColor: '#641346',
     },
+    headerContainer: {
+      position: 'relative',
+    },
     header: { // bio area
       flexDirection: 'row',
       padding: 16,
       alignItems: 'center',
-      backgroundColor: '#e6a8b8',
+      //backgroundColor: '#e6a8b8',
       height: 200,
       justifyContent: 'center',
       paddingTop: 40
+      
     },
     profilePic: {
       width: 120,
@@ -285,7 +298,7 @@ const styles = StyleSheet.create({
       textAlign: 'center'
     },
     reviewBody: {
-      fontSize: 17,
+      fontSize: 15,
       fontFamily: "Afacad",
       color: 'white' 
     },

@@ -132,8 +132,8 @@ const styles = StyleSheet.create({
     color: "#551A2D",
   },
   buttonContainer: {
-    marginTop: 20,
-    gap: 10,
+    marginTop: 10,
+    gap: 7,
     width: "35%",
   },
 });
