@@ -1,6 +1,6 @@
 {
   "extends": "expo/tsconfig.base",
-  "compilerOptions": {
+  "compigit statuslerOptions": {
     "jsx": "react",
     "jsx": "react",
     "jsx": "react",
